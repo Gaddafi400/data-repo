@@ -56,20 +56,22 @@ const Navbar = () => {
         <div className="navbar-end hidden lg:flex">
           <ul className="menu menu-horizontal px-1">
             <li>
-              <a className="hover:text-white">Data set</a>
+              <a className="hover:text-white text-base">Data set</a>
             </li>
             <li>
-              <a className="hover:text-white">Market Finder</a>
+              <a className="hover:text-white text-base">Market Finder</a>
             </li>
             <li tabIndex={0}>
               <details>
-                <summary className="hover:text-white">Discover More</summary>
+                <summary className="hover:text-white text-base">
+                  Discover More
+                </summary>
                 <ul className="p-2 bg-primary-500">
                   <li>
-                    <a className="hover:text-white">About Us</a>
+                    <a className="hover:text-white text-base">About Us</a>
                   </li>
                   <li>
-                    <a className="hover:text-white">Contact Us</a>
+                    <a className="hover:text-white text-base">Contact Us</a>
                   </li>
                 </ul>
               </details>

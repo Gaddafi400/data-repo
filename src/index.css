@@ -31,6 +31,228 @@
   }
 }
 
+/* Hero */
+.hero {
+  width: 100%;
+  height: 587px;
+  /* border: 1px solid red; */
+  padding: 0.5rem;
+  background: linear-gradient(
+    180deg,
+    #292949 0%,
+    rgba(41, 41, 73, 0.82) 49%,
+    rgba(41, 41, 73, 0) 100%
+  );
+}
+
+.hero .search-container {
+  width: 100%;
+  height: 636px;
+  border-radius: 20px 20px 0 0;
+  border: 1px #bbcaff solid;
+  background: linear-gradient(to bottom, #9190a0 0%, white 100%);
+  margin-top: 8rem;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  color: #292949;
+}
+
+.hero .search-container h1 {
+  margin-top: 106px;
+  margin-bottom: 21px;
+  font-size: 32px;
+  text-align: center;
+  font-weight: 700;
+}
+
+.hero .search-container p {
+  max-width: 481px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 400;
+  margin-bottom: 52px;
+}
+
+.hero .search-container form {
+  width: 100%;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.hero .search-container form input {
+  flex-grow: 1;
+  height: 4rem;
+}
+
+.hero .search-container form button {
+  width: 100%;
+  background: #ebb044;
+  padding: 0.7rem;
+  font-size: 24px;
+}
+
+@media (min-width: 640px) {
+  .hero .search-container {
+    width: 1305px;
+
+    height: 636px;
+    border-radius: 20px;
+
+    color: '#181831';
+  }
+  .hero .search-container h1 {
+    margin-top: 106px;
+    margin-bottom: 21px;
+    font-size: 60px;
+    padding-left: 93px;
+    padding-right: 93px;
+  }
+  .hero .search-container p {
+    max-width: 900px;
+    font-size: 32px;
+  }
+
+  .hero .search-container form {
+    width: 1020px;
+    flex-direction: row;
+  }
+
+  .hero .search-container form input {
+    flex-grow: 1;
+  }
+
+  .hero .search-container form input::placeholder {
+    font-size: 1.3rem;
+  }
+
+  .hero .search-container form button {
+    width: 271px;
+    background: #ebb044;
+    margin-left: 10px;
+  }
+}
+
+/* End Hero */
+
+/* sections */
+.first-section {
+  width: 100%;
+  height: 1133px;
+  padding-top: 32rem;
+  background: #e8e8eb;
+  margin-bottom: 300px;
+}
+
+.second-section {
+  height: 1133px;
+  background: #e8e8eb84;
+}
+
+.second-section > div:first-child {
+  position: relative;
+  top: -5rem;
+}
+
+.third-section {
+  background: #f7f8ff;
+  height: 1133px;
+}
+.third-section .card-shape {
+  display: flex;
+  position: relative;
+  top: -10rem;
+}
+
+.third-section .card-shape > div:nth-child(2) {
+  margin-top: -2rem;
+}
+
+.third-section .card-shape-2 {
+  display: flex;
+}
+
+.third-section .card-shape-2 > div:nth-child(2) {
+  margin-top: -2rem;
+}
+
+.third-section > div:nth-child(2) {
+  margin-top: -10rem;
+  margin-bottom: 2rem;
+}
+
+.fourth-section {
+  height: 1133px;
+}
+
+.fourth-section form {
+  margin-top: 5rem;
+  margin-bottom: 5rem;
+  padding: 0;
+}
+
+.fourth-section form input {
+  flex-grow: 1;
+  padding: 2rem;
+  border-radius: 20px 0 0 20px;
+  font-size: 24px;
+}
+
+.fourth-section form button {
+  background: #ebb044;
+  border-radius: 0 20px 20px 0;
+  width: 271px;
+  font-size: 24px;
+}
+
+.fourth-section > div:nth-child(1) {
+  margin-top: 15rem;
+}
+
+.fourth-section > div:nth-child(2) {
+  margin-top: 10rem;
+}
+
+.fifth-section {
+  height: 1133px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fifth-section .last-card {
+  display: flex;
+  padding: 69px;
+}
+
+.fifth-section .last-card p {
+  max-width: 837px;
+  margin-bottom: 2rem;
+}
+
+.fifth-section .last-card .people {
+  margin-top: 5rem;
+  height: 450px;
+  width: 600px;
+}
+
+.fifth-section .last-card .button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.fifth-section .last-card .button > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* end sections */
+
 /* card */
 .card {
   width: 100%;
@@ -66,8 +288,8 @@
 
 .card img {
   margin-left: 2rem;
-  height: 150px;
-  margin-top: -50px;
+  height: 200px;
+  margin-top: -78px;
 }
 
 @media (min-width: 640px) {
@@ -95,7 +317,7 @@
   .card img {
     height: 400px;
     width: 990px;
-    margin-left: 15rem;
+    margin-left: 30rem;
     position: absolute;
     bottom: 0;
   }

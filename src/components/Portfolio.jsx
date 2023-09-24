@@ -2,7 +2,7 @@ import phone from '../assets/phone.png';
 
 const Portfolio = () => {
   return (
-    <div className="card-portfolio">
+    <div className="card-portfolio align-element py-20">
       <h2>Portfolio & Insights</h2>
       <img src={phone} alt="data-set" className="object-cover" />
     </div>

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 const Card = ({ title, description, imageUrl, position }) => {
   return (
     <div
-      className="card"
+      className="card align-element py-20"
       style={{ flexDirection: position === 'right' ? 'row-reverse' : '' }}
     >
       <div className="content">

@@ -85,7 +85,7 @@ const Footer = () => {
       </div>
 
       <div className="h-[0px] border border-white line"></div>
-      <div className="text-white lg:text-xl font-normal font-['Poppins'] text-center copy-right">
+      <div className="text-white font-normal text-center copy-right">
         Copyright &copy; {new Date().getFullYear()} By Steady Data. All Rights
         Reserved
       </div>

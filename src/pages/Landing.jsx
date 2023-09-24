@@ -1,4 +1,4 @@
-import { Card, SectionTitle } from '../components';
+import { Card, SectionTitle, Portfolio } from '../components';
 import location from '../assets/location.png';
 
 const Landing = () => {
@@ -27,6 +27,13 @@ const Landing = () => {
         title="Uncommon Knowledge"
         subtitle="Collect vital data and thought-provoking insights into meaningful subjects."
       />
+
+
+      <section>
+        
+      </section>
+
+      <Portfolio />
     </div>
   );
 };

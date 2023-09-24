@@ -27,13 +27,13 @@ const Navbar = () => {
               className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-primary-500 rounded-box w-52"
             >
               <li>
-                <a>Item 1</a>
+                <a>Data set</a>
               </li>
               <li>
-                <a>Item 3</a>
+                <a>Market Finder</a>
               </li>
               <li>
-                <a>Parent</a>
+                <a>Discover More</a>
                 <ul className="p-2">
                   <li>
                     <a>Submenu 1</a>
@@ -63,7 +63,7 @@ const Navbar = () => {
             </li>
             <li tabIndex={0}>
               <details>
-                <summary className="hover:text-white">Hyperlink</summary>
+                <summary className="hover:text-white">Discover More</summary>
                 <ul className="p-2 bg-primary-500">
                   <li>
                     <a className="hover:text-white">About Us</a>

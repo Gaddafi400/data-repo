@@ -7,13 +7,8 @@ export { default as ErrorElement } from './ErrorElement';
 export { default as Card } from './Card';
 export { default as SectionTitle } from './SectionTitle';
 export { default as Footer } from './Footer';
-
-
-
-
+export { default as Portfolio } from './Portfolio';
 
 // export { default as FeaturedProducts } from './FeaturedProducts';
 // export { default as ProductsGrid } from './ProductsGrid';
 // export { default as Hero } from './Hero';
-
-

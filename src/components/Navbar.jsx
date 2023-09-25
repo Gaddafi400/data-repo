@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
 
 const Navbar = () => {
@@ -68,7 +69,9 @@ const Navbar = () => {
                 </summary>
                 <ul className="p-2 bg-primary-500">
                   <li>
-                    <a className="hover:text-white text-base">About Us</a>
+                    <Link to="./about" className="hover:text-white text-base">
+                      About Us
+                    </Link>
                   </li>
                   <li>
                     <a className="hover:text-white text-base">Contact Us</a>

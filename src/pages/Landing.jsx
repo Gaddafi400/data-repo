@@ -1,4 +1,4 @@
-import { Card, SectionTitle, Portfolio } from '../components';
+import { Card, SectionTitle, Portfolio, Carousel } from '../components';
 import location from '../assets/location.png';
 import people from '../assets/people.png';
 import btnarrow from '../assets/btnarrow.png';
@@ -17,7 +17,6 @@ const Landing = () => {
         />
       </section>
 
-  
       <section className="second-section">
         <Card
           title="Market Finder"
@@ -36,9 +35,7 @@ const Landing = () => {
 
       <section className="third-section">
         <div className="card-shape align-element py-20">
-          <div className="w-[666px] h-[455.10px] bg-white rounded-[50px] shadow" />
-          <div className="w-[750px] h-[510px] bg-white rounded-[50px] shadow" />
-          <div className="w-[666px] h-[455.10px] bg-white rounded-[50px] shadow" />
+          <Carousel />
         </div>
 
         <SectionTitle
@@ -46,9 +43,7 @@ const Landing = () => {
           subtitle="Nigerian Data vividly visualized"
         />
         <div className="card-shape-2 align-element py-20">
-          <div className="w-[666px] h-[500px] bg-white rounded-[50px] shadow" />
-          <div className="w-[750px] h-[550px] bg-white rounded-[50px] shadow" />
-          <div className="w-[659px] h-[500px] bg-white rounded-[50px] shadow" />
+          <Carousel />
         </div>
       </section>
 
@@ -60,7 +55,7 @@ const Landing = () => {
           <input
             type="text"
             placeholder="Email address"
-            className="border border-gray-300 py-5 px-5"
+            className="border border-gray-300 py-4 px-4"
           />
 
           <button type="submit" className="px-6 py-2 text-white ">
@@ -76,7 +71,7 @@ const Landing = () => {
             <p className="text-white text-[64px] font-semibold font-['Poppins']">
               Your Reliable Platform For Seamless Search
             </p>
-            <div className="w-[333px] h-[118px] bg-white rounded-[50px] cursor-pointer button">
+            <div className="w-[310px] h-[110px] bg-white rounded-[50px] cursor-pointer button">
               <span className="text-black text-[32px] font-medium font-['Poppins']">
                 Start Now
               </span>

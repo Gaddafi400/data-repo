@@ -41,8 +41,8 @@ const MyCarousel = () => {
         interval={3000}
         centerMode={true}
         centerSlidePercentage={centerPercentage} // Dynamically set based on screen size
-        showArrows={true}
-        style={{ borderRadius: '20px !important' }}
+        showArrows={false}
+        style={{ borderRadius: '20px !important', overflow: 'hidden' }}
       >
         <div className="carousel-item">
           <img src={image2} alt="Image 1" />

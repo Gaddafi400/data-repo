@@ -45,27 +45,7 @@ const MyCarousel = () => {
         style={{ borderRadius: '20px !important', overflow: 'hidden' }}
       >
         <div className="carousel-item">
-          <div
-            style={{
-              width: '100%',
-              height: '533px',
-            }}
-          >
-            <div
-              style={{
-                width: '100%',
-                height: '100%',
-                color: 'black',
-                border: '30px #292949 solid',
-                fontSize: 40,
-                fontFamily: 'Poppins',
-                fontWeight: '700',
-                wordWrap: 'break-word',
-              }}
-            >
-              DID YOU KNOW
-            </div>
-          </div>
+          <img src={image2} alt="Image 1" />
         </div>
         <div className="carousel-item">
           <img src={image} alt="Image 2" />

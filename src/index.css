@@ -221,9 +221,10 @@
 }
 
 .fourth-section {
-  height: 1133px;
+  height: 950px;
   padding-left: 1rem;
   padding-right: 1rem;
+  /* border: 1px red solid;  */
 }
 
 .fourth-section form {
@@ -260,6 +261,7 @@
   justify-content: center;
   padding-left: 1rem;
   padding-right: 1rem;
+
 }
 
 .fifth-section .last-card {
@@ -313,7 +315,9 @@
   }
 
   .fourth-section {
-    margin-bottom: 10rem;
+    margin-bottom: 0rem;
+    height: 1133px;
+    overflow: visible;
   }
 
   .fourth-section form {
@@ -343,6 +347,8 @@
 
   .fifth-section {
     height: 1133px;
+    height: 900px;
+    margin-bottom: 5rem;
   }
 
   .fifth-section .last-card {

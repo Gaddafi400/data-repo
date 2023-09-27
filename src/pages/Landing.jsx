@@ -1,7 +1,8 @@
-import { Card, SectionTitle, Portfolio, Carousel } from '../components';
+import { Card, SectionTitle, Portfolio, Carousel, Finder } from '../components';
 import location from '../assets/location.png';
 import people from '../assets/people.png';
 import btnarrow from '../assets/btnarrow.png';
+import finder from '../assets/finder.png';
 
 const Landing = () => {
   return (
@@ -18,13 +19,14 @@ const Landing = () => {
       </section>
 
       <section className="second-section">
-        <Card
+        <Finder
           title="Market Finder"
+          imageUrl={finder}
           description="
-        Our platform serves as a comprehensive data repository 
-        where users can easily access a wealth of valuable information 
-        on topics ranging from the economy and the environment to 
-        education and more. "
+            Our platform serves as a comprehensive data repository 
+            where users can easily access a wealth of valuable information 
+            on topics ranging from the economy and the environment to 
+            education and more. "
           position="right"
         />
         <SectionTitle
@@ -48,9 +50,13 @@ const Landing = () => {
       </section>
 
       <section className="fourth-section">
-        <div className="text-slate-800 text-[64px] font-semibold font-['Poppins'] text-center">
+        {/* <div className="text-slate-800 text-[64px] font-semibold font-['Poppins'] text-center">
+          Stay updated with Data Insights
+        </div> */}
+        <div className="text-slate-800 text-4xl sm:text-5xl md:text-6xl lg:text-6xl font-semibold font-['Poppins'] text-center">
           Stay updated with Data Insights
         </div>
+
         <form className="flex align-element">
           <input
             type="text"
@@ -71,12 +77,16 @@ const Landing = () => {
             <p className="text-white text-[64px] font-semibold font-['Poppins']">
               Your Reliable Platform For Seamless Search
             </p>
-            <div className="w-[310px] h-[110px] bg-white rounded-[50px] cursor-pointer button">
-              <span className="text-black text-[32px] font-medium font-['Poppins']">
+            <div className="bg-white rounded-[50px] cursor-pointer button">
+              <span className="text-black text-[30px] font-medium">
                 Start Now
               </span>
-              <div className="w-[70px] h-[70px] bg-slate-800 rounded-full">
-                <img src={btnarrow} alt="btnarrow" className="object-cover" />
+              <div className="w-[55px] h-[55px] bg-slate-800 rounded-full">
+                <img
+                  src={btnarrow}
+                  alt="btnarrow"
+                  className="object-cover w-[30] h-[30]"
+                />
               </div>
             </div>
           </div>

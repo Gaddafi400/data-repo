@@ -1,7 +1,13 @@
+import Category from './Category';
+
 const Hero = () => {
   const handleClick = (e) => {
     e.preventDefault();
     console.log('click');
+  };
+
+  const handleButtonClick = (e) => {
+    e.preventDefault();
   };
 
   return (
@@ -24,6 +30,12 @@ const Hero = () => {
             search
           </button>
         </form>
+        <div className="category">
+          <Category title="Population" handleClick={handleButtonClick} />
+          <Category title="Mining" handleClick={handleButtonClick} />
+          <Category title="Energy" handleClick={handleButtonClick} />
+          <Category title="Economy" handleClick={handleButtonClick} />
+        </div>
       </div>
     </div>
   );

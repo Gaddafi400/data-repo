@@ -10,6 +10,7 @@ export { default as Footer } from './Footer';
 export { default as Portfolio } from './Portfolio';
 export { default as Hero } from './Hero';
 export { default as Carousel } from './Carousel';
+export { default as Finder } from './Finder';
 
 // export { default as FeaturedProducts } from './FeaturedProducts';
 // export { default as ProductsGrid } from './ProductsGrid';

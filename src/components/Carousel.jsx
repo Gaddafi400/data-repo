@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
-import image from '../assets/image.jpg';
-import image1 from '../assets/image3.jpg';
-import image2 from '../assets/image2.jpg';
+import image from '../assets/q1.png';
+import image1 from '../assets/q2.png';
+import image2 from '../assets/q3.png';
 
 const MyCarousel = () => {
   const [centerPercentage, setCenterPercentage] = useState(100);
@@ -44,14 +44,14 @@ const MyCarousel = () => {
         showArrows={false}
         style={{ borderRadius: '20px !important', overflow: 'hidden' }}
       >
-        <div className="carousel-item">
+        <div className="carousel-item border-2 flex items-center justify-center p-6 rounded-lg">
           <img src={image2} alt="Image 1" />
         </div>
-        <div className="carousel-item">
+        <div className="carousel-item border-2 flex items-center justify-center p-6 rounded-lg">
           <img src={image} alt="Image 2" />
         </div>
-        <div className="carousel-item">
-          <img src={image1} alt="Image 3" />
+        <div className="carousel-item border-2 flex items-center justify-center p-6 rounded-lg">
+          <img src={image} alt="Image 3" />
         </div>
       </Carousel>
     </div>

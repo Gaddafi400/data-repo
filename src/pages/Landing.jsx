@@ -36,7 +36,7 @@ const Landing = () => {
       </section>
 
       <section className="third-section">
-        <div className="card-shape align-element py-20">
+        <div className="card-shape align-element">
           <Carousel />
         </div>
 
@@ -44,7 +44,7 @@ const Landing = () => {
           title="Daily Data"
           subtitle="Nigerian Data vividly visualized"
         />
-        <div className="card-shape-2 align-element py-20">
+        <div className="card-shape-2 align-element">
           <Carousel />
         </div>
       </section>
@@ -74,14 +74,14 @@ const Landing = () => {
       <section className="fifth-section">
         <div className="w-[1521px] h-[681px] bg-slate-800 rounded-[60px] last-card">
           <div className="last-card-content">
-            <p className="text-white text-[64px] font-semibold font-['Poppins']">
+            <p className="text-white text-[30px] font-semibold font-['Poppins']">
               Your Reliable Platform For Seamless Search
             </p>
             <div className="bg-white rounded-[50px] cursor-pointer button">
               <span className="text-black text-[30px] font-medium">
                 Start Now
               </span>
-              <div className="w-[55px] h-[55px] bg-slate-800 rounded-full">
+              <div className="w-[50px] h-[50px] bg-slate-800 rounded-full">
                 <img
                   src={btnarrow}
                   alt="btnarrow"

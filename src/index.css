@@ -177,6 +177,11 @@
   margin-bottom: 300px;
   padding-left: 1rem;
   padding-right: 1rem;
+
+  background-image: url('./assets/bg2.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .second-section {
@@ -184,6 +189,11 @@
   background: #e8e8eb84;
   padding-left: 1rem;
   padding-right: 1rem;
+
+  background-image: url('./assets/bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .second-section > div:first-child {
@@ -194,13 +204,17 @@
 .third-section {
   background: hsl(233, 100%, 98%);
   height: 1133px;
+  height: 700px;
   padding-left: 1rem;
   padding-right: 1rem;
+  margin-bottom: 5rem;
 }
 .third-section .card-shape {
   display: flex;
   position: relative;
-  top: -10rem;
+  top: -5rem;
+  width: 100%;
+  /* border: 1px solid red; */
 }
 
 .third-section .card-shape > div:nth-child(2) {
@@ -209,16 +223,17 @@
 
 .third-section .card-shape-2 {
   display: flex;
+  margin-top: 8rem;
 }
 
-.third-section .card-shape-2 > div:nth-child(2) {
+/* .third-section .card-shape-2 > div:nth-child(2) {
   margin-top: -2rem;
 }
 
 .third-section > div:nth-child(2) {
   margin-top: -10rem;
   margin-bottom: 2rem;
-}
+} */
 
 .fourth-section {
   height: 950px;
@@ -262,6 +277,10 @@
   padding-left: 1rem;
   padding-right: 1rem;
 
+  background-image: url('./assets/bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .fifth-section .last-card {
@@ -347,8 +366,6 @@
 
   .fifth-section {
     height: 1133px;
-    height: 900px;
-    margin-bottom: 5rem;
   }
 
   .fifth-section .last-card {
@@ -361,7 +378,7 @@
   .fifth-section .last-card p {
     max-width: 837px;
     margin-bottom: 2rem;
-    font-size: 64px;
+    font-size: 54px;
   }
   .fifth-section .last-card .button {
     width: 300px;

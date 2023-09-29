@@ -14,7 +14,7 @@ const MyCarousel = () => {
       if (window.innerWidth <= 767) {
         setCenterPercentage(100); // Show one slide on mobile
       } else {
-        setCenterPercentage(33.33); // Show three slides on larger screens
+        setCenterPercentage(33.3); // Show three slides on larger screens
       }
     };
 
@@ -31,7 +31,7 @@ const MyCarousel = () => {
   }, []);
 
   return (
-    <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+    <div style={{ maxWidth: '1200px', margin: '0 auto', overflow: 'hidden' }}>
       <Carousel
         showThumbs={false}
         showStatus={false}
@@ -42,15 +42,15 @@ const MyCarousel = () => {
         centerMode={true}
         centerSlidePercentage={centerPercentage} // Dynamically set based on screen size
         showArrows={false}
-        style={{ borderRadius: '20px !important', overflow: 'hidden' }}
+        style={{ borderRadius: '20px !important' }}
       >
-        <div className="carousel-item border-2 flex items-center justify-center p-6 rounded-lg">
+        <div className="carousel-item border-2 flex items-center justify-center p-6 rounded-lg mx-2">
           <img src={image2} alt="Image 1" />
         </div>
-        <div className="carousel-item border-2 flex items-center justify-center p-6 rounded-lg">
+        <div className="carousel-item border-2 flex items-center justify-center p-6 rounded-lg mx-2">
           <img src={image} alt="Image 2" />
         </div>
-        <div className="carousel-item border-2 flex items-center justify-center p-6 rounded-lg">
+        <div className="carousel-item border-2 flex items-center justify-center p-6 rounded-lg mx-2">
           <img src={image} alt="Image 3" />
         </div>
       </Carousel>

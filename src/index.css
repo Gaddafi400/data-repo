@@ -608,10 +608,15 @@
   background-repeat: no-repeat;
   position: absolute;
   inset: 0;
-  transform: rotate(160deg);
   z-index: -1;
   overflow: hidden;
   opacity: 0.5;
+}
+
+@media screen and (min-width: 1200px) {
+  .search-parent::before {
+    transform: rotate(180deg);
+  }
 }
 
 .search-container {
@@ -620,16 +625,17 @@
   margin-top: 12rem;
   color: '#000';
   display: flex;
+  justify-content: center;
 }
 
 .search-container-right {
   display: none;
   width: 100%;
 
-  margin-left: 8rem;
   margin-top: 3.4rem;
+  margin-left: 8rem;
 
-  @media (min-width: 1200px) {
+  @media (min-width: 1600px) {
     display: inline;
   }
 }

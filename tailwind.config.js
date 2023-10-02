@@ -9,6 +9,7 @@ export default {
     extend: {
       colors: {
         primary: {
+          50: 'hsl(240, 17%, 80%)',
           100: '#8e8eb1',
           200: '#7373a4',
           300: '#595987',
@@ -36,6 +37,13 @@ export default {
       },
       maxWidth: {
         '9xl': '90rem',
+      },
+      screens: {
+        sm: '640px', // Small screens and up
+        md: '768px', // Medium screens and up
+        lg: '1024px', // Large screens and up
+        xl: '1280px', // Extra-large screens and up
+        xx: '1580px', // Extra-large screens and up
       },
     },
   },

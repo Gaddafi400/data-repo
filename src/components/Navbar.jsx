@@ -47,12 +47,22 @@ const Navbar = () => {
             </ul>
           </div>
 
-          <div className="flex flex-row items-center">
+          {/* <Link to="/">
+            <div className="flex flex-row items-center">
+              <img src={logo} alt="Logo" className="cursor-pointer" />
+              <a className="normal-case text-white text-24 font-arial font-normal break-words px-3 cursor-pointer">
+                STEADY VARIABLE
+              </a>
+            </div>
+          </Link> */}
+
+          <Link to="/" className="flex flex-row items-center">
             <img src={logo} alt="Logo" className="cursor-pointer" />
-            <a className="normal-case text-white text-24 font-arial font-normal break-words px-3 cursor-pointer">
+            <span className="normal-case text-white text-24 font-arial font-normal break-words px-3 cursor-pointer">
               STEADY VARIABLE
-            </a>
-          </div>
+            </span>
+          </Link>
+
         </div>
         <div className="navbar-end hidden lg:flex">
           <ul className="menu menu-horizontal px-1">

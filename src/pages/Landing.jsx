@@ -1,8 +1,36 @@
+import { redirect, Form } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { Card, SectionTitle, Portfolio, Carousel, Finder } from '../components';
 import location from '../assets/location.png';
 import people from '../assets/people.png';
 import btnarrow from '../assets/btnarrow.png';
 import finder from '../assets/finder.png';
+import { customFetch } from '../utils';
+
+// eslint-disable-next-line react-refresh/only-export-components
+export const action = async ({ request }) => {
+  const formData = await request.formData();
+  const data = Object.fromEntries(formData);
+  const url = '/guest/newsletter';
+
+  try {
+    const response = await customFetch.post(url, data);
+
+    if (response.data?.responseCode === 201) {
+      toast.success('Thank you for subscribing!');
+    } else {
+      toast.error('Failed to subscribe. Please try again later.');
+    }
+    return redirect('/');
+  } catch (error) {
+    if (error.response.status === 400) {
+      toast.error(error.response.data?.data[0]);
+    } else {
+      toast.error(error.message);
+    }
+    return error;
+  }
+};
 
 const Landing = () => {
   return (
@@ -57,22 +85,25 @@ const Landing = () => {
           Stay updated with Data Insights
         </div>
 
-        <form className="flex align-element">
+        <Form className="flex align-element" method="POST">
           <input
-            type="text"
+            type="email"
             placeholder="Email address"
-            className="border border-gray-300 py-4 px-4"
+            name="email"
+            id="email"
+            required
+            className="border border-gray-300 py-4 px-4 focus:outline-none"
           />
 
           <button type="submit" className="px-6 py-2 text-white ">
             subscribe now
           </button>
-        </form>
+        </Form>
         <Portfolio />
       </section>
 
       <section className="fifth-section">
-        <div className="w-[1521px] h-[681px] bg-slate-800 rounded-[60px] last-card">
+        <div className="w-[1521px] h-[681px] bg-slate-800 xl:rounded-[35px] rounded-[25px] last-card">
           <div className="last-card-content">
             <p className="text-white text-[30px] font-semibold font-['Poppins']">
               Your Reliable Platform For Seamless Search

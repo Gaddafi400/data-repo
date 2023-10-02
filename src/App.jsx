@@ -1,16 +1,16 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { ErrorElement } from './components';
-import { HomeLayout, Landing, Error, About } from './pages';
+import { HomeLayout, Landing, Error, About, Search, SingleData } from './pages';
 
 // loaders
-// import { loader as landingLoader } from './pages/Landing';
-// import { loader as singleProductLoader } from './pages/SingleProduct';
-// import { loader as productsLoader } from './pages/Products';
+import { loader as homeLayoutLoader } from './pages/HomeLayout';
+import { action as landingAction } from './pages/Landing';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <HomeLayout />,
+    loader: homeLayoutLoader,
     errorElement: <Error />,
     children: [
       {
@@ -18,15 +18,17 @@ const router = createBrowserRouter([
         element: <Landing />,
         // loader: landingLoader,
         errorElement: ErrorElement,
+        action: landingAction,
       },
       { path: 'about', element: <About /> },
+      { path: 'search-results', element: <Search /> },
     ],
   },
-  // {
-  //   path: '/login',
-  //   element: <Login />,
-  //   errorElement: <Error />,
-  // },
+  {
+    path: '/dataset/:id',
+    element: <SingleData />,
+    errorElement: <Error />,
+  },
   // {
   //   path: '/register',
   //   element: <Register />,
@@ -38,7 +40,3 @@ const App = () => {
   return <RouterProvider router={router} />;
 };
 export default App;
-
-//       <div className="bg-primary-900">
-//         <h1 className="text-7xl font-bold underline">Tailwind project</h1>
-//       </div>

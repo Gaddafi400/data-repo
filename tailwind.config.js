@@ -2,9 +2,14 @@
 
 import typography from '@tailwindcss/typography';
 import daisyui from 'daisyui';
+import flowbite from 'flowbite/plugin'
 
 export default {
-  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  content: [
+    './index.html',
+    './src/**/*.{js,ts,jsx,tsx}',
+    'node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}',
+  ],
   theme: {
     extend: {
       colors: {
@@ -22,6 +27,10 @@ export default {
         },
         secondary: {
           first: '#BBCAFF',
+          lightest: '#D6E2FF',
+          lighter: '#A3BCFF',
+          darker: '#5E7A96',
+          darkest: '#374151',
         },
         transparent: 'transparent',
         current: 'currentColor',
@@ -47,7 +56,7 @@ export default {
       },
     },
   },
-  plugins: [typography, daisyui],
+  plugins: [typography, daisyui, flowbite],
   daisyui: {
     themes: ['winter', 'dracula'],
   },

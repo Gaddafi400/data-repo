@@ -1,10 +1,21 @@
 import { useLoaderData, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import Category from './Category';
+import SearchableSelect from './SearchableSelect';
+
 import { useGlobalContext } from '../context';
 import { customFetch } from '../utils';
 
 const url = '/guest/search/';
+
+const options = [
+  { value: 'apple', label: 'Apple' },
+  { value: 'banana', label: 'Banana' },
+  { value: 'cherry', label: 'Cherry' },
+  { value: 'date', label: 'Date' },
+  { value: 'fig', label: 'Fig' },
+  { value: 'grape', label: 'Grape' },
+];
 
 const Hero = () => {
   const [selectedValue, setSelectedValue] = useState('');
@@ -42,43 +53,23 @@ const Hero = () => {
   return (
     <div className="hero">
       <div className="search-container">
-        <h1>Enhancement through Data Insights</h1>
+        <h1>Data, Knowledge, Insights all in one place </h1>
         <p>
           Comprehensive Data and Knowledge Spanning 36 States and Over 774 Local
           Government in Nigeria
         </p>
 
-        <form className="search-form">
-          <select
-            className="select select-bordered text-base lg:text-lg xl:text-xl"
-            onChange={handleSelectChange}
-            value={selectedValue}
-          >
-            <option disabled value="">
-              Find your
-            </option>
-
-            {/* Map categories to select options */}
-            {datasets?.map((dataset) => (
-              <option key={dataset.id} value={dataset.id}>
-                {dataset.name}
-              </option>
+        <div className="flex flex-col gap-4 py-4 px-4">
+          <SearchableSelect options={options} />
+          <div className="category">
+            {categories.map((category) => (
+              <Category
+                key={category.id}
+                title={category.name}
+                handleClick={handleButtonClick}
+              />
             ))}
-          </select>
-
-          <button className="rounded-xl text-white" onClick={handleSearchBtn}>
-            search
-          </button>
-        </form>
-        <div className="category">
-          {/* Render Category components here */}
-          {categories.map((category) => (
-            <Category
-              key={category.id}
-              title={category.name}
-              handleClick={handleButtonClick}
-            />
-          ))}
+          </div>
         </div>
       </div>
     </div>

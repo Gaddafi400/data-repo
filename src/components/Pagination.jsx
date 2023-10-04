@@ -16,18 +16,18 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   );
 
   return (
-    <div className="pagination">
+    <div className="pagination mt-12">
       <button
         onClick={() => handlePageChange(currentPage - 1)}
-        className="btn rounded-full flex items-center justify-center w-12 h-12"
+        className="rounded-full p-3 bg-secondary-lightest text-primary-400 text-sm border border-primary-400"
       >
-        <FaArrowLeft size={24} />
+        <FaArrowLeft size={18} />
       </button>
       <div className="page-numbers">
         {pageNumbers.map((pageNumber) => (
           <button
             key={pageNumber}
-            className={`page-number ${
+            className={`px-2 page-number ${
               currentPage === pageNumber ? 'active' : ''
             }`}
             onClick={() => handlePageChange(pageNumber)}
@@ -36,11 +36,12 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
           </button>
         ))}
       </div>
+
       <button
         onClick={() => handlePageChange(currentPage + 1)}
-        className="btn rounded-full flex items-center justify-center w-12 h-12"
+        className="rounded-full p-3 bg-secondary-lightest text-primary-400 text-sm border border-primary-400"
       >
-        <FaArrowRight size={24} />
+        <FaArrowRight size={18} />
       </button>
     </div>
   );

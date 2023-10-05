@@ -91,7 +91,8 @@ const SearchResults = ({ searchData, topSearch }) => {
           <img
             src={notFound}
             alt="404"
-            className="object-cover md:w-[978px] md:h-[780px] w-full h-auto mt-0"
+              className="object-cover md:w-[978px] md:h-[780px] w-full h-auto mt-[53px]"
+              style={{ padding: '0 0.7rem' }}
           />
         )}
 

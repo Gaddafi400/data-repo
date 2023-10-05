@@ -9,7 +9,11 @@ import { customFetch } from '../utils';
 const url = '/guest/search/';
 
 const options = [
-  { value: 'apple', label: 'Apple' },
+  {
+    value: 'apple',
+    label:
+      'Mere weeks away from its Aug. 20 launch, Al Jazeera America finally has hired an anchor for its signature nightly news program, America Tonight.',
+  },
   { value: 'banana', label: 'Banana' },
   { value: 'cherry', label: 'Cherry' },
   { value: 'date', label: 'Date' },
@@ -29,6 +33,7 @@ const Hero = () => {
 
   const handleSearchBtn = async (e) => {
     e.preventDefault();
+    
     setIsLoading(true);
     try {
       const queryParams = { datasets: selectedValue };
@@ -60,7 +65,7 @@ const Hero = () => {
         </p>
 
         <div className="flex flex-col gap-4 py-4 px-4">
-          <SearchableSelect options={options} />
+          <SearchableSelect options={datasets} />
           <div className="category">
             {categories.map((category) => (
               <Category

@@ -43,6 +43,7 @@ export default {
         'bubble-gum': '#ff77e9',
         bermuda: '#78dcca',
         footer: '#EBB044',
+        fth: '#c39135',
       },
       maxWidth: {
         '9xl': '90rem',

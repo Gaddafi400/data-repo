@@ -1,37 +1,83 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
+import { useGlobalContext } from '../context';
+import { customFetch } from '../utils';
+
+const URL = '/guest/search/';
+
+const fetchData = async (searchTerm) => {
+  try {
+    const queryParams = { search: searchTerm };
+    const response = await customFetch(URL, { params: queryParams });
+    return {
+      topSearch: response.data?.data.topsearch,
+      results: response.data?.data.data,
+    };
+  } catch (error) {
+    console.error('API Error:', error);
+    throw error;
+  }
+};
 
 const SearchableSelect = ({ options }) => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedOption, setSelectedOption] = useState(null);
+
+  //   const [selectedOption, setSelectedOption] = useState(null);
+
+  const { setIsLoading, setSearchData } = useGlobalContext();
+
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     setSearchTerm(e.target.value);
-    console.log('searchTerm 💥', searchTerm);
   };
 
-  const handleOptionClick = (option) => {
-    setSelectedOption(option);
-    setSearchTerm(option.label); // Display the selected option in the input
-    console.log('value ', option.value);
-    console.log('selectedOption ', selectedOption);
+  const handleOptionClick = async (option) => {
+    try {
+      setSearchTerm(option.name);
+      setIsLoading(true);
+      const searchData = await fetchData(option.name);
+      setSearchData(searchData);
+      setIsLoading(false);
+      setSearchTerm('');
+      navigate('./search-results');
+      navigate('./search-results');
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
-    // try {
-    //   const response = await fetch(`/api/your-api-endpoint/${option.value}`);
-    //   if (response.ok) {
-    //     const data = await response.json();
-    //     console.log('API Response:', data);
-    //     // Handle the API response data as needed
-    //   } else {
-    //     console.error('API Request Failed');
-    //   }
-    // } catch (error) {
-    //   console.error('API Request Error:', error);
-    // }
+  const handleSearchBtn = async () => {
+    try {
+      if (!searchTerm) {
+        toast.warning('Please enter a search term to begin your search.');
+        return;
+      }
+      setIsLoading(true);
+      const searchData = await fetchData(searchTerm);
+      setSearchData(searchData);
+      setIsLoading(false);
+      setSearchTerm('');
+      navigate('./search-results');
+    } catch (error) {
+      if (error.response.status === 404) {
+        setSearchData({
+          topSearch: [],
+          results: [],
+        });
+        setIsLoading(false);
+        setSearchTerm('');
+        navigate('./search-results');
+      }
+    }
   };
 
   // Filter options based on the search term
   const filteredOptions = options.filter((option) =>
-    option.label.toLowerCase().includes(searchTerm.toLowerCase())
+    option.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -70,30 +116,35 @@ const SearchableSelect = ({ options }) => {
           required
         />
         <button
+          onClick={handleSearchBtn}
           type="submit"
-          className="text-white absolute right-2.5 bottom-2.5 bg-footer hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          className="text-white absolute right-2.5 bottom-2.5 bg-footer hover:bg-fth focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
           Search
         </button>
       </div>
 
       {searchTerm && (
-        <ul className="suggestions">
+        <ul className="suggestions bg-primary-500 text-white">
           {filteredOptions.map((option) => (
             <li
-              key={option.value}
+              className="suggestion"
+              key={option.id}
               onClick={() => handleOptionClick(option)}
-              className={`suggestion ${
-                option === selectedOption ? 'selected' : ''
-              }`}
             >
-              {option.label}
+              {option.name.length > 50
+                ? option.name.slice(0, 100) + '...'
+                : option.name}
             </li>
           ))}
         </ul>
       )}
     </div>
   );
+};
+
+SearchableSelect.propTypes = {
+  options: PropTypes.array.isRequired,
 };
 
 export default SearchableSelect;

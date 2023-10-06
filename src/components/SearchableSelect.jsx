@@ -65,7 +65,6 @@ const SearchableSelect = ({ options }) => {
     } catch (error) {
       if (error.response.status === 404) {
         setSearchData({
-          topSearch: [],
           results: [],
         });
         setIsLoading(false);

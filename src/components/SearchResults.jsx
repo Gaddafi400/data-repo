@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 import SearchCard from './SearchCard';
@@ -13,6 +14,7 @@ import { customFetch } from '../utils';
 const SearchResults = ({ searchData, topSearch }) => {
   const itemsPerPage = 10; // Number of items per page
   const [currentPage, setCurrentPage] = useState(1);
+  const navigate = useNavigate();
 
   // Calculate total pages based on data length and itemsPerPage
   const totalPages = Math.ceil(searchData.length / itemsPerPage);
@@ -29,8 +31,9 @@ const SearchResults = ({ searchData, topSearch }) => {
     setCurrentPage(newPage);
   };
 
-  const handleClick = () => {
-    console.log('click');
+  const handleClick = (e, id) => {
+    e.preventDefault();
+    navigate(`/dataset/${id}`);
   };
 
   const handleSubscribe = async (e, email) => {
@@ -55,9 +58,6 @@ const SearchResults = ({ searchData, topSearch }) => {
     }
   };
 
-  const test = getCurrentPageData();
-  console.log('test', test);
-
   return (
     <div className="search-parent">
       <div className="py-20 px-2 search-container text-black">
@@ -67,12 +67,12 @@ const SearchResults = ({ searchData, topSearch }) => {
               We&apos;ve found{' '}
               <span className="font-semibold">{searchData.length}</span> Results
             </h3>
-            {getCurrentPageData().map((result, _) => (
+            {getCurrentPageData().map((result) => (
               <SearchCard
                 key={result.id}
                 heading={result.name}
                 description="remove a person even though it’s the only component that will use it. we have no way to access it until it goes through this drilling"
-                handleClick={handleClick}
+                handleClick={(e) => handleClick(e, result.id)}
               />
             ))}
             {/* only show pagination if search data > itemsPerPage */}
@@ -91,8 +91,8 @@ const SearchResults = ({ searchData, topSearch }) => {
           <img
             src={notFound}
             alt="404"
-              className="object-cover md:w-[978px] md:h-[780px] w-full h-auto mt-[53px]"
-              style={{ padding: '0 0.7rem' }}
+            className="object-cover md:w-[978px] md:h-[780px] w-full h-auto mt-[53px]"
+            style={{ padding: '0 0.7rem' }}
           />
         )}
 

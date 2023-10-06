@@ -1,5 +1,5 @@
 import { useLoaderData, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Category from './Category';
 import SearchableSelect from './SearchableSelect';
 
@@ -8,24 +8,15 @@ import { customFetch } from '../utils';
 
 const url = '/guest/search/';
 
-const options = [
-  {
-    value: 'apple',
-    label:
-      'Mere weeks away from its Aug. 20 launch, Al Jazeera America finally has hired an anchor for its signature nightly news program, America Tonight.',
-  },
-  { value: 'banana', label: 'Banana' },
-  { value: 'cherry', label: 'Cherry' },
-  { value: 'date', label: 'Date' },
-  { value: 'fig', label: 'Fig' },
-  { value: 'grape', label: 'Grape' },
-];
-
 const Hero = () => {
   const [selectedValue, setSelectedValue] = useState('');
-  const { setIsLoading, setSearchData } = useGlobalContext();
-  const { categories, datasets } = useLoaderData();
+  const { setIsLoading, setSearchData, setTopSearch } = useGlobalContext();
+  const { categories, datasets, topSearch } = useLoaderData();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setTopSearch(topSearch);
+  });
 
   const handleSelectChange = (event) => {
     setSelectedValue(event.target.value);
@@ -33,7 +24,7 @@ const Hero = () => {
 
   const handleSearchBtn = async (e) => {
     e.preventDefault();
-    
+
     setIsLoading(true);
     try {
       const queryParams = { datasets: selectedValue };
@@ -51,8 +42,21 @@ const Hero = () => {
     }
   };
 
-  const handleButtonClick = (e) => {
-    e.preventDefault();
+  const handleCategoryClick = async (id) => {
+    setIsLoading(true);
+    try {
+      const queryParams = { dataCategory: id };
+      const response = await customFetch(url, { params: queryParams });
+
+      setSearchData({
+        results: response.data?.data.data,
+      });
+      setIsLoading(false);
+      navigate('./search-results');
+    } catch (error) {
+      // Handle any errors here
+      console.error('API Error:', error);
+    }
   };
 
   return (
@@ -71,7 +75,7 @@ const Hero = () => {
               <Category
                 key={category.id}
                 title={category.name}
-                handleClick={handleButtonClick}
+                handleClick={() => handleCategoryClick(category.id)}
               />
             ))}
           </div>

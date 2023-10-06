@@ -4,6 +4,7 @@ import { HomeLayout, Landing, Error, About, Search, SingleData } from './pages';
 
 // loaders
 import { loader as homeLayoutLoader } from './pages/HomeLayout';
+import { loader as singleDataLoader } from './pages/SingleData';
 import { action as landingAction } from './pages/Landing';
 
 const router = createBrowserRouter([
@@ -27,6 +28,7 @@ const router = createBrowserRouter([
   {
     path: '/dataset/:id',
     element: <SingleData />,
+    loader: singleDataLoader,
     errorElement: <Error />,
   },
   // {

@@ -9,10 +9,12 @@ export const loader = async () => {
   try {
     const response = await customFetch(url);
     const responseData = await response.data.data;
+
     return {
       categories: responseData?.categories,
       datasets: responseData?.datasets,
       knowledge: responseData?.knowledge,
+      topSearch: responseData?.topsearch,
     };
   } catch (error) {
     return error;
@@ -21,14 +23,14 @@ export const loader = async () => {
 
 const HomeLayout = () => {
   const navigation = useNavigation();
- const [ initialPageLoad, setInitialPageLoad] = useState(true);
+  const [initialPageLoad, setInitialPageLoad] = useState(true);
 
   useEffect(() => {
     setInitialPageLoad(false);
   }, []);
 
   const isPageLoading = navigation.state === 'loading' || initialPageLoad;
-  
+
   console.log(isPageLoading);
   return (
     <>

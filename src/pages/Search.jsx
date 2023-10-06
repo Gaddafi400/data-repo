@@ -5,7 +5,7 @@ import { useGlobalContext } from '../context';
 
 const Search = () => {
   const navigate = useNavigate();
-  const { searchData, isLoading } = useGlobalContext();
+  const { searchData, isLoading, topSearch } = useGlobalContext();
 
   useEffect(() => {
     if (!searchData) {
@@ -20,10 +20,7 @@ const Search = () => {
   if (searchData) {
     return (
       <div>
-        <SearchResults
-          searchData={searchData.results}
-          topSearch={searchData.topSearch}
-        />
+        <SearchResults searchData={searchData.results} topSearch={topSearch} />
       </div>
     );
   }

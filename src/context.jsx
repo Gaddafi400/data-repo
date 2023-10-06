@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 const AppProvider = ({ children }) => {
   const [searchData, setSearchData] = useState(null);
+  const [topSearch, setTopSearch] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   return (
@@ -11,6 +12,8 @@ const AppProvider = ({ children }) => {
       value={{
         searchData,
         setSearchData,
+        topSearch,
+        setTopSearch,
         isLoading,
         setIsLoading,
       }}

@@ -874,3 +874,11 @@
   background-color: #007bff;
   color: #fff;
 } */
+
+.chart {
+  width: 50%;
+  height: 50% !important;
+
+  margin: 0 auto;
+  margin-top: 5rem;
+}

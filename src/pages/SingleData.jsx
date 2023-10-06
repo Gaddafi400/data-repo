@@ -6,6 +6,8 @@ import { useState, useEffect } from 'react';
 import xlsx from '../assets/xlsx.png';
 import jpeg from '../assets/jpeg.png';
 import pdf from '../assets/pdf.png';
+import Table from '../components/Table';
+import GrossSavingsBarChart from '../components/GrossSavingsBarChart';
 
 export const loader = async ({ params }) => {
   try {
@@ -70,9 +72,9 @@ const SingleData = () => {
             className={`cursor-pointer ${
               selectedItem === 'otherComponent' ? 'text-blue-500' : ''
             }`}
-            onClick={() => handleItemClick('otherComponent')}
+            onClick={() => handleItemClick('BarChart')}
           >
-            Other Component
+            BarChart
           </li>
           {/* Add more sidebar items here */}
         </ul>
@@ -80,7 +82,6 @@ const SingleData = () => {
     );
   };
 
-  // console.log('results', result);
   return (
     <>
       <Navbar />
@@ -88,7 +89,7 @@ const SingleData = () => {
         <div className="w-full xx:w-[1518px] flex items-center xl:px-12">
           <Heading text="Home" />
           <Heading text="Data Sets" />
-          <Heading text="Population" />
+          <Heading text={result?.category} />
         </div>
         <div className="w-full xx:w-[1518px] h-[292px] bg-white rounded-[25px]">
           <p className="p-4 text-zinc-500 text-1xl font-medium ">
@@ -112,87 +113,22 @@ const SingleData = () => {
             {renderSidebar()}
 
             {/* Right Content */}
-            <div className="w-full md:w-3/0 px-12">
+            <div className="w-full md:w-3/0 sm:p-0 md:pl-12">
               {/* Always show the table */}
               <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
                 {/* Table content goes here */}
-                {selectedItem === 'table' && (
-                  <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                      <tr>
-                        <th scope="col" className="px-6 py-3">
-                          Product name
-                        </th>
-                        <th scope="col" className="px-6 py-3">
-                          Color
-                        </th>
-                        <th scope="col" className="px-6 py-3">
-                          Category
-                        </th>
-                        <th scope="col" className="px-6 py-3">
-                          Price
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
-                        <th
-                          scope="row"
-                          className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                        >
-                          Apple MacBook Pro 17"
-                        </th>
-                        <td className="px-6 py-4">Silver</td>
-                        <td className="px-6 py-4">Laptop</td>
-                        <td className="px-6 py-4">$2999</td>
-                      </tr>
-                      <tr className="border-b bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
-                        <th
-                          scope="row"
-                          className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                        >
-                          Microsoft Surface Pro
-                        </th>
-                        <td className="px-6 py-4">White</td>
-                        <td className="px-6 py-4">Laptop PC</td>
-                        <td className="px-6 py-4">$1999</td>
-                      </tr>
-                      <tr className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
-                        <th
-                          scope="row"
-                          className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                        >
-                          Magic Mouse 2
-                        </th>
-                        <td className="px-6 py-4">Black</td>
-                        <td className="px-6 py-4">Accessories</td>
-                        <td className="px-6 py-4">$99</td>
-                      </tr>
-                      <tr className="border-b bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
-                        <th
-                          scope="row"
-                          className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                        >
-                          Google Pixel Phone
-                        </th>
-                        <td className="px-6 py-4">Gray</td>
-                        <td className="px-6 py-4">Phone</td>
-                        <td className="px-6 py-4">$799</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                )}
+                {selectedItem === 'table' && <Table data={result} />}
               </div>
               {/* Add conditionals for other components */}
-              {isMobile && selectedItem === 'otherComponent' && (
-                <div>{/* Content for 'otherComponent' on mobile */}</div>
+              {selectedItem === 'BarChart' && (
+                <div>
+                  <GrossSavingsBarChart />
+                </div>
               )}
             </div>
           </div>
         </section>
       </div>
-
-      {/* <div className="data-section-container"></div> */}
       <Footer />
     </>
   );

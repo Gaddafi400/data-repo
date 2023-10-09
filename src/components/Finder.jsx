@@ -5,7 +5,7 @@ const Finder = ({ title, description, imageUrl }) => {
     <div className="card align-element py-20 finder">
       <div className="content">
         <h1 className="text-black font-bold">{title}</h1>
-        <p className="text-black font-medium">{description}</p>
+        <p className="text-black">{description}</p>
       </div>
       <img src={imageUrl} alt={title} className="w-[30] h-[30] object-cover" />
     </div>

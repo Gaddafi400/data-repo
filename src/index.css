@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -9,10 +11,8 @@
   }
 }
 
-@layer base {
-  html {
-    font-family: Poppins, sans-serif, system-ui;
-  }
+* {
+  font-family: 'Montserrat', sans-serif;
 }
 
 /* navbar */
@@ -171,17 +171,25 @@
 /* sections */
 .first-section {
   width: 100%;
-  height: 1133px;
-  padding-top: 20rem;
-  background: #e8e8eb;
+  height: 800px;
+  padding-top: 15rem;
   margin-bottom: 300px;
   padding-left: 1rem;
   padding-right: 1rem;
+  position: relative;
+}
 
+.first-section::after {
+  content: '';
   background-image: url('./assets/bg2.png');
   background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background-position: left;
+  background-repeat: repeat;
+  position: absolute;
+  inset: 0;
+  z-index: -10;
+  overflow: hidden;
+  opacity: 0.5;
 }
 
 .second-section {
@@ -203,43 +211,28 @@
 
 .third-section {
   background: hsl(233, 100%, 98%);
+  background: #bbcaff35;
   height: 1133px;
   height: 700px;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  /* padding-left: 1rem;
+  padding-right: 1rem; */
   margin-bottom: 5rem;
-}
-.third-section .card-shape {
-  display: flex;
-  position: relative;
-  top: -5rem;
-  width: 100%;
-  /* border: 1px solid red; */
-}
 
-.third-section .card-shape > div:nth-child(2) {
-  margin-top: -2rem;
+  @media (max-width: 767px) {
+    height: 550px;
+  }
 }
-
-.third-section .card-shape-2 {
-  display: flex;
-  margin-top: 8rem;
-}
-
-/* .third-section .card-shape-2 > div:nth-child(2) {
-  margin-top: -2rem;
-}
-
-.third-section > div:nth-child(2) {
-  margin-top: -10rem;
-  margin-bottom: 2rem;
-} */
 
 .fourth-section {
   height: 950px;
   padding-left: 1rem;
   padding-right: 1rem;
-  /* border: 1px red solid;  */
+}
+
+.fourth-section h1 {
+  font-size: 2.2rem;
+  padding: 1rem;
+  line-height: 1.1;
 }
 
 .fourth-section form {
@@ -253,14 +246,14 @@
   flex-grow: 1;
   padding: 1rem;
   border-radius: 15px;
-  font-size: 24px;
+  font-size: 18px;
 }
 
 .fourth-section form button {
   background: #ebb044;
   border-radius: 15px;
   width: 100%;
-  font-size: 24px;
+  font-size: 18px;
   padding: 1rem;
   margin-top: 1rem;
 }
@@ -286,13 +279,13 @@
 .fifth-section .last-card {
   display: flex;
   flex-direction: column;
-  padding: 30px;
+  padding: 25px;
 }
 
 .fifth-section .last-card p {
   max-width: 400px;
   margin-bottom: 2rem;
-  font-size: 2.5rem;
+  font-size: 2.2rem;
 }
 
 .fifth-section .last-card .people {
@@ -303,16 +296,14 @@
 
 .fifth-section .last-card .button {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  padding: 0.8rem 1rem;
   align-items: center;
   gap: 1rem;
-  width: 260px;
-  height: 80px;
-  border-radius: 25px;
-  margin-left: 0.7rem;
+  border-radius: 18px;
 }
 .fifth-section .last-card .button span {
-  font-size: 24px;
+  font-size: 20px;
 }
 
 .fifth-section .last-card .button > div {
@@ -323,11 +314,11 @@
   height: 45px;
 }
 .fifth-section .last-card .button > div img {
-  height: 100%;
-  width: 100%;
+  height: 80%;
+  width: 80%;
 }
 
-@media (min-width: 640px) {
+@media (min-width: 767px) {
   .first-section {
     height: 1133px;
     padding-top: 32rem;
@@ -337,6 +328,10 @@
     margin-bottom: 0rem;
     height: 1133px;
     overflow: visible;
+  }
+
+  .fourth-section h1 {
+    font-size: 3rem;
   }
 
   .fourth-section form {
@@ -350,14 +345,14 @@
     flex-grow: 1;
     padding: 1.5rem;
     border-radius: 20px 0 0 20px;
-    font-size: 24px;
+    font-size: 22px;
   }
 
   .fourth-section form button {
     background: #ebb044;
     border-radius: 0 20px 20px 0;
     width: 271px;
-    font-size: 24px;
+    font-size: 22px;
     margin: 0;
   }
   .fourth-section > div:nth-child(1) {
@@ -378,7 +373,7 @@
   .fifth-section .last-card p {
     max-width: 837px;
     margin-bottom: 2rem;
-    font-size: 54px;
+    font-size: 3rem;
   }
   .fifth-section .last-card .button {
     width: 300px;
@@ -416,32 +411,30 @@
 }
 
 .card .content {
-  /* margin-left: 16px;
-  margin-top: 40px; */
-  /* padding: 1rem; */
-  font-family: Poppins;
-  /* background: red; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .card .content h1 {
-  font-size: 2.2rem;
+  font-size: 1.875rem;
   margin-bottom: 0.9rem;
-  /* text-align: center; */
 }
 
 .card .content p {
-  font-size: 1.4rem;
+  font-size: 18px;
   letter-spacing: 0.1px;
   margin-bottom: 2rem;
   max-width: 500px;
-  /* text-align: justify; */
   letter-spacing: 0.9px;
+  line-height: 1.5;
 }
 
 .card img {
   position: absolute;
   bottom: 0;
-  left: 0;
+  right: 0;
   width: 100%;
   height: 300px;
 }
@@ -460,43 +453,42 @@
   text-align: left;
 }
 .finder img {
-  /* background: red; */
-  height: 275px;
-  width: 275px;
+  height: 285px;
+  width: 285px;
   top: 58%;
   left: 15%;
+  padding: 15px;
 }
 
 @media (min-width: 640px) {
   .card {
     border-radius: 35px;
     line-height: 1.2;
-    font-size: 2rem;
     height: 681px;
   }
 
   .card .content {
     margin-left: 87px;
-    margin-top: 103px;
+    margin-top: 50px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: start;
   }
 
   .card .content h1 {
-    font-size: 65px;
-    margin-bottom: 4rem;
-    text-align: left;
+    font-size: 3rem;
+    margin-bottom: 2rem;
   }
 
   .card .content p {
-    font-size: 24px;
+    font-size: 1.4rem;
     max-width: 774px;
   }
 
   .card img {
-    /* height: 400px;
-    width: 990px;
-    margin-left: 30rem;
-    position: absolute;
-    bottom: 0; */
+    right: -155px;
   }
 
   .finder {
@@ -561,6 +553,7 @@
   max-width: 310px;
   margin: 3rem 0 3rem 0;
   color: #292949;
+  text-align: center;
 }
 .card-portfolio img {
   height: 300px;
@@ -577,9 +570,10 @@
     padding: 110px;
   }
   .card-portfolio h2 {
-    font-size: 64px;
+    font-size: 54px;
     max-width: 310px;
     margin-top: -5rem;
+    text-align: left;
   }
   .card-portfolio img {
     height: 500px;
@@ -870,11 +864,6 @@
   }
 }
 
-/* .suggestion.selected {
-  background-color: #007bff;
-  color: #fff;
-} */
-
 .chart {
   width: 50%;
   height: 50% !important;
@@ -882,3 +871,80 @@
   margin: 0 auto;
   margin-top: 5rem;
 }
+
+/* Carousel */
+
+.c-parent {
+  padding: 27px;
+
+  @media (min-width: 767px) {
+    padding: 2px;
+  }
+}
+
+.circle-with-ding {
+  width: 350px;
+  height: 350px;
+  background-color: white;
+  border-radius: 50%;
+  border: 0.0111px solid #292949c7;
+  position: relative;
+
+  margin: 4rem;
+  margin-bottom: 5rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+
+  @media (min-width: 767px) {
+    padding-top: 5rem;
+    width: 550px;
+    height: 550px;
+  }
+}
+
+.circle-with-ding h2 {
+  padding-top: 1rem;
+  font-weight: 900;
+  font-size: 20px;
+
+  @media (min-width: 767px) {
+    font-size: 22px;
+  }
+}
+
+.circle-with-ding p {
+  max-width: 200px;
+
+  @media (min-width: 767px) {
+    font-size: 20px;
+    max-width: 300px;
+  }
+}
+
+.circle-with-ding::before {
+  content: '';
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent; /* Left side of the triangle */
+  border-right: 10px solid transparent; /* Right side of the triangle */
+  border-bottom: 20px solid white; /* Bottom side of the triangle */
+  position: absolute;
+  top: 70%; /* Adjust the top position to position the triangle */
+  left: 325px; /* Adjust the left position to position the triangle */
+  /* transform: rotate(90deg); */
+  z-index: -1;
+}
+
+@media (min-width: 767px) {
+  .circle-with-ding::before {
+    border-left: 20px solid transparent; /* Left side of the triangle */
+    border-right: 20px solid transparent; /* Right side of the triangle */
+    border-bottom: 30px solid white; /* Bottom side of the triangle */
+    top: 65%; /* Adjust the top position to position the triangle */
+    left: 518px; /* Adjust the left position to position the triangle */
+  }
+}
+/* End Carousel */

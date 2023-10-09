@@ -1,61 +1,62 @@
-import { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
-import image from '../assets/q1.png';
-import image1 from '../assets/q2.png';
-import image2 from '../assets/q3.png';
+import bulb from '../assets/bulb.png';
+import c1 from '../assets/c1.png';
+import c2 from '../assets/c2.png';
+import c3 from '../assets/c3.png';
+import c4 from '../assets/c4.png';
+import c5 from '../assets/c5.png';
+import c6 from '../assets/c6.png';
 
-const MyCarousel = () => {
-  const [centerPercentage, setCenterPercentage] = useState(100);
+function getRandomImage() {
+  const images = [bulb, c1, c2, c3, c4, c5, c6];
+  const randomIndex = Math.floor(Math.random() * images.length);
+  return images[randomIndex];
+}
 
-  useEffect(() => {
-    // Update the centerPercentage based on the screen width
-    const handleResize = () => {
-      if (window.innerWidth <= 767) {
-        setCenterPercentage(100); // Show one slide on mobile
-      } else {
-        setCenterPercentage(33.3); // Show three slides on larger screens
-      }
-    };
+const MyCarousel = ({ data }) => {
 
-    // Add a resize event listener
-    window.addEventListener('resize', handleResize);
+  const slideContentStyles = {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    textAlign: 'center',
+  };
 
-    // Initial calculation
-    handleResize();
+  const imageStyles = {
+    width: '120px',
+  };
 
-    // Clean up the event listener on unmount
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
+  console.log(getRandomImage());
 
   return (
-    <div style={{ maxWidth: '1200px', margin: '0 auto', overflow: 'hidden' }}>
-      <Carousel
-        showThumbs={false}
-        showStatus={false}
-        emulateTouch={true}
-        infiniteLoop={true}
-        autoPlay={true}
-        interval={3000}
-        centerMode={true}
-        centerSlidePercentage={centerPercentage} // Dynamically set based on screen size
-        showArrows={false}
-        style={{ borderRadius: '20px !important' }}
-      >
-        <div className="carousel-item border-2 flex items-center justify-center p-6 rounded-lg mx-2">
-          <img src={image2} alt="Image 1" />
+    <Carousel
+      showArrows={true}
+      showThumbs={false}
+      showStatus={false}
+      emulateTouch={true}
+      infiniteLoop={true}
+      autoPlay={true}
+      interval={3000}
+    >
+      {data.map((item) => (
+        <div className="c-parent" key={item?.id}>
+          <div style={slideContentStyles}>
+            <div className="circle-with-ding">
+              <img src={getRandomImage()} alt="Icon 1" style={imageStyles} />
+              <h2 className="font-bold">DID YOU KNOW?</h2>
+              <p>{item?.message}</p>
+            </div>
+          </div>
         </div>
-        <div className="carousel-item border-2 flex items-center justify-center p-6 rounded-lg mx-2">
-          <img src={image} alt="Image 2" />
-        </div>
-        <div className="carousel-item border-2 flex items-center justify-center p-6 rounded-lg mx-2">
-          <img src={image} alt="Image 3" />
-        </div>
-      </Carousel>
-    </div>
+      ))}
+    </Carousel>
   );
+};
+
+MyCarousel.propTypes = {
+  data: PropTypes.string.isRequired,
 };
 
 export default MyCarousel;

@@ -31,7 +31,6 @@ const HomeLayout = () => {
 
   const isPageLoading = navigation.state === 'loading' || initialPageLoad;
 
-  console.log(isPageLoading);
   return (
     <>
       <Navbar />

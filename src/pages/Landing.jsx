@@ -6,6 +6,7 @@ import people from '../assets/people.png';
 import btnarrow from '../assets/btnarrow.png';
 import finder from '../assets/finder.png';
 import { customFetch } from '../utils';
+import { useGlobalContext } from '../context';
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const action = async ({ request }) => {
@@ -33,6 +34,8 @@ export const action = async ({ request }) => {
 };
 
 const Landing = () => {
+  const { knowledge } = useGlobalContext();
+
   return (
     <div>
       <section className="first-section">
@@ -64,26 +67,13 @@ const Landing = () => {
       </section>
 
       <section className="third-section">
-        <div className="card-shape align-element">
-          <Carousel />
-        </div>
-
-        <SectionTitle
-          title="Daily Data"
-          subtitle="Nigerian Data vividly visualized"
-        />
-        <div className="card-shape-2 align-element">
-          <Carousel />
-        </div>
+        <Carousel data={knowledge} />
       </section>
 
       <section className="fourth-section">
-        {/* <div className="text-slate-800 text-[64px] font-semibold font-['Poppins'] text-center">
+        <h1 className="text-slate-800 font-bold  text-center">
           Stay updated with Data Insights
-        </div> */}
-        <div className="text-slate-800 text-4xl sm:text-5xl md:text-6xl lg:text-6xl font-semibold font-['Poppins'] text-center">
-          Stay updated with Data Insights
-        </div>
+        </h1>
 
         <Form className="flex align-element" method="POST">
           <input
@@ -105,18 +95,30 @@ const Landing = () => {
       <section className="fifth-section">
         <div className="w-[1521px] h-[681px] bg-slate-800 xl:rounded-[35px] rounded-[25px] last-card">
           <div className="last-card-content">
-            <p className="text-white text-[30px] font-semibold font-['Poppins']">
+            <p className="text-white font-semibold">
               Your Reliable Platform For Seamless Search
             </p>
-            <div className="bg-white rounded-[50px] cursor-pointer button">
-              <span className="text-black text-[30px] font-medium">
-                Start Now
-              </span>
-              <div className="w-[50px] h-[50px] bg-slate-800 rounded-full">
+
+            <div
+              className="bg-white cursor-pointer button"
+              onClick={(e) => {
+                // console.log('first+++++++++++++');
+                e.preventDefault();
+                const targetElement = document.getElementById('hero');
+                const { top, left } = targetElement.getBoundingClientRect(); //get position on screen
+                window.scrollTo({
+                  top: top + window.scrollY,
+                  left: left + window.scrollX,
+                  behavior: 'smooth',
+                });
+              }}
+            >
+              <span className="text-black font-base">Start Now</span>
+              <div className="w-[25px] h-[25px] bg-slate-800 rounded-full">
                 <img
                   src={btnarrow}
                   alt="btnarrow"
-                  className="object-cover w-[30] h-[30]"
+                  className="object-cover w-[20] h-[20]"
                 />
               </div>
             </div>

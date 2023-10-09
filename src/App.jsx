@@ -1,6 +1,14 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { ErrorElement } from './components';
-import { HomeLayout, Landing, Error, About, Search, SingleData } from './pages';
+import {
+  HomeLayout,
+  Landing,
+  Error,
+  About,
+  Search,
+  SingleData,
+  Mfinder,
+} from './pages';
 
 // loaders
 import { loader as homeLayoutLoader } from './pages/HomeLayout';
@@ -23,6 +31,11 @@ const router = createBrowserRouter([
       },
       { path: 'about', element: <About /> },
       { path: 'search-results', element: <Search /> },
+      {
+        path: '/market-finder',
+        element: <Mfinder />,
+        errorElement: <Error />,
+      },
     ],
   },
   {

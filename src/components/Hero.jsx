@@ -10,12 +10,14 @@ const url = '/guest/search/';
 
 const Hero = () => {
   const [selectedValue, setSelectedValue] = useState('');
-  const { setIsLoading, setSearchData, setTopSearch } = useGlobalContext();
-  const { categories, datasets, topSearch } = useLoaderData();
+  const { setIsLoading, setSearchData, setTopSearch, setKnowledge } =
+    useGlobalContext();
+  const { categories, datasets, knowledge, topSearch } = useLoaderData();
   const navigate = useNavigate();
 
   useEffect(() => {
     setTopSearch(topSearch);
+    setKnowledge(knowledge);
   });
 
   const handleSelectChange = (event) => {
@@ -60,7 +62,7 @@ const Hero = () => {
   };
 
   return (
-    <div className="hero">
+    <div className="hero" id='hero'>
       <div className="search-container">
         <h1>Data, Knowledge, Insights all in one place </h1>
         <p>

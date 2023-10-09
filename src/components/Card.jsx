@@ -8,7 +8,7 @@ const Card = ({ title, description, imageUrl, position }) => {
     >
       <div className="content">
         <h1 className="text-black font-bold">{title}</h1>
-        <p className="text-black font-medium">{description}</p>
+        <p className="text-black">{description}</p>
       </div>
       <img src={imageUrl} alt={title} className="w-full h-full object-cover" />
     </div>

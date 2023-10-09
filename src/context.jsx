@@ -6,6 +6,7 @@ const AppProvider = ({ children }) => {
   const [searchData, setSearchData] = useState(null);
   const [topSearch, setTopSearch] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [knowledge, setKnowledge] = useState([]);
 
   return (
     <AppContext.Provider
@@ -16,6 +17,8 @@ const AppProvider = ({ children }) => {
         setTopSearch,
         isLoading,
         setIsLoading,
+        knowledge,
+        setKnowledge,
       }}
     >
       {children}

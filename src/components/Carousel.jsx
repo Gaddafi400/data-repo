@@ -56,7 +56,7 @@ const MyCarousel = ({ data }) => {
 };
 
 MyCarousel.propTypes = {
-  data: PropTypes.string.isRequired,
+  data: PropTypes.array.isRequired,
 };
 
 export default MyCarousel;

@@ -31,17 +31,17 @@ const router = createBrowserRouter([
       },
       { path: 'about', element: <About /> },
       { path: 'search-results', element: <Search /> },
-      {
-        path: '/market-finder',
-        element: <Mfinder />,
-        errorElement: <Error />,
-      },
     ],
   },
   {
     path: '/dataset/:id',
     element: <SingleData />,
     loader: singleDataLoader,
+    errorElement: <Error />,
+  },
+  {
+    path: '/market-finder',
+    element: <Mfinder />,
     errorElement: <Error />,
   },
   // {

@@ -3,7 +3,7 @@ import logo from '../assets/logo.png';
 
 const Navbar = () => {
   return (
-    <div className="bg-primary-500  text-white">
+    <div className="bg-primary-500  text-white nav">
       <div className="navbar lg:align-element">
         <div className="mobile-nav navbar-start ">
           <div className="dropdown">
@@ -28,63 +28,69 @@ const Navbar = () => {
               className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-primary-500 rounded-box w-52"
             >
               <li>
-                <a>Data set</a>
+                <Link className="nav-link">Data set</Link>
               </li>
               <li>
-                <a>Market Finder</a>
+                <Link to={'./market-finder'} className="nav-link">
+                  Market Finder
+                </Link>
               </li>
               <li>
-                <a>Discover More</a>
+                <Link className="nav-link">Discover More</Link>
                 <ul className="p-2">
                   <li>
-                    <a>Submenu 1</a>
+                    <Link className="nav-link">Submenu 1</Link>
                   </li>
-                  <li>
-                    <a>Submenu 2</a>
+                  <li className="nav-link">
+                    <Link className="nav-link">Submenu 2</Link>
                   </li>
                 </ul>
               </li>
             </ul>
           </div>
-
-          {/* <Link to="/">
+          <Link to="/">
             <div className="flex flex-row items-center">
               <img src={logo} alt="Logo" className="cursor-pointer" />
-              <a className="normal-case text-white text-24 font-arial font-normal break-words px-3 cursor-pointer">
+              <Link
+                to={'/'}
+                className="normal-case text-white text-24 font-arial font-normal break-words px-3 cursor-pointer"
+              >
                 STEADY VARIABLE
-              </a>
+              </Link>
             </div>
-          </Link> */}
-
-          <Link to="/" className="flex flex-row items-center">
-            <img src={logo} alt="Logo" className="cursor-pointer" />
-            <span className="normal-case text-white text-24 font-arial font-normal break-words px-3 cursor-pointer">
-              STEADY VARIABLE
-            </span>
           </Link>
-
         </div>
+
         <div className="navbar-end hidden lg:flex">
           <ul className="menu menu-horizontal px-1">
             <li>
-              <a className="hover:text-white text-base">Data set</a>
+              <Link className="hover:text-white text-base nav-link">
+                Data set
+              </Link>
             </li>
             <li>
-              <a className="hover:text-white text-base">Market Finder</a>
+              <Link to={'/market-finder'} className="text-base nav-link">
+                Market Finder
+              </Link>
             </li>
             <li tabIndex={0}>
               <details>
-                <summary className="hover:text-white text-base">
+                <summary className="hover:text-white text-base nav-link">
                   Discover More
                 </summary>
                 <ul className="p-2 bg-primary-500">
                   <li>
-                    <Link to="./about" className="hover:text-white text-base">
+                    <Link
+                      to="./about"
+                      className="hover:text-white text-base nav-link"
+                    >
                       About Us
                     </Link>
                   </li>
                   <li>
-                    <a className="hover:text-white text-base">Contact Us</a>
+                    <Link className="hover:text-white text-base nav-link">
+                      Contact Us
+                    </Link>
                   </li>
                 </ul>
               </details>

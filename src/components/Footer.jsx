@@ -2,14 +2,14 @@ import logo from '../assets/joinlogo.jpg';
 import instagram from '../assets/instagram.png';
 import facebook from '../assets/facebook.png';
 import linkedin from '../assets/linkin.png';
-import google from '../assets/google.png';
+import twitter from '../assets/twitter.png';
 
 import FooterLink from './FooterLink';
 
 const Footer = () => {
   return (
     <div className="bg-primary-500 text-white p-4">
-      <div className="container align-element">
+      <div className="container align-element p-0">
         <div className="grid grid-cols-1 lg:grid-cols-5 md:grid-cols-2 gap-4">
           {/* Footer Content for Column 1 */}
           <div className="mb-4 lg:mb-0   lg:col-span-2 column-one">
@@ -26,27 +26,53 @@ const Footer = () => {
               more.
             </p>
             <div className="column-one-social">
-              <img
-                src={instagram}
-                alt="instagram"
-                className="w-full h-20 object-cover"
-              />
-              <img
-                src={google}
-                alt="google"
-                className="w-full h-20 object-cover"
-              />
-              <img
-                src={linkedin}
-                alt="linkedin"
-                className="w-full h-20 object-cover"
-              />
+              <a
+                href="https://www.instagram.com/steadyvariables/?hl=en"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src={instagram}
+                  alt="instagram"
+                  className="w-full h-20 object-cover"
+                />
+              </a>
 
-              <img
-                src={facebook}
-                alt="facebook"
-                className="w-full h-20 object-cover"
-              />
+              <a
+                href="https://twitter.com/SteadyVariables"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src={twitter}
+                  alt="twitter"
+                  className="w-full h-20 object-cover"
+                />
+              </a>
+
+              <a
+                href="LinkedIn https://ng.linkedin.com/company/steady-variables"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src={linkedin}
+                  alt="linkedin"
+                  className="w-full h-20 object-cover"
+                />
+              </a>
+
+              <a
+                href="https://m.facebook.com/steadyvariables/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src={facebook}
+                  alt="facebook"
+                  className="w-full h-20 object-cover"
+                />
+              </a>
             </div>
           </div>
 
@@ -85,7 +111,7 @@ const Footer = () => {
       </div>
 
       <div className="h-[0px] border border-white line"></div>
-      <div className="text-white font-normal text-center copy-right">
+      <div className="text-white text-center copy-right">
         Copyright &copy; {new Date().getFullYear()} By Steady Data. All Rights
         Reserved
       </div>

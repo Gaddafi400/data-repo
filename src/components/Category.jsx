@@ -2,7 +2,10 @@ import { PropTypes } from 'prop-types';
 
 const Category = ({ title, handleClick }) => {
   return (
-    <button onClick={handleClick} className="category-button">
+    <button
+      onClick={handleClick}
+      className="category-button cursor-pointer hover:bg-primary-400"
+    >
       {title}
     </button>
   );
@@ -14,4 +17,3 @@ Category.propTypes = {
 };
 
 export default Category;
-

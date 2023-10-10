@@ -4,7 +4,7 @@ import arrow from '../assets/arrow.png';
 
 const FooterLink = ({ title, link }) => {
   return (
-    <div className="capitalize column-2-list">
+    <div className="capitalize column-2-list footer-link">
       <img src={arrow} alt="arrow" />
       <Link to={link}>{title}</Link>
     </div>

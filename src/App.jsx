@@ -8,7 +8,10 @@ import {
   Search,
   SingleData,
   Mfinder,
+  Login,
+  Register,
 } from './pages';
+// import { DashBoard } from './pages/Dashboard';
 
 // loaders
 import { loader as homeLayoutLoader } from './pages/HomeLayout';
@@ -45,10 +48,20 @@ const router = createBrowserRouter([
     errorElement: <Error />,
   },
   // {
-  //   path: '/register',
-  //   element: <Register />,
+  //   path: '/dashboard',
+  //   element: <DashBoard />,
   //   errorElement: <Error />,
   // },
+  {
+    path: '/login',
+    element: <Login />,
+    errorElement: <Error />,
+  },
+  {
+    path: '/register',
+    element: <Register />,
+    errorElement: <Error />,
+  },
 ]);
 
 const App = () => {

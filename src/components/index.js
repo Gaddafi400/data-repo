@@ -14,6 +14,5 @@ export { default as Finder } from './Finder';
 export { default as SearchCard } from './SearchCard';
 export { default as SearchResults } from './SearchResults';
 export { default as Heading } from './Heading';
-
-// export { default as FeaturedProducts } from './FeaturedProducts';
-// export { default as ProductsGrid } from './ProductsGrid';
+export { default as Select } from './Select';
+export { default as Map } from './Map';

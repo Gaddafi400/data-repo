@@ -16,3 +16,4 @@ export { default as SearchResults } from './SearchResults';
 export { default as Heading } from './Heading';
 export { default as Select } from './Select';
 export { default as Map } from './Map';
+export { default as FinderSidebar } from './FinderSidebar';

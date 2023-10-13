@@ -1,9 +1,28 @@
 import { useState, useEffect } from 'react';
-import { Select, Navbar, Footer, Heading, Map } from '../components';
+import {
+  Select,
+  Navbar,
+  Footer,
+  Heading,
+  Map,
+  FinderSidebar,
+} from '../components';
 
 import { customFetchMarket } from '../utils';
 
-// Custom Select component
+// export const action = async ({ request }) => {
+//   const formData = await request.formData();
+//   const data = Object.fromEntries(formData);
+//   const url = '/guest/';
+
+//   try {
+//     const response = await customFetchMarket.get(url);
+
+//     return {};
+//   } catch (error) {
+//     return error;
+//   }
+// };
 
 const Mfinder = () => {
   const [states, setStates] = useState([]);
@@ -22,6 +41,7 @@ const Mfinder = () => {
       .get(stateUrl)
       .then((response) => {
         setLocalGovernments([]);
+        setTowns([]);
         setStates(response.data?.data);
       })
       .catch((error) => {
@@ -70,9 +90,26 @@ const Mfinder = () => {
     setSelectedTown(e.target.value);
   };
 
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    const url = '/guest/';
+    const params = {
+      state: selectedState,
+      town: selectedTown,
+      lga: selectedLGA,
+    };
+
+    console.log(params);
+    try {
+      const response = await customFetchMarket.get(url, params);
+      console.log(response);
+    } catch (error) {
+      return error;
+    }
+  };
+
   return (
     <>
-      {/* Navbar and other components here */}
       <Navbar />
       <div className="mfinder-hero">
         <div className="w-full xx:w-[1518px] flex items-center xl:px-20 px-6  align-element heading">
@@ -85,9 +122,10 @@ const Mfinder = () => {
           <h1 className=" text-white font-medium text-center">
             Find Local Markets and Commodities in Nigeria
           </h1>
-          <form action="" className="mfinder-form">
+          <form className="mfinder-form">
             <Select
               id="state"
+              name="state"
               options={states}
               value={selectedState}
               onChange={handleStateChange}
@@ -95,12 +133,14 @@ const Mfinder = () => {
             />
             <Select
               id="lga"
+              name="lga"
               options={localGovernments}
               value={selectedLGA}
               onChange={handleLGAChange}
               placeholder="Select LGA"
             />
             <Select
+              name="town"
               id="town"
               options={towns}
               value={selectedTown}
@@ -108,7 +148,11 @@ const Mfinder = () => {
               placeholder="Select town"
             />
 
-            <button className="w-full  bg-fth rounded-lg  text-white  ">
+            <button
+              type="submit"
+              onClick={handleSearch}
+              className="w-full  bg-fth rounded-lg  text-white  "
+            >
               Steady search
             </button>
           </form>
@@ -118,6 +162,7 @@ const Mfinder = () => {
       <div className="data-section-container px-2">
         <section className="data-section w-full xx:w-[1518px] rounded-[30px] p-6">
           <Map />
+          <FinderSidebar />
         </section>
       </div>
       <Footer />

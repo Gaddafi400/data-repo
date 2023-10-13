@@ -39,10 +39,14 @@ const Navbar = () => {
                 <Link className="nav-link">Discover More</Link>
                 <ul className="p-2">
                   <li>
-                    <Link className="nav-link">Submenu 1</Link>
+                    <Link to="./about" className="nav-link">
+                      About us
+                    </Link>
                   </li>
                   <li className="nav-link">
-                    <Link className="nav-link">Submenu 2</Link>
+                    <Link to="./contact" className="nav-link">
+                      Contact us
+                    </Link>
                   </li>
                 </ul>
               </li>
@@ -81,14 +85,17 @@ const Navbar = () => {
                 <ul className="p-2 bg-primary-500">
                   <li>
                     <Link
-                      to="./about"
+                      to="/about"
                       className="hover:text-white text-base nav-link"
                     >
                       About Us
                     </Link>
                   </li>
                   <li>
-                    <Link className="hover:text-white text-base nav-link">
+                    <Link
+                      to="/contact"
+                      className="hover:text-white text-base nav-link"
+                    >
                       Contact Us
                     </Link>
                   </li>

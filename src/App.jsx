@@ -3,6 +3,7 @@ import { ErrorElement } from './components';
 import {
   HomeLayout,
   Landing,
+  Contact,
   Error,
   About,
   Search,
@@ -11,7 +12,7 @@ import {
   Login,
   Register,
 } from './pages';
-// import { DashBoard } from './pages/Dashboard';
+import { DashBoard } from './pages/Dashboard';
 
 // loaders
 import { loader as homeLayoutLoader } from './pages/HomeLayout';
@@ -33,6 +34,7 @@ const router = createBrowserRouter([
         action: landingAction,
       },
       { path: 'about', element: <About /> },
+      { path: 'contact', element: <Contact /> },
       { path: 'search-results', element: <Search /> },
     ],
   },
@@ -47,11 +49,11 @@ const router = createBrowserRouter([
     element: <Mfinder />,
     errorElement: <Error />,
   },
-  // {
-  //   path: '/dashboard',
-  //   element: <DashBoard />,
-  //   errorElement: <Error />,
-  // },
+  {
+    path: '/dashboard',
+    element: <DashBoard />,
+    errorElement: <Error />,
+  },
   {
     path: '/login',
     element: <Login />,

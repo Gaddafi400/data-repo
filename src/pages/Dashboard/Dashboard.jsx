@@ -1,4 +1,4 @@
-import { Sidebar } from './Sidebar';
+import Sidebar from './Sidebar';
 
 export const Dashboard = () => {
   return (
@@ -8,7 +8,4 @@ export const Dashboard = () => {
   );
 };
 
-
 export default Dashboard;
-
-

@@ -42,6 +42,7 @@
   border-radius: 12px;
   color: white !important;
 }
+
 a:visited {
   background: #292949 !important;
   color: white !important;
@@ -1053,6 +1054,20 @@ a:visited {
   height: 875px;
   margin: 0 auto;
   margin-bottom: 10rem;
+
+  display: flex;
+  gap: 1rem;
+}
+
+.map {
+  height: 100%;
+  width: 85%;
+  background: yellow;
+}
+
+.mfinder-sidebar {
+  height: 100%;
+  width: 15%;
 }
 
 /* Login */
@@ -1072,7 +1087,22 @@ a:visited {
   padding: 2rem;
 }
 
-.map {
-  height: 100%;
-  overflow: hidden;
+/* Contact us */
+
+.contact-us {
+  margin-top: 10rem;
+  @media (min-width: 767px) {
+    margin-top: 20rem;
+  }
+}
+
+/* about-us */
+.about-us {
+  margin-top: 5rem;
+  @media (min-width: 767px) {
+    margin-top: 10rem;
+  }
+}
+.about-us p {
+  text-align: start;
 }

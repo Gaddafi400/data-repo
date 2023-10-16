@@ -2,11 +2,14 @@ import React, { useState, useContext } from 'react';
 const AppContext = React.createContext();
 import PropTypes from 'prop-types';
 
+import { getUserFromLocalStorage } from './utils';
+
 const AppProvider = ({ children }) => {
   const [searchData, setSearchData] = useState(null);
   const [topSearch, setTopSearch] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [knowledge, setKnowledge] = useState([]);
+  const [user, setUser] = useState(getUserFromLocalStorage());
 
   return (
     <AppContext.Provider
@@ -19,6 +22,8 @@ const AppProvider = ({ children }) => {
         setIsLoading,
         knowledge,
         setKnowledge,
+        user,
+        setUser,
       }}
     >
       {children}

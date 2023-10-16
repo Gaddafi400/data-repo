@@ -43,10 +43,10 @@
   color: white !important;
 }
 
-a:visited {
+/* a:visited {
   background: #292949 !important;
   color: white !important;
-}
+} */
 
 .hero {
   width: 100%;
@@ -1105,4 +1105,21 @@ a:visited {
 }
 .about-us p {
   text-align: start;
+}
+
+.create-town {
+  position: fixed;
+  background: rgba(29, 21, 21, 0.448);
+    padding: 0.8rem;
+  height: 100vh;
+  width: 100vw;
+  z-index: 100;
+  inset: 0;
+}
+
+.create-town form {
+  max-width: 600px;
+  background: #fff;
+  margin: 6em auto;
+
 }

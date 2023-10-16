@@ -2,13 +2,14 @@
 
 import typography from '@tailwindcss/typography';
 import daisyui from 'daisyui';
-import flowbite from 'flowbite/plugin'
+import flowbite from 'flowbite/plugin';
 
 export default {
   content: [
     './index.html',
     './src/**/*.{js,ts,jsx,tsx}',
     'node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}',
+    'node_modules/tw-elements/dist/js/**/*.js',
   ],
   theme: {
     extend: {
@@ -57,7 +58,12 @@ export default {
       },
     },
   },
-  plugins: [typography, daisyui, flowbite],
+  plugins: [
+    typography,
+    daisyui,
+    flowbite,
+    require('tw-elements/dist/plugin.cjs'),
+  ],
   daisyui: {
     themes: ['winter', 'dracula'],
   },

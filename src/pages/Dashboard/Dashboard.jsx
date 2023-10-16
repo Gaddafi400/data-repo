@@ -1,11 +1,12 @@
-import Sidebar from './Sidebar';
 
-export const Dashboard = () => {
+
+
+import React from 'react'
+
+const DashBoard = () => {
   return (
-    <>
-      <Sidebar />
-    </>
-  );
-};
+    <div>DashBoard</div>
+  )
+}
 
-export default Dashboard;
+export default DashBoard

@@ -93,9 +93,6 @@ const StateTable = ({ items }) => {
             <th scope="col" className="px-6 py-3">
               Commodities
             </th>
-            <th scope="col" className="px-6 py-3">
-              Actions
-            </th>
           </tr>
         </thead>
         <tbody>
@@ -137,14 +134,6 @@ const StateTable = ({ items }) => {
               <td className="px-6 py-4">{item.towns}</td>
               <td className="px-6 py-4">{item.markets}</td>
               <td className="px-6 py-4">{item.commodities}</td>
-              <td className="px-6 py-4">
-                <a
-                  href="#"
-                  className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                >
-                  Edit
-                </a>
-              </td>
             </tr>
           ))}
         </tbody>

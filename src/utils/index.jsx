@@ -45,3 +45,13 @@ export const flattenErrorMessage = (data) => {
     return data;
   }
 };
+
+export const daysOfWeek = [
+  'monday',
+  'tuesday',
+  'wednesday',
+  'thursday',
+  'friday',
+  'saturday',
+  'sunday',
+];

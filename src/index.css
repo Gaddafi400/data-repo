@@ -1125,6 +1125,7 @@
   width: 100vw;
   z-index: 100;
   inset: 0;
+  overflow: scroll;
 }
 
 .create-town form {

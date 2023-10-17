@@ -1,6 +1,14 @@
 import PropTypes from 'prop-types';
 
-const TextInput = ({ label, name, value, onChange, placeholder, darkMode }) => {
+const TextInput = ({
+  label,
+  name,
+  value,
+  onChange,
+  placeholder,
+  darkMode,
+  required,
+}) => {
   return (
     <div className="mb-2">
       <label
@@ -23,7 +31,7 @@ const TextInput = ({ label, name, value, onChange, placeholder, darkMode }) => {
             : ''
         }`}
         placeholder={placeholder}
-        required
+        required={required ? true : false}
       />
     </div>
   );
@@ -36,6 +44,7 @@ TextInput.propTypes = {
   onChange: PropTypes.func.isRequired,
   placeholder: PropTypes.string,
   darkMode: PropTypes.bool,
+  required: PropTypes.bool,
 };
 
 export default TextInput;

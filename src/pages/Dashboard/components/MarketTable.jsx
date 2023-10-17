@@ -1,21 +1,31 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { FaTrash, FaEdit } from 'react-icons/fa';
+import Pagination from './Pagination';
+import CreateMarket from './CreateMarket';
 
 const MarketTable = ({ items }) => {
   const [search, setSearch] = useState('');
-  const itemsPerPage = 10; // Number of items to display per page
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const totalItems = items.length;
+  const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
+  const [markets, setMarkets] = useState(items);
+
+  const openCloseModal = () => {
+    setIsModalOpen(!isModalOpen);
+  };
 
   // Filter items based on the search input
-  const filteredItems = items.filter((item) =>
+  const filteredMarkets = markets.filter((item) =>
     item.name.toLowerCase().includes(search.toLowerCase())
   );
 
   // Calculate the index of the first and last item to display on the current page
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredItems.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = filteredMarkets.slice(indexOfFirstItem, indexOfLastItem);
 
   // Function to handle page change
   const handlePageChange = (pageNumber) => {
@@ -26,8 +36,21 @@ const MarketTable = ({ items }) => {
 
   // Generate page numbers for pagination
   const pageNumbers = [];
-  for (let i = 1; i <= Math.ceil(filteredItems.length / itemsPerPage); i++) {
+  for (let i = 1; i <= Math.ceil(filteredMarkets.length / itemsPerPage); i++) {
     pageNumbers.push(i);
+  }
+
+  const onMarketCreated = (newMarket) => {
+    setMarkets([...markets, newMarket]);
+  };
+
+  if (isModalOpen) {
+    return (
+      <CreateMarket
+        onClose={openCloseModal}
+        onMarketCreated={onMarketCreated}
+      />
+    );
   }
 
   return (
@@ -69,7 +92,7 @@ const MarketTable = ({ items }) => {
         <button
           className="block text-white bg-primary-400 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
           type="button"
-          // onClick={() => openCloseModal()}
+          onClick={() => openCloseModal()}
         >
           Create Market
         </button>
@@ -180,77 +203,13 @@ const MarketTable = ({ items }) => {
       </table>
 
       {/* Pagination */}
-      <nav
-        className="flex items-center justify-between pt-4 px-4 pb-4"
-        aria-label="Table navigation"
-      >
-        <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
-          Showing{' '}
-          <span className="font-semibold text-gray-900 dark:text-white">
-            {indexOfFirstItem + 1}
-          </span>{' '}
-          -{' '}
-          <span className="font-semibold text-gray-900 dark:text-white">
-            {indexOfLastItem > filteredItems.length
-              ? filteredItems.length
-              : indexOfLastItem}
-          </span>{' '}
-          of{' '}
-          <span className="font-semibold text-gray-900 dark:text-white">
-            {filteredItems.length}
-          </span>
-        </span>
-        <ul className="inline-flex -space-x-px text-sm h-8 ">
-          {currentPage > 1 && (
-            <li>
-              <a
-                href="#"
-                onClick={() => handlePageChange(currentPage - 1)}
-                className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark-hover-bg-gray-700 dark-hover-text-white"
-              >
-                Previous
-              </a>
-            </li>
-          )}
-
-          {pageNumbers.map((number, index) => (
-            <li key={number}>
-              <a
-                href="#"
-                onClick={() => handlePageChange(number)}
-                className={`flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 ${
-                  currentPage === number
-                    ? 'text-blue-600 border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white dark-hover-bg-gray-700 dark-hover-text-white'
-                    : 'hover:bg-gray-100 hover:text-gray-700 dark-hover-bg-gray-700 dark-hover-text-white'
-                } ${
-                  index === 0 && currentPage === 1
-                    ? 'rounded-l-lg'
-                    : '' /* Apply rounded-l-lg to the first item only when there's no "Previous" button */
-                } ${
-                  index === pageNumbers.length - 1 &&
-                  currentPage === pageNumbers.length
-                    ? 'rounded-r-lg'
-                    : '' /* Apply rounded-r-lg to the last item only when there's no "Next" button */
-                }`}
-              >
-                {number}
-              </a>
-            </li>
-          ))}
-
-          {currentPage < pageNumbers.length && (
-            <li>
-              <a
-                href="#"
-                onClick={() => handlePageChange(currentPage + 1)}
-                className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover-bg-gray-100 hover-text-gray-700 dark-bg-gray-800 dark-border-gray-700 dark-text-gray-400 dark-hover-bg-gray-700 dark-hover-text-white rounded-r-lg"
-              >
-                Next
-              </a>
-            </li>
-          )}
-        </ul>
-      </nav>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={pageNumbers.length}
+        onPageChange={handlePageChange}
+        itemsPerPage={itemsPerPage}
+        totalItems={totalItems}
+      />
     </div>
   );
 };

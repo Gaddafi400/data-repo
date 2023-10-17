@@ -7,7 +7,11 @@ import xlsx from '../assets/xlsx.png';
 import jpeg from '../assets/jpeg.png';
 import pdf from '../assets/pdf.png';
 import Table from '../components/Table';
-import GrossSavingsBarChart from '../components/GrossSavingsBarChart';
+
+import BarChart from '../components/chart/BarChart';
+import PieChart from '../components/chart/PieChart';
+import LineChart from '../components/chart/LineChart';
+import BubbleChart from '../components/chart/BubbleChart';
 
 export const loader = async ({ params }) => {
   try {
@@ -24,8 +28,8 @@ export const loader = async ({ params }) => {
 const SingleData = () => {
   const { result } = useLoaderData();
   const [selectedItem, setSelectedItem] = useState('table');
-
   const [isMobile, setIsMobile] = useState(false);
+  const [chartType, setChartType] = useState('PieChart');
 
   useEffect(() => {
     const handleResize = () => {
@@ -72,9 +76,9 @@ const SingleData = () => {
             className={`cursor-pointer ${
               selectedItem === 'otherComponent' ? 'text-blue-500' : ''
             }`}
-            onClick={() => handleItemClick('BarChart')}
+            onClick={() => handleItemClick('Charts')}
           >
-            BarChart
+            Chart
           </li>
           {/* Add more sidebar items here */}
         </ul>
@@ -92,7 +96,7 @@ const SingleData = () => {
           <Heading text={result?.category} />
         </div>
         <div className="w-full xx:w-[1518px] h-[292px] bg-white rounded-[25px]">
-          <p className="p-4 text-zinc-500 text-1xl font-medium ">
+          <p className="p-14 text-zinc-500" style={{ fontSize: '18px' }}>
             {result?.description}
           </p>
         </div>
@@ -120,9 +124,43 @@ const SingleData = () => {
                 {selectedItem === 'table' && <Table data={result} />}
               </div>
               {/* Add conditionals for other components */}
-              {selectedItem === 'BarChart' && (
-                <div>
-                  <GrossSavingsBarChart />
+
+              {selectedItem === 'Charts' && (
+                <div className="bg-white h-full p-4 rounded-lg">
+                  <div className="chart-container">
+                    {/* display chart here base on the button click under the container */}
+                    {chartType === 'BarChart' ? <BarChart /> : ''}
+                    {chartType === 'PieChart' ? <PieChart /> : ''}
+                    {chartType === 'LineChart' ? <LineChart /> : ''}
+                    {chartType === 'BubbleChart' ? <BubbleChart /> : ''}
+                  </div>
+
+                  <div className="flex justify-between align-items-center px-5">
+                    <button
+                      className="btn border border-primary-500 px-6"
+                      onClick={() => setChartType('PieChart')}
+                    >
+                      Pie Chart
+                    </button>
+                    <button
+                      className="btn border-primary-500 px-6"
+                      onClick={() => setChartType('BarChart')}
+                    >
+                      Bar Chart
+                    </button>
+                    <button
+                      className="btn border-primary-500 px-6"
+                      onClick={() => setChartType('LineChart')}
+                    >
+                      Line Chart
+                    </button>
+                    <button
+                      className="btn border-primary-500 px-6"
+                      onClick={() => setChartType('BubbleChart')}
+                    >
+                      Bubble Chart
+                    </button>
+                  </div>
                 </div>
               )}
             </div>

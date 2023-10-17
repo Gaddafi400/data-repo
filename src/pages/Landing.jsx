@@ -102,7 +102,6 @@ const Landing = () => {
             <div
               className="bg-white cursor-pointer button"
               onClick={(e) => {
-                // console.log('first+++++++++++++');
                 e.preventDefault();
                 const targetElement = document.getElementById('hero');
                 const { top, left } = targetElement.getBoundingClientRect(); //get position on screen

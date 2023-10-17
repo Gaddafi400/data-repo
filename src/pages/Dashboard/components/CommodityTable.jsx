@@ -1,43 +1,35 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { FaTrash, FaEdit } from 'react-icons/fa';
-
 import Pagination from './Pagination';
+import CreateCommodity from './CreateCommodity';
 
-import CreateTown from './CreateTown';
-import EditTown from './EditTown';
-
-const TownTable = ({ items }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isEditOpen, setIsEditOpen] = useState(false);
-
-  const [editData, setEditData] = useState(false);
-  const [towns, setTowns] = useState(items);
-
+const CommodityTable = ({ items }) => {
   const [search, setSearch] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const itemsPerPage = 10;
   const totalItems = items.length;
   const [currentPage, setCurrentPage] = useState(1);
+
+  const [commodities, setCommodities] = useState(items);
 
   const openCloseModal = () => {
     setIsModalOpen(!isModalOpen);
   };
 
-  const openCloseEditModal = () => {
-    setIsEditOpen(!isEditOpen);
+  const onCommodityCreated = (newCommodity) => {
+    setCommodities([...commodities, newCommodity]);
   };
 
-  const onTownCreated = (newTown) => {
-    setTowns([...towns, newTown]);
-  };
-
-  const filteredTowns = towns.filter((item) =>
+  // Filter items based on the search input
+  const filteredItems = commodities.filter((item) =>
     item.name.toLowerCase().includes(search.toLowerCase())
   );
 
+  // Calculate the index of the first and last item to display on the current page
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredTowns.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = filteredItems.slice(indexOfFirstItem, indexOfLastItem);
 
   // Function to handle page change
   const handlePageChange = (pageNumber) => {
@@ -48,27 +40,21 @@ const TownTable = ({ items }) => {
 
   // Generate page numbers for pagination
   const pageNumbers = [];
-  for (let i = 1; i <= Math.ceil(filteredTowns.length / itemsPerPage); i++) {
+  for (let i = 1; i <= Math.ceil(filteredItems.length / itemsPerPage); i++) {
     pageNumbers.push(i);
   }
 
   if (isModalOpen) {
     return (
-      <CreateTown onClose={openCloseModal} onTownCreated={onTownCreated} />
+      <CreateCommodity
+        onCommodityCreated={onCommodityCreated}
+        onClose={openCloseModal}
+      />
     );
   }
 
-  if (isEditOpen) {
-    return <EditTown onClose={openCloseEditModal} initialData={editData} />;
-  }
-  // handle edit
-  const handleEdit = (item) => {
-    setEditData(item);
-    openCloseEditModal();
-  };
-
   return (
-    <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-4 mb-4">
+    <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
       <div className="pb-4 bg-white dark:bg-gray-900 flex justify-between items-center px-4 mt-2">
         <div>
           <label htmlFor="table-search" className="sr-only">
@@ -108,7 +94,7 @@ const TownTable = ({ items }) => {
           type="button"
           onClick={() => openCloseModal()}
         >
-          Create Town
+          Create commodity
         </button>
       </div>
 
@@ -131,14 +117,12 @@ const TownTable = ({ items }) => {
               Name
             </th>
             <th scope="col" className="px-6 py-3">
-              State
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Local Gov&apos;ts
+              Alias
             </th>
             <th scope="col" className="px-6 py-3">
               Number of markets
             </th>
+
             <th scope="col" className="px-6 py-3">
               Actions
             </th>
@@ -179,12 +163,11 @@ const TownTable = ({ items }) => {
               >
                 {item.name}
               </th>
-              <td className="px-6 py-4">{item.state?.name}</td>
-              <td className="px-6 py-4">{item.lga?.name}</td>
-              <td className="px-6 py-4">{item.numberOfMarkets || '-'}</td>
+              <td className="px-6 py-4">{item.alias}</td>
+              <td className="px-6 py-4">{item.numberOfMarkets}</td>
               <td className="px-6 py-4 flex">
                 <button
-                  onClick={() => handleEdit(item)}
+                  // onClick={() => handleEdit(item)}
                   className="font-medium hover:underline flex items-center mr-3"
                 >
                   <FaEdit className="mr-1" /> Edit
@@ -211,8 +194,8 @@ const TownTable = ({ items }) => {
   );
 };
 
-TownTable.propTypes = {
+CommodityTable.propTypes = {
   items: PropTypes.array,
 };
 
-export default TownTable;
+export default CommodityTable;

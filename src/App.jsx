@@ -19,7 +19,9 @@ import {
   State,
   LocalGov,
   ProtectedRoute,
-  Town
+  Town,
+  Commodity,
+  Market
 } from './pages/Dashboard';
 
 // loaders
@@ -28,6 +30,8 @@ import { loader as singleDataLoader } from './pages/SingleData';
 import { loader as stateLoader } from './pages/Dashboard/State';
 import { loader as localGovLoader } from './pages/Dashboard/LocalGov';
 import { loader as townLoader } from './pages/Dashboard/Town';
+import { loader as commodityLoader } from './pages/Dashboard/Commodity';
+import { loader as marketLoader } from './pages/Dashboard/Market';
 
 import { action as landingAction } from './pages/Landing';
 import { action as loginAction } from './pages/Login';
@@ -91,6 +95,18 @@ const router = createBrowserRouter([
         path: 'town',
         element: <Town />,
         loader: townLoader,
+        errorElement: ErrorElement,
+      },
+      {
+        path: 'commodity',
+        element: <Commodity />,
+        loader: commodityLoader,
+        errorElement: ErrorElement,
+      },
+      {
+        path: 'market',
+        element: <Market />,
+        loader: marketLoader,
         errorElement: ErrorElement,
       },
     ],

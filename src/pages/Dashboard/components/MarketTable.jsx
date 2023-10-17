@@ -2,42 +2,20 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { FaTrash, FaEdit } from 'react-icons/fa';
 
-import Pagination from './Pagination';
-
-import CreateTown from './CreateTown';
-import EditTown from './EditTown';
-
-const TownTable = ({ items }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isEditOpen, setIsEditOpen] = useState(false);
-
-  const [editData, setEditData] = useState(false);
-  const [towns, setTowns] = useState(items);
-
+const MarketTable = ({ items }) => {
   const [search, setSearch] = useState('');
-  const itemsPerPage = 10;
-  const totalItems = items.length;
+  const itemsPerPage = 10; // Number of items to display per page
   const [currentPage, setCurrentPage] = useState(1);
 
-  const openCloseModal = () => {
-    setIsModalOpen(!isModalOpen);
-  };
-
-  const openCloseEditModal = () => {
-    setIsEditOpen(!isEditOpen);
-  };
-
-  const onTownCreated = (newTown) => {
-    setTowns([...towns, newTown]);
-  };
-
-  const filteredTowns = towns.filter((item) =>
+  // Filter items based on the search input
+  const filteredItems = items.filter((item) =>
     item.name.toLowerCase().includes(search.toLowerCase())
   );
 
+  // Calculate the index of the first and last item to display on the current page
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredTowns.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = filteredItems.slice(indexOfFirstItem, indexOfLastItem);
 
   // Function to handle page change
   const handlePageChange = (pageNumber) => {
@@ -48,27 +26,12 @@ const TownTable = ({ items }) => {
 
   // Generate page numbers for pagination
   const pageNumbers = [];
-  for (let i = 1; i <= Math.ceil(filteredTowns.length / itemsPerPage); i++) {
+  for (let i = 1; i <= Math.ceil(filteredItems.length / itemsPerPage); i++) {
     pageNumbers.push(i);
   }
 
-  if (isModalOpen) {
-    return (
-      <CreateTown onClose={openCloseModal} onTownCreated={onTownCreated} />
-    );
-  }
-
-  if (isEditOpen) {
-    return <EditTown onClose={openCloseEditModal} initialData={editData} />;
-  }
-  // handle edit
-  const handleEdit = (item) => {
-    setEditData(item);
-    openCloseEditModal();
-  };
-
   return (
-    <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-4 mb-4">
+    <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
       <div className="pb-4 bg-white dark:bg-gray-900 flex justify-between items-center px-4 mt-2">
         <div>
           <label htmlFor="table-search" className="sr-only">
@@ -106,12 +69,11 @@ const TownTable = ({ items }) => {
         <button
           className="block text-white bg-primary-400 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
           type="button"
-          onClick={() => openCloseModal()}
+          // onClick={() => openCloseModal()}
         >
-          Create Town
+          Create Market
         </button>
       </div>
-
       <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
@@ -127,8 +89,12 @@ const TownTable = ({ items }) => {
                 </label>
               </div>
             </th>
+
             <th scope="col" className="px-6 py-3">
               Name
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Alias
             </th>
             <th scope="col" className="px-6 py-3">
               State
@@ -137,8 +103,18 @@ const TownTable = ({ items }) => {
               Local Gov&apos;ts
             </th>
             <th scope="col" className="px-6 py-3">
-              Number of markets
+              town
             </th>
+            <th scope="col" className="px-6 py-3">
+              Number Of Commodities
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Longitude
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Latitude
+            </th>
+
             <th scope="col" className="px-6 py-3">
               Actions
             </th>
@@ -179,12 +155,16 @@ const TownTable = ({ items }) => {
               >
                 {item.name}
               </th>
+              <td className="px-6 py-4">{item.alias}</td>
               <td className="px-6 py-4">{item.state?.name}</td>
               <td className="px-6 py-4">{item.lga?.name}</td>
-              <td className="px-6 py-4">{item.numberOfMarkets || '-'}</td>
+              <td className="px-6 py-4">{item.town?.name}</td>
+              <td className="px-6 py-4">{item.numberOfCommodities}</td>
+              <td className="px-6 py-4">{item.longitude}</td>
+              <td className="px-6 py-4">{item.latitude}</td>
               <td className="px-6 py-4 flex">
                 <button
-                  onClick={() => handleEdit(item)}
+                  // onClick={() => handleEdit(item)}
                   className="font-medium hover:underline flex items-center mr-3"
                 >
                   <FaEdit className="mr-1" /> Edit
@@ -200,19 +180,83 @@ const TownTable = ({ items }) => {
       </table>
 
       {/* Pagination */}
-      <Pagination
-        currentPage={currentPage}
-        totalPages={pageNumbers.length}
-        onPageChange={handlePageChange}
-        itemsPerPage={itemsPerPage}
-        totalItems={totalItems}
-      />
+      <nav
+        className="flex items-center justify-between pt-4 px-4 pb-4"
+        aria-label="Table navigation"
+      >
+        <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
+          Showing{' '}
+          <span className="font-semibold text-gray-900 dark:text-white">
+            {indexOfFirstItem + 1}
+          </span>{' '}
+          -{' '}
+          <span className="font-semibold text-gray-900 dark:text-white">
+            {indexOfLastItem > filteredItems.length
+              ? filteredItems.length
+              : indexOfLastItem}
+          </span>{' '}
+          of{' '}
+          <span className="font-semibold text-gray-900 dark:text-white">
+            {filteredItems.length}
+          </span>
+        </span>
+        <ul className="inline-flex -space-x-px text-sm h-8 ">
+          {currentPage > 1 && (
+            <li>
+              <a
+                href="#"
+                onClick={() => handlePageChange(currentPage - 1)}
+                className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark-hover-bg-gray-700 dark-hover-text-white"
+              >
+                Previous
+              </a>
+            </li>
+          )}
+
+          {pageNumbers.map((number, index) => (
+            <li key={number}>
+              <a
+                href="#"
+                onClick={() => handlePageChange(number)}
+                className={`flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 ${
+                  currentPage === number
+                    ? 'text-blue-600 border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white dark-hover-bg-gray-700 dark-hover-text-white'
+                    : 'hover:bg-gray-100 hover:text-gray-700 dark-hover-bg-gray-700 dark-hover-text-white'
+                } ${
+                  index === 0 && currentPage === 1
+                    ? 'rounded-l-lg'
+                    : '' /* Apply rounded-l-lg to the first item only when there's no "Previous" button */
+                } ${
+                  index === pageNumbers.length - 1 &&
+                  currentPage === pageNumbers.length
+                    ? 'rounded-r-lg'
+                    : '' /* Apply rounded-r-lg to the last item only when there's no "Next" button */
+                }`}
+              >
+                {number}
+              </a>
+            </li>
+          ))}
+
+          {currentPage < pageNumbers.length && (
+            <li>
+              <a
+                href="#"
+                onClick={() => handlePageChange(currentPage + 1)}
+                className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover-bg-gray-100 hover-text-gray-700 dark-bg-gray-800 dark-border-gray-700 dark-text-gray-400 dark-hover-bg-gray-700 dark-hover-text-white rounded-r-lg"
+              >
+                Next
+              </a>
+            </li>
+          )}
+        </ul>
+      </nav>
     </div>
   );
 };
 
-TownTable.propTypes = {
+MarketTable.propTypes = {
   items: PropTypes.array,
 };
 
-export default TownTable;
+export default MarketTable;

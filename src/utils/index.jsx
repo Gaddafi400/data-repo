@@ -1,7 +1,5 @@
 import axios from 'axios';
 
-
-
 export const header = (bearerToken) => {
   return {
     headers: {
@@ -34,4 +32,16 @@ export const getUserFromLocalStorage = () => {
   const result = localStorage.getItem('user');
   const user = result ? JSON.parse(result) : null;
   return user;
+};
+
+export const flattenErrorMessage = (data) => {
+  if (Array.isArray(data)) {
+    return data.map((item) => flattenErrorMessage(item)).join(' ');
+  } else if (typeof data === 'object') {
+    return Object.values(data)
+      .map((item) => flattenErrorMessage(item))
+      .join(' ');
+  } else {
+    return data;
+  }
 };

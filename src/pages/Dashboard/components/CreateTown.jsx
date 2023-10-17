@@ -7,10 +7,11 @@ import TextInput from './TextInput';
 import {
   customFetchMarket,
   getUserFromLocalStorage,
+  flattenErrorMessage,
   header,
 } from '../../../utils';
 
-const CreateTown = ({ onClose }) => {
+const CreateTown = ({ onClose, onTownCreated }) => {
   const initialFormState = {
     name: '',
     state: '',
@@ -80,10 +81,13 @@ const CreateTown = ({ onClose }) => {
       const responseData = response.data.data;
       toast.success('Town created successfully!');
       setFormData(initialFormState);
+      onTownCreated(responseData);
       onClose();
       return { towns: responseData };
     } catch (error) {
-      toast.error('Failed to create town. Please try again.');
+      const errorMessage = flattenErrorMessage(error.response.data?.data);
+      toast.error(errorMessage || 'Failed to create town. Please try again.');
+
       return error;
     } finally {
       setIsSubmitting(false);
@@ -164,6 +168,7 @@ const CreateTown = ({ onClose }) => {
 
 CreateTown.propTypes = {
   onClose: PropTypes.func,
+  onTownCreated: PropTypes.func,
 };
 
 export default CreateTown;

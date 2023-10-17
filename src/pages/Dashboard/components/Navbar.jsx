@@ -53,10 +53,27 @@ const Navbar = () => {
               items={['State', 'Local Govt', 'Town']}
               onClick={(e) => categoryClick(e)}
             />
-            <Dropdown
+
+            <button
+              style={{ paddingRight: '112px' }}
+              className="mt-2 text-white hover:bg-primary-700 px-5 rounded-lg p-3"
+              onClick={() => navigate('/dashboard/commodity')}
+            >
+              Commodities
+            </button>
+
+            <button
+              style={{ paddingRight: '155px' }}
+              className="mt-2 text-white hover:bg-primary-700 px-5 rounded-lg p-3"
+              onClick={() => navigate('/dashboard/market')}
+            >
+              Markets
+            </button>
+
+            {/* <Dropdown
               label="Commodities"
               items={['Maize', 'Rice', 'Millets']}
-            />
+            /> */}
 
             {/* {SidebarData.map((item, index) => {
               return (

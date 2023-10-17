@@ -159,8 +159,8 @@ const Mfinder = () => {
         </div>
       </div>
       {/* Other components and JSX */}
-      <div className="data-section-container px-2">
-        <section className="data-section w-full xx:w-[1518px] rounded-[30px] p-6">
+      <div className="m-data-section-container px-2">
+        <section className="m-data-section w-full xx:w-[1518px] rounded-[30px] p-6">
           <Map />
           <FinderSidebar />
         </section>

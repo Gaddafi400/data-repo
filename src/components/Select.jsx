@@ -11,7 +11,7 @@ const Select = ({
 }) => {
   // determine the default value based on the selected prop
   const defaultValue = selected
-    ? options?.find((option) => option.name === selected)
+    ? options?.find((option) => option.id === selected)
     : '';
 
   return (
@@ -42,8 +42,6 @@ const Select = ({
           </option>
         )}
 
-        
-
         {options?.map((option) => {
           return (
             <option key={option?.id} value={option.id}>
@@ -63,7 +61,7 @@ Select.propTypes = {
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   placeholder: PropTypes.string.isRequired,
-  selected: PropTypes.string,
+  selected: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.number]),
 };
 
 export default Select;

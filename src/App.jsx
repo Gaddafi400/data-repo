@@ -21,20 +21,36 @@ import {
   ProtectedRoute,
   Town,
   Commodity,
-  Market
+  Market,
 } from './pages/Dashboard';
+
+import {
+  Dashboard as RepoDashboard,
+  SharedLayout as RepoSharedLayout,
+  ProtectedRoute as RepoProtectedRoute,
+  Variable,
+  Categories,
+  Cknowledge,
+  Operation
+} from './pages/Repo';
 
 // loaders
 import { loader as homeLayoutLoader } from './pages/HomeLayout';
 import { loader as singleDataLoader } from './pages/SingleData';
+//
 import { loader as stateLoader } from './pages/Dashboard/State';
 import { loader as localGovLoader } from './pages/Dashboard/LocalGov';
 import { loader as townLoader } from './pages/Dashboard/Town';
 import { loader as commodityLoader } from './pages/Dashboard/Commodity';
 import { loader as marketLoader } from './pages/Dashboard/Market';
-
+// repo
+import { loader as variableLoader } from './pages/Repo/Variable';
+import { loader as categoriesLoader } from './pages/Repo/Categories';
+import { loader as cKnowledgeLoader } from './pages/Repo/Cknowledge';
+import { loader as operationLoader } from './pages/Repo/Operation';
+// 
 import { action as landingAction } from './pages/Landing';
-import { action as loginAction } from './pages/Login';
+// import { action as loginAction } from './pages/Login';
 
 const router = createBrowserRouter([
   {
@@ -112,9 +128,49 @@ const router = createBrowserRouter([
     ],
   },
   {
+    path: '/repo',
+    element: (
+      <RepoProtectedRoute>
+        <RepoSharedLayout />
+      </RepoProtectedRoute>
+    ),
+    errorElement: <Error />,
+    children: [
+      {
+        index: true,
+        element: <RepoDashboard />,
+        errorElement: ErrorElement,
+      },
+      {
+        path: 'variable',
+        element: <Variable />,
+        loader: variableLoader,
+        errorElement: ErrorElement,
+      },
+      {
+        path: 'categories',
+        element: <Categories />,
+        loader: categoriesLoader,
+        errorElement: ErrorElement,
+      },
+      {
+        path: 'common-knowledge',
+        element: <Cknowledge />,
+        loader: cKnowledgeLoader,
+        errorElement: ErrorElement,
+      },
+      {
+        path: 'operation',
+        element: <Operation />,
+        loader: operationLoader,
+        errorElement: ErrorElement,
+      },
+    ],
+  },
+  {
     path: '/login',
     element: <Login />,
-    action: loginAction,
+    // action: loginAction,
     errorElement: <Error />,
   },
   {

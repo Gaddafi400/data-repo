@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { Line } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
@@ -23,8 +24,12 @@ const options = {
   },
 };
 
-const LineChart = () => {
-  return <Line data={data} options={options} />;
+const LineChart = ({ cData }) => {
+  return <Line data={cData} options={options} />;
+};
+
+LineChart.propTypes = {
+  cData: PropTypes.oneOfType([PropTypes.object]),
 };
 
 export default LineChart;

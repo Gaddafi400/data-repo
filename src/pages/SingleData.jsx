@@ -1,6 +1,6 @@
 import { Navbar, Footer, Heading } from '../components';
 import { useLoaderData } from 'react-router-dom';
-import { customFetch } from '../utils';
+import { customFetch, extractLabelsAndData } from '../utils';
 import { useState, useEffect } from 'react';
 
 import xlsx from '../assets/xlsx.png';
@@ -17,19 +17,25 @@ export const loader = async ({ params }) => {
   try {
     const url = '/guest/subcategories';
     const response = await customFetch(`${url}/${params.id}`);
-    console.log(response);
-
-    return { result: response.data.data };
+    return {
+      result: response.data.data?.dataset,
+      chartLabel: response.data.data?.chartLabel,
+      chartData: response.data.data?.chartData,
+    };
   } catch (error) {
     return error;
   }
 };
 
 const SingleData = () => {
-  const { result } = useLoaderData();
+  const { result, chartLabel, chartData } = useLoaderData();
   const [selectedItem, setSelectedItem] = useState('table');
   const [isMobile, setIsMobile] = useState(false);
   const [chartType, setChartType] = useState('PieChart');
+
+  const cData = extractLabelsAndData(chartLabel, chartData, result?.name);
+
+  console.log('cData ✳️', cData);
 
   useEffect(() => {
     const handleResize = () => {
@@ -129,10 +135,10 @@ const SingleData = () => {
                 <div className="bg-white h-full p-4 rounded-lg">
                   <div className="chart-container">
                     {/* display chart here base on the button click under the container */}
-                    {chartType === 'BarChart' ? <BarChart /> : ''}
-                    {chartType === 'PieChart' ? <PieChart /> : ''}
-                    {chartType === 'LineChart' ? <LineChart /> : ''}
-                    {chartType === 'BubbleChart' ? <BubbleChart /> : ''}
+                    {chartType === 'BarChart' ? <BarChart cData={cData} /> : ''}
+                    {chartType === 'PieChart' ? <PieChart cData={cData} /> : ''}
+                    {chartType === 'LineChart' ? <LineChart cData={cData}/> : ''}
+                    {chartType === 'BubbleChart' ? <BubbleChart cData={cData}/> : ''}
                   </div>
 
                   <div className="flex justify-between align-items-center px-5">

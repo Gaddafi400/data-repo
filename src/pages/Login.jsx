@@ -30,7 +30,7 @@ const Login = () => {
       const username = userData?.user.name;
       toast.success(`Welcome back ${username}`);
       setUser(userData);
-      navigate('/dashboard');
+      navigate('/redirect');
     } catch (error) {
       const errorMessage = flattenErrorMessage(error.response.data?.data);
       toast.error(errorMessage || 'Failed to create town. Please try again.');

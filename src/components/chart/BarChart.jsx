@@ -1,7 +1,8 @@
+import PropTypes from 'prop-types';
+
 import { Bar } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
-
 
 const data = {
   labels: ['January', 'February', 'March', 'April', 'May'],
@@ -24,8 +25,12 @@ const options = {
   },
 };
 
-const BarChart = () => {
-  return <Bar data={data} options={options} />;
+const BarChart = ({ cData }) => {
+  return <Bar data={cData} options={options} />;
+};
+
+BarChart.propTypes = {
+  cData: PropTypes.oneOfType([PropTypes.object]),
 };
 
 export default BarChart;

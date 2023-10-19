@@ -2,51 +2,87 @@ import { useState } from 'react';
 import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
 import { Link, useNavigate } from 'react-router-dom';
-import { SidebarData } from './SidebarData';
 import './Navbar.css';
 import { IconContext } from 'react-icons';
-
 import { Dropdown } from '../../../components';
+import logo from '../../../assets/logo.png';
+import { removeUserFromLocalStorage } from '../../../utils';
 
 const Navbar = () => {
-  const [sidebar, setSidebar] = useState(false);
+  const [sidebar, setSidebar] = useState(true);
   const navigate = useNavigate();
 
-  const showSidebar = () => setSidebar(!sidebar);
-
-  console.log('showSidebar', sidebar);
+  const showSidebar = (e) => {
+    e.preventDefault();
+    return setSidebar(!sidebar);
+  };
 
   const categoryClick = (e) => {
-    showSidebar();
+    // showSidebar();
     if (e.target.id.toLowerCase() === 'state') {
       navigate('/dashboard/state');
     } else if (e.target.id.toLowerCase() === 'town') {
       navigate('/dashboard/town');
     } else {
-      navigate('/dashboard/default');
+      navigate('/dashboard/town');
     }
   };
 
   return (
     <>
       <IconContext.Provider value={{ color: '#fff' }}>
-        <div className="navbar">
+        {/* navbar */}
+        <div className="admin-navbar flex justify-between items-center p-5">
           <Link to="#" className="menu-bars">
             <FaIcons.FaBars onClick={showSidebar} />
           </Link>
+
+          <div className="flex space-x-4">
+            {/* Profile Link */}
+            <Link
+              to="/profile"
+              className="text-white bg-primary-700 hover:bg-primary-800 p-2 rounded-lg px-6"
+            >
+              Profile
+            </Link>
+
+            {/* Logout Button */}
+            <button
+              onClick={() => {
+                removeUserFromLocalStorage();
+                navigate('/login');
+              }}
+              className="bg-red-500 text-white p-2 px-6 rounded-lg"
+            >
+              Logout
+            </button>
+          </div>
         </div>
-        <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
+        {/* end nav */}
+
+        {/* sidebar {`nav-menu active ${sidebar ? 'nav-menu.active' : ''}`} */}
+        <nav className={`nav-menu ${sidebar ? 'active' : ''}`}>
           <ul className="nav-menu-items">
+            {/* hide on large screen */}
             <li className="navbar-toggle">
-              <Link to="#" className="menu-bars" onClick={showSidebar}>
+              <Link
+                to="#"
+                className="menu-bars ml-12 toggle-icon"
+                onClick={showSidebar}
+              >
                 <AiIcons.AiOutlineClose />
               </Link>
             </li>
 
-            {/* <div className="flex justify-between px-2">
-              <span>Dashboard</span>
-              <AiIcons.AiFillHome />
-            </div> */}
+            {/* display on large screen */}
+            <li className="px-12 pt-2 mb-3">
+              <img
+                className="bg-white admin-logo"
+                src={logo}
+                alt="logo"
+                size="300"
+              />
+            </li>
 
             <Dropdown
               label="Municipal"
@@ -69,22 +105,6 @@ const Navbar = () => {
             >
               Markets
             </button>
-
-            {/* <Dropdown
-              label="Commodities"
-              items={['Maize', 'Rice', 'Millets']}
-            /> */}
-
-            {/* {SidebarData.map((item, index) => {
-              return (
-                <li key={index} className={item.cName}>
-                  <Link >
-                    {item.icon}
-                    <span>{item.title}</span>
-                  </Link>
-                </li>
-              );
-            })} */}
           </ul>
         </nav>
       </IconContext.Provider>

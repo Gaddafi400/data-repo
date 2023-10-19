@@ -11,6 +11,7 @@ import {
   Mfinder,
   Login,
   Register,
+  Redirect,
 } from './pages';
 
 import {
@@ -31,7 +32,7 @@ import {
   Variable,
   Categories,
   Cknowledge,
-  Operation
+  Operation,
 } from './pages/Repo';
 
 // loaders
@@ -48,7 +49,7 @@ import { loader as variableLoader } from './pages/Repo/Variable';
 import { loader as categoriesLoader } from './pages/Repo/Categories';
 import { loader as cKnowledgeLoader } from './pages/Repo/Cknowledge';
 import { loader as operationLoader } from './pages/Repo/Operation';
-// 
+//
 import { action as landingAction } from './pages/Landing';
 // import { action as loginAction } from './pages/Login';
 
@@ -170,7 +171,11 @@ const router = createBrowserRouter([
   {
     path: '/login',
     element: <Login />,
-    // action: loginAction,
+    errorElement: <Error />,
+  },
+  {
+    path: '/redirect',
+    element: <Redirect />,
     errorElement: <Error />,
   },
   {

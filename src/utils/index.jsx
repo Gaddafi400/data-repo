@@ -55,3 +55,40 @@ export const daysOfWeek = [
   'saturday',
   'sunday',
 ];
+
+const getRandomColor = () => {
+  return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+};
+
+export const extractLabelsAndData = (chartLabel, chartData, label) => {
+  const labels = [];
+  const data = [];
+  const backgroundColors = [];
+
+  for (const key in chartLabel) {
+    if (Object.prototype.hasOwnProperty.call(chartLabel, key)) {
+      const label = chartLabel[key];
+      const dataPoint = chartData[key] || '';
+      labels.push(label);
+      data.push(dataPoint);
+      backgroundColors.push(getRandomColor());
+    }
+  }
+
+  const cData = {
+    labels: labels.slice(0, 12),
+    datasets: [
+      {
+        label: `${label}`,
+        data: data.slice(0, 12),
+        backgroundColor: backgroundColors.slice(0, 12),
+        borderColor: 'rgba(75, 192, 192, 1)',
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  return cData;
+};
+
+ 

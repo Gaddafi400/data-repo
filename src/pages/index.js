@@ -8,3 +8,4 @@ export { default as Mfinder } from './Mfinder';
 export { default as Login } from './Login';
 export { default as Register } from './Register';
 export { default as Contact } from './Contact';
+export { default as Redirect } from './Redirect';

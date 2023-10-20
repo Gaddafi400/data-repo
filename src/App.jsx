@@ -33,6 +33,8 @@ import {
   Categories,
   Cknowledge,
   Operation,
+  Dataset,
+  SingleDataset,
 } from './pages/Repo';
 
 // loaders
@@ -49,6 +51,8 @@ import { loader as variableLoader } from './pages/Repo/Variable';
 import { loader as categoriesLoader } from './pages/Repo/Categories';
 import { loader as cKnowledgeLoader } from './pages/Repo/Cknowledge';
 import { loader as operationLoader } from './pages/Repo/Operation';
+import { loader as datasetLoader } from './pages/Repo/Dataset';
+import { loader as singleDatasetLoader } from './pages/Repo/SingleDataset';
 //
 import { action as landingAction } from './pages/Landing';
 // import { action as loginAction } from './pages/Login';
@@ -164,6 +168,18 @@ const router = createBrowserRouter([
         path: 'operation',
         element: <Operation />,
         loader: operationLoader,
+        errorElement: ErrorElement,
+      },
+      {
+        path: 'dataset',
+        element: <Dataset />,
+        loader: datasetLoader,
+        errorElement: ErrorElement,
+      },
+      {
+        path: 'dataset/:id',
+        element: <SingleDataset />,
+        loader: singleDatasetLoader,
         errorElement: ErrorElement,
       },
     ],

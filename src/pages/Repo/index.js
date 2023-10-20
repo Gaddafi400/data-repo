@@ -4,4 +4,6 @@ export { default as SharedLayout } from './SharedLayout';
 export { default as Variable } from './Variable';
 export { default as Categories } from './Categories';
 export { default as Cknowledge } from './Cknowledge';
+export { default as Dataset } from './Dataset';
+export { default as SingleDataset } from './SingleDataset';
 export { default as Operation } from './Operation';

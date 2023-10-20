@@ -80,9 +80,9 @@ export const extractLabelsAndData = (chartLabel, chartData, label) => {
     datasets: [
       {
         label: `${label}`,
-        data: data.slice(0, 12),
-        backgroundColor: backgroundColors.slice(0, 12),
-        borderColor: 'rgba(75, 192, 192, 1)',
+        data: data,
+        backgroundColor: backgroundColors,
+        borderColor: '#21213e',
         borderWidth: 1,
       },
     ],

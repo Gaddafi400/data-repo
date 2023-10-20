@@ -1,44 +1,37 @@
-import { useState } from 'react';
 import PropTypes from 'prop-types';
-import { FaTrash, FaEdit } from 'react-icons/fa';
 
+import { useNavigate, redirect } from 'react-router-dom';
+import { useState } from 'react';
+
+import { FaTrash, FaEdit, FaEye } from 'react-icons/fa';
 import Pagination from '../../Dashboard/components/Pagination';
-import { CreateCategory } from '../components';
 
-const CategoriesTable = ({ items }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isEditOpen, setIsEditOpen] = useState(false);
-
-  const [editData, setEditData] = useState(false);
-  const [categories, setCategories] = useState(items);
-
+const DatasetTable = ({ items }) => {
   const [search, setSearch] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const itemsPerPage = 10;
   const totalItems = items.length;
   const [currentPage, setCurrentPage] = useState(1);
+  const navigate = useNavigate();
+  const [datasets, setDatasets] = useState(items);
 
   const openCloseModal = () => {
     setIsModalOpen(!isModalOpen);
   };
 
-  const openCloseEditModal = () => {
-    setIsEditOpen(!isEditOpen);
-  };
+  // const onCommodityCreated = (newDataset) => {
+  //   setDatasets([...datasets, newDataset]);
+  // };
 
-  const onCategoryCreated = (newCategories) => {
-    setCategories([...categories, newCategories]);
-  };
-
-  const filteredCategories = categories.filter((item) =>
+  // Filter items based on the search input
+  const filteredDataset = datasets.filter((item) =>
     item.name.toLowerCase().includes(search.toLowerCase())
   );
 
+  // Calculate the index of the first and last item to display on the current page
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredCategories.slice(
-    indexOfFirstItem,
-    indexOfLastItem
-  );
+  const currentItems = filteredDataset.slice(indexOfFirstItem, indexOfLastItem);
 
   // Function to handle page change
   const handlePageChange = (pageNumber) => {
@@ -49,31 +42,21 @@ const CategoriesTable = ({ items }) => {
 
   // Generate page numbers for pagination
   const pageNumbers = [];
-  for (
-    let i = 1;
-    i <= Math.ceil(filteredCategories.length / itemsPerPage);
-    i++
-  ) {
+  for (let i = 1; i <= Math.ceil(filteredDataset.length / itemsPerPage); i++) {
     pageNumbers.push(i);
   }
 
-  if (isModalOpen) {
-    return (
-      <CreateCategory onClose={openCloseModal} onCategoryCreated={onCategoryCreated} />
-    );
-  }
-
-  // if (isEditOpen) {
-  //   return <EditTown onClose={openCloseEditModal} initialData={editData} />;
+  // if (isModalOpen) {
+  //   return (
+  //     <CreateCommodity
+  //       onCommodityCreated={onCommodityCreated}
+  //       onClose={openCloseModal}
+  //     />
+  //   );
   // }
-  // handle edit
-  // const handleEdit = (item) => {
-  //   setEditData(item);
-  //   openCloseEditModal();
-  // };
 
   return (
-    <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-4 mb-4">
+    <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-5">
       <div className="pb-4 bg-white dark:bg-gray-900 flex justify-between items-center px-4 mt-2">
         <div>
           <label htmlFor="table-search" className="sr-only">
@@ -113,7 +96,7 @@ const CategoriesTable = ({ items }) => {
           type="button"
           onClick={() => openCloseModal()}
         >
-          Create Category
+          Create variable
         </button>
       </div>
 
@@ -125,7 +108,7 @@ const CategoriesTable = ({ items }) => {
                 <input
                   id="checkbox-all-search"
                   type="checkbox"
-                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  className="w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500"
                 />
                 <label htmlFor="checkbox-all-search" className="sr-only">
                   checkbox
@@ -133,10 +116,13 @@ const CategoriesTable = ({ items }) => {
               </div>
             </th>
             <th scope="col" className="px-6 py-3">
-              Name
+              name
             </th>
             <th scope="col" className="px-6 py-3">
-              number Of Subcategories
+              Variable
+            </th>
+            <th scope="col" className="px-6 py-3">
+              category
             </th>
             <th scope="col" className="px-6 py-3">
               Actions
@@ -162,7 +148,7 @@ const CategoriesTable = ({ items }) => {
                   <input
                     id={`checkbox-table-search-${index + 1}`}
                     type="checkbox"
-                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                    className="w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500"
                   />
                   <label
                     htmlFor={`checkbox-table-search-${index + 1}`}
@@ -178,7 +164,9 @@ const CategoriesTable = ({ items }) => {
               >
                 {item.name}
               </th>
-              <td className="px-6 py-4">{item.numberOfSubcategories}</td>
+
+              <td className="px-6 py-4">{item.variables}</td>
+              <td className="px-6 py-4">{item.category}</td>
 
               <td className="px-6 py-4 flex">
                 <button
@@ -187,7 +175,16 @@ const CategoriesTable = ({ items }) => {
                 >
                   <FaEdit className="mr-1" /> Edit
                 </button>
-
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const targetUrl = `/repo/dataset/${item?.id}`;
+                    navigate(targetUrl);
+                  }}
+                  className="font-medium hover:underline flex items-center mr-3"
+                >
+                  <FaEye className="mr-1" /> View
+                </button>
                 <button className="font-medium hover:underline flex items-center">
                   <FaTrash className="mr-1 text-red-600" /> Delete
                 </button>
@@ -209,8 +206,8 @@ const CategoriesTable = ({ items }) => {
   );
 };
 
-CategoriesTable.propTypes = {
+DatasetTable.propTypes = {
   items: PropTypes.array,
 };
 
-export default CategoriesTable;
+export default DatasetTable;

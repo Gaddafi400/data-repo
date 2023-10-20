@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import { FaTrash, FaEdit } from 'react-icons/fa';
 import Pagination from '../../Dashboard/components/Pagination';
+import { CreateCknowledge } from '../components';
 
 const CknowledgeTable = ({ items }) => {
   const [search, setSearch] = useState('');
@@ -18,9 +19,9 @@ const CknowledgeTable = ({ items }) => {
     setIsModalOpen(!isModalOpen);
   };
 
-  // const onCommodityCreated = (newVariable) => {
-  //   SetCKnowledge([...cKnowledge, newVariable]);
-  // };
+  const onCknowledgeCreated = (newCknowledge) => {
+    SetCKnowledge([...cKnowledge, newCknowledge]);
+  };
 
   // Filter items based on the search input
   const filteredCKnowledge = cKnowledge.filter((item) =>
@@ -52,14 +53,14 @@ const CknowledgeTable = ({ items }) => {
     pageNumbers.push(i);
   }
 
-  // if (isModalOpen) {
-  //   return (
-  //     <CreateCommodity
-  //       onCommodityCreated={onCommodityCreated}
-  //       onClose={openCloseModal}
-  //     />
-  //   );
-  // }
+  if (isModalOpen) {
+    return (
+      <CreateCknowledge
+        onCknowledgeCreated={onCknowledgeCreated}
+        onClose={openCloseModal}
+      />
+    );
+  }
 
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-5">

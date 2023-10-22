@@ -76,7 +76,7 @@ export const extractLabelsAndData = (chartLabel, chartData, label) => {
   }
 
   const cData = {
-    labels: labels.slice(0, 12),
+    labels: labels,
     datasets: [
       {
         label: `${label}`,
@@ -92,7 +92,6 @@ export const extractLabelsAndData = (chartLabel, chartData, label) => {
 };
 
 // transform data
-
 const convertToNumber = (value) => (value ? 1 : 0);
 
 export const transformData = (originalData) => ({

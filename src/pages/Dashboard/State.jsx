@@ -26,7 +26,7 @@ const State = () => {
   const { state } = useLoaderData();
 
   return (
-    <div className="align-element">
+    <div className="admin-container container-with-sidebar">
       <StateTable items={state} />
     </div>
   );

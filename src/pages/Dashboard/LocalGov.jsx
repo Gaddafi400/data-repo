@@ -24,7 +24,7 @@ export const loader = async () => {
 const LocalGov = () => {
   const { localGov } = useLoaderData();
 
-  return <div>LocalGov</div>;
+  return <div className="admin-container container-with-sidebar">LocalGov</div>;
 };
 
 export default LocalGov;

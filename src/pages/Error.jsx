@@ -1,9 +1,10 @@
-import { useRouteError, Link } from 'react-router-dom';
+import { useRouteError, Link, } from 'react-router-dom';
 import notFound from '../assets/404.png';
 
 const Error = () => {
   const error = useRouteError();
-  console.log(error, '-------------');
+ 
+ 
 
   if (error.status === 404) {
     return (

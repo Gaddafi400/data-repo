@@ -21,7 +21,7 @@ const Variable = () => {
   const { variables } = useLoaderData();
 
   return (
-    <div className="align-element">
+    <div className="admin-container container-with-sidebar">
       <VariableTable items={variables} />
     </div>
   );

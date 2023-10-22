@@ -33,7 +33,7 @@ const Login = () => {
       navigate('/redirect');
     } catch (error) {
       const errorMessage = flattenErrorMessage(error.response.data?.data);
-      toast.error(errorMessage || 'Failed to create town. Please try again.');
+      toast.error(errorMessage || 'Login failed. Please try again.');
     } finally {
       setIsSubmitting(false);
     }

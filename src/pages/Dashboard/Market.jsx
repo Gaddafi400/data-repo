@@ -25,7 +25,7 @@ const Market = () => {
   const { markets } = useLoaderData();
 
   return (
-    <div className="align-element">
+    <div className="admin-container container-with-sidebar">
       <MarketTable items={markets} />
     </div>
   );

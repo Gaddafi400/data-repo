@@ -23,7 +23,7 @@ const Cknowledge = () => {
   const { cKnowledge } = useLoaderData();
 
   return (
-    <div className="align-element">
+    <div className="admin-container container-with-sidebar">
       <CknowledgeTable items={cKnowledge} />
     </div>
   );

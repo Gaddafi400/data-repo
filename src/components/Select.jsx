@@ -45,7 +45,8 @@ const Select = ({
         {options?.map((option) => {
           return (
             <option key={option?.id} value={option.id}>
-              {option.name}
+              {/* {variable when using it for data set} */}
+              {option?.name || option?.variable}
             </option>
           );
         })}
@@ -61,7 +62,11 @@ Select.propTypes = {
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   placeholder: PropTypes.string.isRequired,
-  selected: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.number]),
+  selected: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.bool,
+    PropTypes.number,
+  ]),
 };
 
 export default Select;

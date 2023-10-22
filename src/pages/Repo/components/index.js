@@ -6,3 +6,5 @@ export { default as DatasetTable } from './DatasetTable';
 export { default as OperationTable } from './OperationTable';
 export { default as CreateCategory } from './CreateCategory';
 export { default as CreateCknowledge } from './CreateCknowledge';
+export { default as CreateDataset } from './CreateDataset';
+export { default as Upload } from './Upload';

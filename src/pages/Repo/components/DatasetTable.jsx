@@ -1,31 +1,32 @@
 import PropTypes from 'prop-types';
 
-import { useNavigate, redirect } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
 import { FaTrash, FaEdit, FaEye } from 'react-icons/fa';
 import Pagination from '../../Dashboard/components/Pagination';
+import CreateDataset from './CreateDataset';
 
 const DatasetTable = ({ items }) => {
   const [search, setSearch] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const itemsPerPage = 10;
-  const totalItems = items.length;
+  const totalItems = items?.length;
   const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
-  const [datasets, setDatasets] = useState(items);
+  const [datasets, setDataset] = useState(items);
 
   const openCloseModal = () => {
     setIsModalOpen(!isModalOpen);
   };
 
-  // const onCommodityCreated = (newDataset) => {
-  //   setDatasets([...datasets, newDataset]);
-  // };
+  const onDatasetCreated = (newDataset) => {
+    setDataset([...datasets, newDataset]);
+  };
 
   // Filter items based on the search input
   const filteredDataset = datasets.filter((item) =>
-    item.name.toLowerCase().includes(search.toLowerCase())
+    item?.name.toLowerCase().includes(search.toLowerCase())
   );
 
   // Calculate the index of the first and last item to display on the current page
@@ -46,19 +47,19 @@ const DatasetTable = ({ items }) => {
     pageNumbers.push(i);
   }
 
-  // if (isModalOpen) {
-  //   return (
-  //     <CreateCommodity
-  //       onCommodityCreated={onCommodityCreated}
-  //       onClose={openCloseModal}
-  //     />
-  //   );
-  // }
+  if (isModalOpen) {
+    return (
+      <CreateDataset
+        onDatasetCreated={onDatasetCreated}
+        onClose={openCloseModal}
+      />
+    );
+  }
 
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-5">
-      <div className="pb-4 bg-white dark:bg-gray-900 flex justify-between items-center px-4 mt-2">
-        <div>
+      <div className="pb-4 bg-white dark:bg-gray-900 flex flex-col sm:flex-row justify-between items-center px-4 mt-2">
+        <div className="mb-2 sm:mb-0 sm:mr-2">
           <label htmlFor="table-search" className="sr-only">
             Search
           </label>
@@ -92,11 +93,11 @@ const DatasetTable = ({ items }) => {
         </div>
 
         <button
-          className="block text-white bg-primary-400 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+          className="block w-full sm:w-auto text-white bg-primary-400 hover:bg-primary-700 rounded-lg text-sm px-5 py-2.5 text-center"
           type="button"
           onClick={() => openCloseModal()}
         >
-          Create variable
+          Create dataset
         </button>
       </div>
 

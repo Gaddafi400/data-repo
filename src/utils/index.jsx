@@ -91,4 +91,23 @@ export const extractLabelsAndData = (chartLabel, chartData, label) => {
   return cData;
 };
 
- 
+// transform data
+
+const convertToNumber = (value) => (value ? 1 : 0);
+
+export const transformData = (originalData) => ({
+  category: originalData.category,
+  name: originalData.name,
+  description: originalData.description,
+  variables: originalData.variables.map((variable) => {
+    const variableOptions = variable.variableOptions.reduce((acc, option) => {
+      acc[option.name] = convertToNumber(option.selected);
+      return acc;
+    }, {});
+
+    return {
+      variable: variable.variable,
+      ...variableOptions,
+    };
+  }),
+});

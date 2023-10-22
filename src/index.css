@@ -129,6 +129,7 @@
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 1rem;
+  cursor: pointer;
 }
 
 .category-button {
@@ -137,6 +138,7 @@
   color: #fff;
   border-radius: 8px;
   width: 130px;
+  cursor: pointer;
 }
 
 /* Hero large screen  */
@@ -1080,23 +1082,6 @@
   width: 15%;
 }
 
-/* Login */
-
-/* .login {
-  max-width: 700px;
-  height: 100vh;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.login form {
-  width: 100%;
-  padding: 2rem;
-} */
-
 /* Contact us */
 
 .contact-us {
@@ -1132,4 +1117,29 @@
   max-width: 600px;
   background: #fff;
   margin: 6em auto;
+}
+
+/* Admin */
+.admin-container {
+  position: relative;
+  width: calc(100% - 250px);
+  margin: 0 auto;
+}
+
+.container-with-sidebar {
+  margin-left: 250px;
+  padding: 2rem;
+  /* border: 1px solid red; */
+}
+
+@media (max-width: 640px) {
+  .admin-container {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .container-with-sidebar {
+    margin-left: auto;
+    padding: 1rem;
+  }
 }

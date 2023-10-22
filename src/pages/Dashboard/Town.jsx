@@ -26,7 +26,7 @@ const Town = () => {
   const { towns } = useLoaderData();
 
   return (
-    <div className="align-element">
+    <div className="admin-container container-with-sidebar">
       <TownTable items={towns} />
     </div>
   );

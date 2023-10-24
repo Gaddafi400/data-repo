@@ -1,7 +1,7 @@
-import PropTypes from 'prop-types';
-import { Pie } from 'react-chartjs-2';
-import { Chart, registerables } from 'chart.js';
-Chart.register(...registerables);
+// import PropTypes from 'prop-types';
+// import { Pie } from 'react-chartjs-2';
+// import { Chart, registerables } from 'chart.js';
+// Chart.register(...registerables);
 
 // const data = {
 //   labels: ['January', 'February', 'March', 'April', 'May'],
@@ -22,12 +22,132 @@ Chart.register(...registerables);
 //   ],
 // };
 
-const PieChart = ({ cData }) => {
-  return <Pie data={cData} />;
+// const PieChart = ({ cData }) => {
+//   return <Pie data={cData} />;
+// };
+
+// PieChart.propTypes = {
+//   cData: PropTypes.object,
+// };
+
+// export default PieChart;
+
+// import Highcharts from 'highcharts';
+// import HighchartsReact from 'highcharts-react-official';
+
+// const options = {
+//   title: {
+//     text: 'My chart',
+//   },
+//   series: [
+//     {
+//       data: [1, 2, 3],
+//     },
+//   ],
+// };
+
+// const PieChart = () => (
+//   <div>
+//     <HighchartsReact highcharts={Highcharts} options={options} />
+//   </div>
+// );
+
+// export default PieChart;
+
+import PropTypes from 'prop-types';
+import Highcharts from 'highcharts';
+import HighchartsReact from 'highcharts-react-official';
+import exportingInit from 'highcharts/modules/exporting';
+import offlineExportingInit from 'highcharts/modules/offline-exporting';
+
+// Initialize the exporting module
+exportingInit(Highcharts);
+offlineExportingInit(Highcharts);
+
+const PieChart = ({ hData, label }) => {
+  const options = {
+    chart: {
+      type: 'pie',
+      backgroundColor: null,
+      plotBackgroundColor: null,
+      plotBorderWidth: null,
+      plotShadow: false,
+      width: 1000, // Set the width of the chart (in pixels)
+      height: 650, // Set the height of the chart (in pixels)
+      borderWidth: 1,
+      borderColor: 'gray',
+    },
+    title: {
+      text: label,
+      align: 'center',
+      style: {
+        color: 'black',
+        fontSize: '18px',
+        fontFamily: 'Arial, sans-serif',
+      },
+    },
+    tooltip: {
+      pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>',
+      style: {
+        color: 'black',
+        fontSize: '14px',
+      },
+    },
+    plotOptions: {
+      pie: {
+        allowPointSelect: true,
+        cursor: 'pointer',
+        dataLabels: {
+          enabled: true,
+          format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+          style: {
+            color: 'black',
+            fontSize: '12px',
+          },
+        },
+        innerSize: '60%', // Adjust the inner size as needed
+      },
+    },
+    exporting: {
+      buttons: {
+        contextButton: {
+          menuItems: ['downloadPNG', 'downloadJPEG', 'downloadSVG'],
+        },
+      },
+    },
+    series: [
+      {
+        name: 'Brands',
+        colorByPoint: true,
+        data: hData,
+      },
+    ],
+    legend: {
+      itemStyle: {
+        color: 'black',
+        fontSize: '14px',
+      },
+    },
+    colors: [
+      '#0077B6',
+      '#00A88E',
+      '#005465',
+      '#33FF33',
+      '#FF6633',
+      '#ff33a081',
+    ],
+  };
+
+  return (
+    <div className="">
+      <HighchartsReact highcharts={Highcharts} options={options} />
+    </div>
+  );
 };
 
 PieChart.propTypes = {
-  cData: PropTypes.object,
+  hData: PropTypes.array,
+  label: PropTypes.string,
 };
 
 export default PieChart;

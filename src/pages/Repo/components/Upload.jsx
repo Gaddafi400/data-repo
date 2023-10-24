@@ -41,7 +41,7 @@ const Upload = ({ onClose, datasetId }) => {
         formData.append('subcategory', datasetId);
         const response = await customFetch.post(url, formData, header(token));
         toast.success('Dataset uploaded successfully!');
-        // return onClose();
+        onClose();
       } else {
         toast.error('Please select a file to upload.');
       }

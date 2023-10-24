@@ -1,6 +1,10 @@
 import { Navbar, Footer, Heading } from '../components';
 import { useLoaderData } from 'react-router-dom';
-import { customFetch, extractLabelsAndData } from '../utils';
+import {
+  customFetch,
+  extractLabelsAndData,
+  formatDataHeightChart,
+} from '../utils';
 import { useState, useEffect } from 'react';
 
 import xlsx from '../assets/xlsx.png';
@@ -10,7 +14,7 @@ import Table from '../components/Table';
 
 import BarChart from '../components/chart/BarChart';
 import PieChart from '../components/chart/PieChart';
-import LineChart from '../components/chart/LineChart';
+import AreaChart from '../components/chart/AreaChart';
 import BubbleChart from '../components/chart/BubbleChart';
 
 export const loader = async ({ params }) => {
@@ -35,7 +39,7 @@ const SingleData = () => {
 
   const cData = extractLabelsAndData(chartLabel, chartData, result?.name);
 
-  console.log('cData ✳️', cData);
+  const hData = formatDataHeightChart(chartLabel, chartData);
 
   useEffect(() => {
     const handleResize = () => {
@@ -132,13 +136,29 @@ const SingleData = () => {
               {/* Add conditionals for other components */}
 
               {selectedItem === 'Charts' && (
-                <div className="bg-white h-full p-4 rounded-lg">
+                <div className="bg-white h-full p-4 rounded-lg overflow-scroll">
                   <div className="chart-container">
                     {/* display chart here base on the button click under the container */}
-                    {chartType === 'BarChart' ? <BarChart cData={cData} /> : ''}
-                    {chartType === 'PieChart' ? <PieChart cData={cData} /> : ''}
-                    {chartType === 'LineChart' ? <LineChart cData={cData}/> : ''}
-                    {chartType === 'BubbleChart' ? <BubbleChart cData={cData}/> : ''}
+                    {chartType === 'BarChart' ? (
+                      <BarChart hData={hData} label={result?.name} />
+                    ) : (
+                      ''
+                    )}
+                    {chartType === 'PieChart' ? (
+                      <PieChart hData={hData} label={result?.name} />
+                    ) : (
+                      ''
+                    )}
+                    {chartType === 'AreaChart' ? (
+                      <AreaChart hData={hData} label={result?.name} />
+                    ) : (
+                      ''
+                    )}
+                    {chartType === 'BubbleChart' ? (
+                      <BubbleChart hData={hData} label={result?.name} />
+                    ) : (
+                      ''
+                    )}
                   </div>
 
                   <div className="flex justify-between align-items-center px-5">
@@ -156,9 +176,9 @@ const SingleData = () => {
                     </button>
                     <button
                       className="btn border-primary-500 px-6"
-                      onClick={() => setChartType('LineChart')}
+                      onClick={() => setChartType('AreaChart')}
                     >
-                      Line Chart
+                      Area Chart
                     </button>
                     <button
                       className="btn border-primary-500 px-6"

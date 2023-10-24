@@ -8,47 +8,55 @@ import offlineExportingInit from 'highcharts/modules/offline-exporting';
 exportingInit(Highcharts);
 offlineExportingInit(Highcharts);
 
-const BubbleChart = ({ hData, label }) => {
+const AreaChart = ({ hData, label }) => {
   const options = {
     chart: {
-      type: 'scatter', // Set the chart type to 'scatter'
-      backgroundColor: null,
-      width: 1000, // Set the width of the chart (in pixels)
-      height: 650, // Set the height of the chart (in pixels)
+      type: 'area', // Change the chart type to 'area'
+      backgroundColor: 'transparent',
+      width: 1000,
+      height: 720,
     },
     title: {
       text: label,
       align: 'left',
       style: {
-        color: 'black', // Set the title text color to black
+        color: 'black',
+        fontSize: '24px',
       },
     },
     xAxis: {
-      title: {
-        text: 'X-axis',
+      categories: hData.map((item) => item.name),
+      labels: {
         style: {
-          color: 'black', // Set the x-axis label color to black
+          color: 'black',
+          fontSize: '14px',
         },
+        rotation: -45,
       },
     },
     yAxis: {
       title: {
-        text: 'Y-axis',
+        text: 'Value',
         style: {
-          color: 'black', // Set the y-axis label color to black
+          color: 'black',
+          fontSize: '14px',
+        },
+      },
+      labels: {
+        style: {
+          color: 'black',
+          fontSize: '12px',
         },
       },
     },
     plotOptions: {
-      scatter: {
-        marker: {
-          radius: 10, // Adjust the marker size to control the bubble appearance
-        },
+      area: {
+        fillOpacity: 0.5, // Adjust fill opacity for the area chart
         dataLabels: {
           enabled: true,
-          format: '{point.name}',
           style: {
-            color: 'rgba(41, 41, 73, 0.7)',
+            color: 'black',
+            fontSize: '12px',
           },
         },
       },
@@ -62,9 +70,9 @@ const BubbleChart = ({ hData, label }) => {
     },
     series: [
       {
-        name: label,
-        data: hData,
-        color: 'rgba(41, 41, 73, 0.9)',
+        name: 'Values',
+        data: hData.map((item) => item.y),
+        color: 'rgba(41, 41, 73, 0.5)', 
       },
     ],
   };
@@ -76,9 +84,9 @@ const BubbleChart = ({ hData, label }) => {
   );
 };
 
-BubbleChart.propTypes = {
+AreaChart.propTypes = {
   hData: PropTypes.array,
   label: PropTypes.string,
 };
 
-export default BubbleChart;
+export default AreaChart;

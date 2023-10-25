@@ -1,9 +1,16 @@
 import { useLoaderData } from 'react-router-dom';
 import { useState } from 'react';
+import { AiOutlinePlus } from 'react-icons/ai';
+import { FaTrash } from 'react-icons/fa';
 import { toast } from 'react-toastify';
-import { customFetch, header, getUserFromLocalStorage } from '../../utils';
+import {
+  customFetch,
+  header,
+  getUserFromLocalStorage,
+  flattenErrorMessage,
+} from '../../utils';
 import Table from '../../components/Table';
-import { Upload } from './components';
+import { Upload, AddOperation, AddVariable } from './components';
 
 let datasetId = '';
 
@@ -24,10 +31,14 @@ export const loader = async ({ params }) => {
 const SingleDataset = () => {
   const { singleRecord } = useLoaderData();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAddOperation, setIsAddOperation] = useState(false);
+  const [isAddVariable, setIsVariable] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
 
   const { name, variables, category, description, dataRecord, operations } =
     singleRecord;
+
+  const [variableState, setVariableState] = useState(variables);
 
   const tableData = {
     variables,
@@ -84,8 +95,43 @@ const SingleDataset = () => {
     setIsModalOpen(!isModalOpen);
   };
 
+  const handleAddOperation = (e) => {
+    e.preventDefault();
+    setIsAddOperation(!isAddOperation);
+  };
+
+  const handleAddVariable = (e) => {
+    e.preventDefault();
+    setIsVariable(!isAddVariable);
+  };
+
+  const handleDeleteVariable = async (e, variableId) => {
+    e.preventDefault();
+    const token = getUserFromLocalStorage().token;
+    const url = `admin/subcategories/${variableId}/variable`;
+
+    try {
+      const response = await customFetch.delete(url, header(token));
+      const responseData = response.data?.data;
+      toast.success('Variable deleted successfully!');
+      return { category: responseData };
+    } catch (error) {
+      const errorMessage = flattenErrorMessage(error.response.data?.data);
+      toast.error(errorMessage || 'Failed to variable. Please try again.');
+      return error;
+    }
+  };
+
   if (isModalOpen) {
     return <Upload onClose={openCloseModal} datasetId={datasetId} />;
+  }
+
+  if (isAddOperation) {
+    return <AddOperation onClose={handleAddOperation} />;
+  }
+
+  if (isAddVariable) {
+    return <AddVariable onClose={handleAddVariable} datasetId={datasetId} />;
   }
 
   return (
@@ -109,30 +155,117 @@ const SingleDataset = () => {
             {isDownloading ? 'Downloading...' : 'Download template'}
           </button>
         </div>
-
         <h1 className="text-3xl font-bold mb-4">{name}</h1>
         <p className="text-lg text-gray-700 mb-4">{category}</p>
         <p className="text-gray-600 mb-4">{description}</p>
 
         {/* Variables */}
-        <h2 className="text-xl font-semibold mb-2">Variables</h2>
-        <ul className="list-disc pl-6 mb-4">
-          {variables.map((variable) => (
-            <li key={variable.id}>{variable.variable}</li>
-          ))}
-        </ul>
+        <div className="flex items-center justify-between gap-4">
+          <h2 className="text-xl font-semibold mb-3 mt-3 sm:text-2xl md:text-xl lg:text-xl xl:text-xl 2xl:text-xl">
+            Variables
+          </h2>
+          <div
+            className=" text-black rounded-lg h-[28px] px-2   flex items-center border  border-black cursor-pointer  hover:bg-primary-400 hover:text-white"
+            onClick={handleAddVariable}
+          >
+            <AiOutlinePlus
+              className="mr-2 bg-primary-500 text-white rounded-full"
+              style={{ fontSize: '20px' }}
+            />{' '}
+            <span className="text-sm">Add variable</span>
+          </div>
+        </div>
+
+        <div className="border border-primary-200 rounded-lg p-1 mb-12">
+          <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 ">
+            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <tr>
+                <th scope="col" className="px-6 py-3  border-gray-300">
+                  Variables
+                </th>
+                <th scope="col" className="px-6 py-3 border-gray-300">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {variableState.map((variable) => (
+                <tr key={variable.id} className="border-b border-gray-300">
+                  <td className="px-6 py-4">{variable.variable}</td>
+                  <td className="px-6 py-4 flex items-center">
+                    <span
+                      className="mr-2 text-red-600 cursor-pointer"
+                      onClick={(e) => handleDeleteVariable(e, variable.id)}
+                    >
+                      <FaTrash />
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* End Variables */}
 
         {/* Operations */}
-        <h2 className="text-xl font-semibold mb-2">Operations</h2>
-        <ul className="list-disc pl-6 mb-4">
-          {operations.map((operation) => (
-            <li key={operation.id}>{operation.operation}</li>
-          ))}
-        </ul>
+        <div className="flex items-center justify-between gap-4">
+          <h2 className="text-xl font-semibold mb-3 mt-3 sm:text-2xl md:text-xl lg:text-xl xl:text-xl 2xl:text-xl">
+            Operations
+          </h2>
+          <div
+            className=" text-black rounded-lg h-[28px] px-2   flex items-center border  border-black cursor-pointer  hover:bg-primary-400 hover:text-white"
+            onClick={handleAddOperation}
+          >
+            <AiOutlinePlus
+              className="mr-2 bg-primary-500 text-white rounded-full hover:bg-primary-700"
+              style={{ fontSize: '20px' }}
+            />{' '}
+            <span className="text-sm"> Add operation</span>
+          </div>
+        </div>
+
+        <div className="border border-primary-200 rounded-lg p-1 mb-12">
+          <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 overflow-y-auto">
+            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <tr>
+                <th scope="col" className="px-6 py-3 border-gray-300">
+                  Variables
+                </th>
+                <th scope="col" className="px-6 py-3  border-gray-300">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {operations.map((operation) => (
+                <tr
+                  key={operation.id}
+                  className="bg-white border-b dark:bg-gray-900 dark:border-gray-700"
+                >
+                  <td className="px-6 py-4">{operation.operation}</td>
+                  <td className="px-6 py-4 flex items-center">
+                    <span
+                      className="mr-2 text-red-600 cursor-pointer"
+                      // onClick={() => handleDeleteVariable(variable.id)}
+                    >
+                      <FaTrash />
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* End operations */}
 
         {/* Data Records */}
+        <h2 className="text-xl font-semibold mb-3 mt-3 sm:text-2xl md:text-xl lg:text-xl xl:text-xl 2xl:text-xl">
+          Dataset Records
+        </h2>
         <div
-          className="border border-primary-500 rounded-lg"
+          className="border border-primary-200 rounded-lg"
           style={{ maxHeight: '500px', overflowX: 'auto' }}
         >
           <Table data={tableData} />

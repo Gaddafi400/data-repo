@@ -46,7 +46,7 @@ const Select = ({
           return (
             <option key={option?.id} value={option.id}>
               {/* {variable when using it for data set} */}
-              {option?.name || option?.variable}
+              {option?.name || option?.variable || option?.operation}
             </option>
           );
         })}

@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { toast } from 'react-toastify';
 
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
@@ -6,15 +7,22 @@ import { useState } from 'react';
 import { FaTrash, FaEdit, FaEye } from 'react-icons/fa';
 import Pagination from '../../Dashboard/components/Pagination';
 import CreateDataset from './CreateDataset';
+import {
+  customFetch,
+  getUserFromLocalStorage,
+  header,
+  flattenErrorMessage,
+} from '../../../utils';
 
 const DatasetTable = ({ items }) => {
   const [search, setSearch] = useState('');
+  const [datasets, setDataset] = useState(items);
+  const [deleting, setDeleting] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const itemsPerPage = 10;
-  const totalItems = items?.length;
+  const totalItems = datasets?.length;
   const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
-  const [datasets, setDataset] = useState(items);
 
   const openCloseModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -38,6 +46,39 @@ const DatasetTable = ({ items }) => {
   const handlePageChange = (pageNumber) => {
     if (pageNumber >= 1 && pageNumber <= pageNumbers.length) {
       setCurrentPage(pageNumber);
+    }
+  };
+
+  // handle delete
+  const handleDelete = async (e, id, name) => {
+    e.preventDefault();
+    const url = `/admin/subcategories/${id}`;
+    const token = getUserFromLocalStorage().token;
+
+    try {
+      setDeleting(true);
+      const response = await customFetch.delete(url, header(token));
+      const responseData = await response.data.data;
+
+      console.log(responseData);
+
+      toast.success(`Dataset ${name} deleted successfully`);
+
+      // Remove the deleted dataset from the state
+      const updatedDatasets = datasets.filter((dataset) => dataset.id !== id);
+      setDataset(updatedDatasets);
+
+      // Check if the current page exceeds the new total number of pages to update pagination
+      if (currentPage > Math.ceil(updatedDatasets.length / itemsPerPage)) {
+        // If so, set the current page to the last page
+        setCurrentPage(Math.ceil(updatedDatasets.length / itemsPerPage));
+      }
+    } catch (error) {
+      const errorMessage = flattenErrorMessage(error.response.data?.data);
+      toast.error(errorMessage || 'Failed to Delete. Please try again.');
+      return error;
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -186,8 +227,24 @@ const DatasetTable = ({ items }) => {
                 >
                   <FaEye className="mr-1" /> View
                 </button>
-                <button className="font-medium hover:underline flex items-center">
-                  <FaTrash className="mr-1 text-red-600" /> Delete
+                <button
+                  className={`font-medium hover:underline flex items-center ${
+                    deleting ? 'text-red-600' : ''
+                  }`}
+                  onClick={(e) => handleDelete(e, item.id, item.name)}
+                  disabled={deleting}
+                >
+                  {deleting ? (
+                    'Deleting...'
+                  ) : (
+                    <FaTrash
+                      className={`mr-1 ${
+                        deleting ? 'animate-spin' : ''
+                      } text-red-600`}
+                    />
+                  )}
+
+                  {deleting ? null : 'Delete'}
                 </button>
               </td>
             </tr>

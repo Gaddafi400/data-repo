@@ -8,3 +8,5 @@ export { default as CreateCategory } from './CreateCategory';
 export { default as CreateCknowledge } from './CreateCknowledge';
 export { default as CreateDataset } from './CreateDataset';
 export { default as Upload } from './Upload';
+export { default as AddOperation } from './AddOperation';
+export { default as AddVariable } from './AddVariable';

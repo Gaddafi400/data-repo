@@ -61,4 +61,6 @@
   }
 }
 
- 
+.selected-nav {
+  background-color: #181831 !important;
+}

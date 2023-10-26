@@ -1,30 +1,24 @@
 import { useState } from 'react';
 import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import '../../Dashboard/components/Navbar.css';
 import { IconContext } from 'react-icons';
 import logo from '../../../assets/logo.png';
-import { Dropdown } from '../../../components';
 import { removeUserFromLocalStorage } from '../../../utils';
 
 const Navbar = () => {
   const [sidebar, setSidebar] = useState(true);
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const showSidebar = () => setSidebar(!sidebar);
+  const showSidebar = (e) => {
+    e.preventDefault();
+    return setSidebar(!sidebar);
+  };
 
-  console.log('showSidebar', sidebar);
-
-  const categoryClick = (e) => {
-    showSidebar();
-    if (e.target.id.toLowerCase() === 'index') {
-      navigate('/dashboard/state');
-    } else if (e.target.id.toLowerCase() === 'town') {
-      navigate('/dashboard/town');
-    } else {
-      navigate('/dashboard/default');
-    }
+  const activeLink = (path) => {
+    return location.pathname === path ? 'selected-nav' : '';
   };
 
   return (
@@ -59,7 +53,9 @@ const Navbar = () => {
         </div>
         {/* end nav */}
 
-        <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
+        {/* <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
+         */}
+        <nav className={`nav-menu p-2 ${sidebar ? 'active' : ''}`}>
           <ul className="nav-menu-items">
             {/* hide on large screen */}
             <li className="navbar-toggle">
@@ -75,24 +71,39 @@ const Navbar = () => {
             {/* display on large screen */}
             <li className="px-12 pt-2 mb-3">
               <img
-                className="bg-white admin-logo"
+                className="bg-white admin-logo cursor-pointer"
                 src={logo}
                 alt="logo"
                 size="300"
+                onClick={() => navigate('/repo')}
               />
             </li>
 
             <button
+              style={{ paddingRight: '133px' }}
+              className={`mt-2 text-white px-5 rounded-lg p-3  ${activeLink(
+                '/repo'
+              )}`}
+              onClick={() => navigate('/repo')}
+            >
+              Dashboard
+            </button>
+
+            <button
               style={{ paddingRight: '148px' }}
-              className="mt-2 text-white hover:bg-primary-700 px-5 rounded-lg p-3"
+              className={`mt-2 text-white px-5 rounded-lg p-2 ${activeLink(
+                '/repo/variable'
+              )}`}
               onClick={() => navigate('/repo/variable')}
             >
               Variables
             </button>
 
             <button
-              style={{ paddingRight: '140px' }}
-              className="mt-2 text-white hover:bg-primary-700 px-5 rounded-lg p-3"
+              style={{ paddingRight: '134px' }}
+              className={`mt-2 text-white px-5 rounded-lg p-2  ${activeLink(
+                '/repo/categories'
+              )}`}
               onClick={() => navigate('/repo/categories')}
             >
               Categories
@@ -100,7 +111,9 @@ const Navbar = () => {
 
             <button
               style={{ paddingRight: '112px' }}
-              className="mt-2 text-white hover:bg-primary-700 px-5 rounded-lg p-3"
+              className={`mt-2 text-white px-5 rounded-lg p-2 ${activeLink(
+                '/repo/common-knowledge'
+              )}`}
               onClick={() => navigate('/repo/common-knowledge')}
             >
               C-Knowledge
@@ -108,7 +121,9 @@ const Navbar = () => {
 
             <button
               style={{ paddingRight: '150px' }}
-              className="mt-2 text-white hover:bg-primary-700 px-5 rounded-lg p-3"
+              className={`mt-2 text-white px-5 rounded-lg p-2 ${activeLink(
+                '/repo/dataset'
+              )}`}
               onClick={() => navigate('/repo/dataset')}
             >
               Data Set

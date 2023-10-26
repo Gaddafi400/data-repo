@@ -40,7 +40,8 @@ import {
 // loaders
 import { loader as homeLayoutLoader } from './pages/HomeLayout';
 import { loader as singleDataLoader } from './pages/SingleData';
-//
+// market finder
+import { loader as dashboardLoader } from './pages/Dashboard/Dashboard';
 import { loader as stateLoader } from './pages/Dashboard/State';
 import { loader as localGovLoader } from './pages/Dashboard/LocalGov';
 import { loader as townLoader } from './pages/Dashboard/Town';
@@ -53,6 +54,7 @@ import { loader as cKnowledgeLoader } from './pages/Repo/Cknowledge';
 import { loader as operationLoader } from './pages/Repo/Operation';
 import { loader as datasetLoader } from './pages/Repo/Dataset';
 import { loader as singleDatasetLoader } from './pages/Repo/SingleDataset';
+import { loader as repoDashboardLoader } from './pages/Repo/Dashboard';
 //
 import { action as landingAction } from './pages/Landing';
 // import { action as loginAction } from './pages/Login';
@@ -98,6 +100,7 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Dashboard />,
+        loader: dashboardLoader,
         errorElement: ErrorElement,
       },
       {
@@ -144,6 +147,7 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <RepoDashboard />,
+        loader: repoDashboardLoader,
         errorElement: ErrorElement,
       },
       {

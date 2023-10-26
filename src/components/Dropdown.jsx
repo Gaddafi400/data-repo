@@ -12,7 +12,9 @@ const Dropdown = ({ onClick, label, items }) => {
     <li>
       <button
         type="button"
-        className={`flex items-center w-full p-2 text-base text-white transition duration-75 rounded-lg group nav-link`}
+        className={`flex items-center w-full p-2 text-base text-white transition duration-75 rounded-lg group nav-link ${
+          isDropdownOpen ? 'selected-nav' : ''
+        }`}
         aria-controls="dropdown-example"
         onClick={toggleDropdown}
       >

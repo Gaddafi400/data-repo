@@ -7,6 +7,8 @@ import { useState } from 'react';
 import { FaTrash, FaEdit, FaEye } from 'react-icons/fa';
 import Pagination from '../../Dashboard/components/Pagination';
 import CreateDataset from './CreateDataset';
+import { Confirm } from '../../Dashboard/components';
+import EditDataset from './EditDataset';
 import {
   customFetch,
   getUserFromLocalStorage,
@@ -18,7 +20,13 @@ const DatasetTable = ({ items }) => {
   const [search, setSearch] = useState('');
   const [datasets, setDataset] = useState(items);
   const [deleting, setDeleting] = useState(false);
+
+  const [editData, setEditData] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [deletingItemId, setDeletingItemId] = useState(null);
+
   const itemsPerPage = 10;
   const totalItems = datasets?.length;
   const [currentPage, setCurrentPage] = useState(1);
@@ -50,35 +58,37 @@ const DatasetTable = ({ items }) => {
   };
 
   // handle delete
-  const handleDelete = async (e, id, name) => {
-    e.preventDefault();
-    const url = `/admin/subcategories/${id}`;
-    const token = getUserFromLocalStorage().token;
+  const handleDelete = async () => {
+    
+    if (deletingItemId) {
+      const url = `/admin/subcategories/${id}`;
+      const token = getUserFromLocalStorage().token;
 
-    try {
-      setDeleting(true);
-      const response = await customFetch.delete(url, header(token));
-      const responseData = await response.data.data;
+      try {
+        setDeleting(true);
+        const response = await customFetch.delete(url, header(token));
+        const responseData = await response.data.data;
 
-      console.log(responseData);
+        console.log(responseData);
 
-      toast.success(`Dataset ${name} deleted successfully`);
+        toast.success(`Dataset ${name} deleted successfully`);
 
-      // Remove the deleted dataset from the state
-      const updatedDatasets = datasets.filter((dataset) => dataset.id !== id);
-      setDataset(updatedDatasets);
+        // Remove the deleted dataset from the state
+        const updatedDatasets = datasets.filter((dataset) => dataset.id !== id);
+        setDataset(updatedDatasets);
 
-      // Check if the current page exceeds the new total number of pages to update pagination
-      if (currentPage > Math.ceil(updatedDatasets.length / itemsPerPage)) {
-        // If so, set the current page to the last page
-        setCurrentPage(Math.ceil(updatedDatasets.length / itemsPerPage));
+        // Check if the current page exceeds the new total number of pages to update pagination
+        if (currentPage > Math.ceil(updatedDatasets.length / itemsPerPage)) {
+          // If so, set the current page to the last page
+          setCurrentPage(Math.ceil(updatedDatasets.length / itemsPerPage));
+        }
+      } catch (error) {
+        const errorMessage = flattenErrorMessage(error.response.data?.data);
+        toast.error(errorMessage || 'Failed to Delete. Please try again.');
+        return error;
+      } finally {
+        setDeleting(false);
       }
-    } catch (error) {
-      const errorMessage = flattenErrorMessage(error.response.data?.data);
-      toast.error(errorMessage || 'Failed to Delete. Please try again.');
-      return error;
-    } finally {
-      setDeleting(false);
     }
   };
 
@@ -88,11 +98,40 @@ const DatasetTable = ({ items }) => {
     pageNumbers.push(i);
   }
 
+  // handle edits
+  const openCloseEditModal = () => {
+    setIsEditOpen(!isEditOpen);
+  };
+
+  const handleEdit = (item) => {
+    setEditData(item);
+    openCloseEditModal();
+  };
+
+  const handleConfirmDelete = (e) => {
+    e.preventDefault();
+    setConfirmDelete(!confirmDelete);
+  };
+
   if (isModalOpen) {
     return (
       <CreateDataset
         onDatasetCreated={onDatasetCreated}
         onClose={openCloseModal}
+      />
+    );
+  }
+
+  if (isEditOpen) {
+    return <EditDataset onClose={openCloseEditModal} initialData={editData} />;
+  }
+
+  if (confirmDelete) {
+    return (
+      <Confirm
+        onClose={handleConfirmDelete}
+        message="Are you sure you want to delete this dataset?"
+        // onConfirm={handleDelete}
       />
     );
   }
@@ -212,7 +251,7 @@ const DatasetTable = ({ items }) => {
 
               <td className="px-6 py-4 flex">
                 <button
-                  // onClick={() => handleEdit(item)}
+                  onClick={() => handleEdit(item)}
                   className="font-medium hover:underline flex items-center mr-3"
                 >
                   <FaEdit className="mr-1" /> Edit
@@ -231,20 +270,15 @@ const DatasetTable = ({ items }) => {
                   className={`font-medium hover:underline flex items-center ${
                     deleting ? 'text-red-600' : ''
                   }`}
-                  onClick={(e) => handleDelete(e, item.id, item.name)}
+                  // onClick={(e) => handleDelete(e, item.id, item.name)}
+                  onClick={(e) => {
+                    handleConfirmDelete(e);
+                    setDeletingItemId(item.id);
+                  }}
                   disabled={deleting}
                 >
-                  {deleting ? (
-                    'Deleting...'
-                  ) : (
-                    <FaTrash
-                      className={`mr-1 ${
-                        deleting ? 'animate-spin' : ''
-                      } text-red-600`}
-                    />
-                  )}
-
-                  {deleting ? null : 'Delete'}
+                  <FaTrash className="mr-1  animate-spin text-red-600" />
+                  Delete
                 </button>
               </td>
             </tr>

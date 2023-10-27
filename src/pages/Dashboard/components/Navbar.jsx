@@ -128,6 +128,16 @@ const Navbar = () => {
             >
               Markets
             </button>
+
+            <button
+              style={{ paddingRight: '170px' }}
+              className={`mt-2 text-white px-5 rounded-lg p-2  ${activeLink(
+                '/dashboard/users'
+              )}`}
+              onClick={() => navigate('/dashboard/users')}
+            >
+              Users
+            </button>
           </ul>
         </nav>
       </IconContext.Provider>

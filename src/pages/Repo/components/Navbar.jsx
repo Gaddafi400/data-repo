@@ -33,14 +33,14 @@ const Navbar = () => {
           <div className="flex space-x-4">
             {/* Profile Link */}
             <Link
-              to="/profile"
+              // to="/profile"
               className="text-white bg-primary-700 hover:bg-primary-800 p-2 rounded-lg px-6"
             >
               Profile
             </Link>
 
             {/* Logout Button */}
-            <button
+            <Link
               onClick={() => {
                 removeUserFromLocalStorage();
                 navigate('/login');
@@ -48,7 +48,7 @@ const Navbar = () => {
               className="bg-red-500 text-white p-2 px-6 rounded-lg"
             >
               Logout
-            </button>
+            </Link>
           </div>
         </div>
         {/* end nav */}
@@ -110,7 +110,7 @@ const Navbar = () => {
             </button>
 
             <button
-              style={{ paddingRight: '112px' }}
+              style={{ paddingRight: '108px' }}
               className={`mt-2 text-white px-5 rounded-lg p-2 ${activeLink(
                 '/repo/common-knowledge'
               )}`}

@@ -22,6 +22,7 @@ import {
   ProtectedRoute,
   Town,
   Commodity,
+  Users,
   Market,
 } from './pages/Dashboard';
 
@@ -47,6 +48,7 @@ import { loader as localGovLoader } from './pages/Dashboard/LocalGov';
 import { loader as townLoader } from './pages/Dashboard/Town';
 import { loader as commodityLoader } from './pages/Dashboard/Commodity';
 import { loader as marketLoader } from './pages/Dashboard/Market';
+import { loader as usersLoader } from './pages/Dashboard/Users';
 // repo
 import { loader as variableLoader } from './pages/Repo/Variable';
 import { loader as categoriesLoader } from './pages/Repo/Categories';
@@ -131,6 +133,12 @@ const router = createBrowserRouter([
         path: 'market',
         element: <Market />,
         loader: marketLoader,
+        errorElement: ErrorElement,
+      },
+      {
+        path: 'users',
+        element: <Users />,
+        loader: usersLoader,
         errorElement: ErrorElement,
       },
     ],

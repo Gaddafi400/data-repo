@@ -1,25 +1,29 @@
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 import { useState } from 'react';
-import { TextInput } from '../../Dashboard/components';
+import { Select } from '../../../components';
+import TextInput from './TextInput';
 
 import {
-  customFetch,
+  customFetchMarket,
   getUserFromLocalStorage,
   header,
-  flattenErrorMessage,
 } from '../../../utils';
 
-const EditTown = ({ onClose, initialData }) => {
+const EditTown = ({ onClose, initialData, updateUser }) => {
   const initialFormState = {
     name: initialData?.name,
-    description: `${initialData?.description}`,
+    phoneNumber: initialData?.phone_number,
+    type: initialData?.type,
   };
 
   const [formData, setFormData] = useState(initialFormState);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  console.log('formData  ', initialData);
+  const [userTypes, setUserTypes] = useState([
+    { name: 'Super admin', id: 'super_admin' },
+    { name: 'Admin', id: 'admin' },
+  ]);
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;
@@ -32,23 +36,25 @@ const EditTown = ({ onClose, initialData }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    let url = '/admin/subcategories';
-    const token = getUserFromLocalStorage().token;
+    let url = '/admin/users';
 
+    const token = getUserFromLocalStorage().token;
     url = `${url}/${initialData?.id}`;
 
     try {
-      const response = await customFetch.patch(url, formData, header(token));
-      const responseData = response.data.data;
-      toast.success('Dataset updated successfully!');
-      setFormData({});
-      onClose();
-      return { dataset: responseData };
-    } catch (error) {
-      const errorMessage = flattenErrorMessage(error.response.data?.data);
-      toast.error(
-        errorMessage || 'Failed to update dateset. Please try again.'
+      const response = await customFetchMarket.patch(
+        url,
+        formData,
+        header(token)
       );
+      const responseData = response.data.data;
+      toast.success('User updated successfully!');
+      setFormData({});
+      // update user state
+      updateUser(responseData);
+      return { user: responseData };
+    } catch (error) {
+      toast.error('Failed to update user. Please try again.');
       return error;
     } finally {
       setIsSubmitting(false);
@@ -68,39 +74,38 @@ const EditTown = ({ onClose, initialData }) => {
           </button>
         </div>
         <h1 className="text-2xl font-medium  text-gray-800 dark:text-white my-4">
-          Update a dataset
+          Update user
         </h1>
 
         <div className="mb-6">
           <TextInput
-            label="Name"
+            type="text"
+            id="name"
             name="name"
+            label="Name"
             value={formData.name}
             onChange={handleFormChange}
             placeholder="Name"
           />
 
-          <div className="col-span-full mb-4">
-            <label
-              htmlFor="about"
-              className="block text-sm font-medium leading-6 text-gray-900"
-            >
-              Description
-            </label>
-            <div className="mt-2">
-              <textarea
-                id="description"
-                name="description"
-                value={formData.description}
-                onChange={handleFormChange}
-                rows="3"
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6"
-              ></textarea>
-            </div>
-            <p className="mt-3 text-sm leading-6 text-gray-600">
-              Write a few sentences about the dataset.
-            </p>
-          </div>
+          <TextInput
+            type="text"
+            label="phone Number"
+            name="phoneNumber"
+            value={formData.phoneNumber}
+            onChange={handleFormChange}
+            placeholder="Phone Number"
+          />
+
+          <Select
+            id="type"
+            name="type"
+            options={userTypes}
+            value={formData.type}
+            onChange={handleFormChange}
+            placeholder="Select user type"
+            label="User type"
+          />
         </div>
         <button
           type="submit"
@@ -120,6 +125,7 @@ const EditTown = ({ onClose, initialData }) => {
 
 EditTown.propTypes = {
   onClose: PropTypes.func,
+  updateUser: PropTypes.func,
   initialData: PropTypes.object,
 };
 

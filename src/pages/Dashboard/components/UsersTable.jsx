@@ -1,55 +1,55 @@
-import PropTypes from 'prop-types';
-import { toast } from 'react-toastify';
-
-import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { toast } from 'react-toastify';
+import PropTypes from 'prop-types';
+import { FaTrash, FaEdit } from 'react-icons/fa';
 
-import { FaTrash, FaEdit, FaEye } from 'react-icons/fa';
-import Pagination from '../../Dashboard/components/Pagination';
-import CreateDataset from './CreateDataset';
-import { Confirm } from '../../Dashboard/components';
-import EditDataset from './EditDataset';
+import Pagination from './Pagination';
+
+import CreateUser from './CreateUser';
+import EditUser from './EditUser';
+import Confirm from './Confirm';
+
 import {
-  customFetch,
+  customFetchMarket,
   getUserFromLocalStorage,
-  header,
   flattenErrorMessage,
+  header,
 } from '../../../utils';
 
-const DatasetTable = ({ items }) => {
-  const [search, setSearch] = useState('');
-  const [datasets, setDataset] = useState(items);
-  const [deleting, setDeleting] = useState(false);
-
-  const [editData, setEditData] = useState(false);
+const UsersTable = ({ usersList }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
 
+  const [editData, setEditData] = useState(false);
+  const [users, currentUsers] = useState(usersList);
+  const [deleting, setDeleting] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deletingItemId, setDeletingItemId] = useState(null);
 
+  const [search, setSearch] = useState('');
   const itemsPerPage = 10;
-  const totalItems = datasets?.length;
+  const totalItems = users.length;
   const [currentPage, setCurrentPage] = useState(1);
-  const navigate = useNavigate();
 
   const openCloseModal = () => {
     setIsModalOpen(!isModalOpen);
   };
 
-  const onDatasetCreated = (newDataset) => {
-    setDataset([...datasets, newDataset]);
+  const openCloseEditModal = () => {
+    setIsEditOpen(!isEditOpen);
   };
 
-  // Filter items based on the search input
-  const filteredDataset = datasets.filter((item) =>
-    item?.name.toLowerCase().includes(search.toLowerCase())
+  const onUserCreated = (newTown) => {
+    currentUsers([...users, newTown]);
+  };
+
+  const filteredUsers = users.filter((item) =>
+    item.name.toLowerCase().includes(search.toLowerCase())
   );
 
-  // Calculate the index of the first and last item to display on the current page
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredDataset.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = filteredUsers.slice(indexOfFirstItem, indexOfLastItem);
 
   // Function to handle page change
   const handlePageChange = (pageNumber) => {
@@ -58,58 +58,28 @@ const DatasetTable = ({ items }) => {
     }
   };
 
-  // delete method to execute on confirm delete
-  const handleDelete = async () => {
-    if (deletingItemId) {
-      const url = `/admin/subcategories/${deletingItemId}`;
-      const token = getUserFromLocalStorage().token;
-
-      try {
-        setDeleting(true);
-        const response = await customFetch.delete(url, header(token));
-        const responseData = await response.data.data;
-
-        console.log(responseData);
-
-        toast.success(`Dataset deleted successfully`);
-
-        // Remove the deleted dataset from the state
-        const updatedDatasets = datasets.filter(
-          (dataset) => dataset.id !== deletingItemId
-        );
-        setDataset(updatedDatasets);
-        setDeletingItemId(null);
-
-        // Check if the current page exceeds the new total number of pages to update pagination
-        if (currentPage > Math.ceil(updatedDatasets.length / itemsPerPage)) {
-          // If so, set the current page to the last page
-          setCurrentPage(Math.ceil(updatedDatasets.length / itemsPerPage));
-        }
-        // close the modal
-        setConfirmDelete(!confirmDelete);
-      } catch (error) {
-        const errorMessage = flattenErrorMessage(error.response.data?.data);
-        toast.error(errorMessage || 'Failed to Delete. Please try again.');
-        return error;
-      } finally {
-        setDeleting(false);
-      }
-    }
-  };
-
   // Generate page numbers for pagination
   const pageNumbers = [];
-  for (let i = 1; i <= Math.ceil(filteredDataset.length / itemsPerPage); i++) {
+  for (let i = 1; i <= Math.ceil(filteredUsers.length / itemsPerPage); i++) {
     pageNumbers.push(i);
   }
 
-  // handle edits
-  const openCloseEditModal = () => {
-    setIsEditOpen(!isEditOpen);
-  };
-
+  // handle edit
   const handleEdit = (item) => {
     setEditData(item);
+    openCloseEditModal();
+  };
+
+  // update user state on edit
+  const updateUser = (editedUser) => {
+    const userIndex = users.findIndex((user) => user.id === editedUser.id);
+
+    if (userIndex !== -1) {
+      // Create a new copy of the 'users' array with the updated user
+      const updatedUsers = [...users];
+      updatedUsers[userIndex] = editedUser;
+      currentUsers(updatedUsers);
+    }
     openCloseEditModal();
   };
 
@@ -118,34 +88,73 @@ const DatasetTable = ({ items }) => {
     setConfirmDelete(!confirmDelete);
   };
 
+  // delete user
+  const deleteUser = async () => {
+    if (deletingItemId) {
+      let url = `/admin/users/${deletingItemId}`;
+      const token = getUserFromLocalStorage().token;
+
+      try {
+        setDeleting(true);
+        const response = await customFetchMarket.delete(url, header(token));
+        const responseData = response.data.data;
+        toast.success('User deleted successfully!');
+
+        // Filter out the user with the specified ID from the 'users' state
+        const updatedUsers = users.filter((user) => user.id !== deletingItemId);
+        currentUsers(updatedUsers);
+        setDeletingItemId(null);
+
+        // Check if the current page exceeds the new total number of pages to update pagination
+        if (currentPage > Math.ceil(updatedUsers.length / itemsPerPage)) {
+          // If so, set the current page to the last page
+          setCurrentPage(Math.ceil(updatedUsers.length / itemsPerPage));
+        }
+        // close the modal
+        setConfirmDelete(!confirmDelete);
+
+        return { user: responseData };
+      } catch (error) {
+        const errorMessage = flattenErrorMessage(error.response.data?.data);
+        toast.error(errorMessage || 'Failed to delete user. Please try again.');
+        return error;
+      } finally {
+        setDeleting(false);
+      }
+    }
+  };
+
   if (isModalOpen) {
     return (
-      <CreateDataset
-        onDatasetCreated={onDatasetCreated}
-        onClose={openCloseModal}
-      />
+      <CreateUser onClose={openCloseModal} onUserCreated={onUserCreated} />
     );
   }
 
   if (isEditOpen) {
-    return <EditDataset onClose={openCloseEditModal} initialData={editData} />;
+    return (
+      <EditUser
+        onClose={openCloseEditModal}
+        initialData={editData}
+        updateUser={updateUser}
+      />
+    );
   }
 
   if (confirmDelete) {
     return (
       <Confirm
         onClose={handleConfirmDelete}
-        message="Are you sure you want to delete this dataset?"
-        onConfirm={handleDelete}
+        message="Are you sure you want to delete this user?"
+        onConfirm={deleteUser}
         deleting={deleting}
       />
     );
   }
 
   return (
-    <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-5">
-      <div className="pb-4 bg-white dark:bg-gray-900 flex flex-col sm:flex-row justify-between items-center px-4 mt-2">
-        <div className="mb-2 sm:mb-0 sm:mr-2">
+    <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-4 mb-4">
+      <div className="pb-4 bg-white dark:bg-gray-900 flex justify-between items-center px-4 mt-2">
+        <div>
           <label htmlFor="table-search" className="sr-only">
             Search
           </label>
@@ -179,11 +188,11 @@ const DatasetTable = ({ items }) => {
         </div>
 
         <button
-          className="block w-full sm:w-auto text-white bg-primary-400 hover:bg-primary-700 rounded-lg text-sm px-5 py-2.5 text-center"
+          className="block text-white bg-primary-400 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
           type="button"
           onClick={() => openCloseModal()}
         >
-          Create dataset
+          Create Users
         </button>
       </div>
 
@@ -195,7 +204,7 @@ const DatasetTable = ({ items }) => {
                 <input
                   id="checkbox-all-search"
                   type="checkbox"
-                  className="w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500"
+                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                 />
                 <label htmlFor="checkbox-all-search" className="sr-only">
                   checkbox
@@ -203,14 +212,15 @@ const DatasetTable = ({ items }) => {
               </div>
             </th>
             <th scope="col" className="px-6 py-3">
-              name
+              Name
             </th>
             <th scope="col" className="px-6 py-3">
-              Variable
+              Email
             </th>
             <th scope="col" className="px-6 py-3">
-              category
+              Phone Number
             </th>
+
             <th scope="col" className="px-6 py-3">
               Actions
             </th>
@@ -235,7 +245,7 @@ const DatasetTable = ({ items }) => {
                   <input
                     id={`checkbox-table-search-${index + 1}`}
                     type="checkbox"
-                    className="w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500"
+                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   />
                   <label
                     htmlFor={`checkbox-table-search-${index + 1}`}
@@ -251,10 +261,8 @@ const DatasetTable = ({ items }) => {
               >
                 {item.name}
               </th>
-
-              <td className="px-6 py-4">{item.variables}</td>
-              <td className="px-6 py-4">{item.category}</td>
-
+              <td className="px-6 py-4">{item.email}</td>
+              <td className="px-6 py-4">{item.phone_number}</td>
               <td className="px-6 py-4 flex">
                 <button
                   onClick={() => handleEdit(item)}
@@ -262,26 +270,14 @@ const DatasetTable = ({ items }) => {
                 >
                   <FaEdit className="mr-1" /> Edit
                 </button>
+
                 <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    const targetUrl = `/repo/dataset/${item?.id}`;
-                    navigate(targetUrl);
-                  }}
-                  className="font-medium hover:underline flex items-center mr-3"
-                >
-                  <FaEye className="mr-1" /> View
-                </button>
-                <button
-                  className={`font-medium hover:underline flex items-center ${
-                    deleting ? 'text-red-600' : ''
-                  }`}
+                  className={`font-medium hover:underline flex items-center`}
                   // onClick={(e) => handleDelete(e, item.id, item.name)}
                   onClick={(e) => {
                     handleConfirmDelete(e);
                     setDeletingItemId(item.id);
                   }}
-                  disabled={deleting}
                 >
                   <FaTrash className="mr-1  animate-spin text-red-600" />
                   Delete
@@ -304,8 +300,8 @@ const DatasetTable = ({ items }) => {
   );
 };
 
-DatasetTable.propTypes = {
-  items: PropTypes.array,
+UsersTable.propTypes = {
+  usersList: PropTypes.array,
 };
 
-export default DatasetTable;
+export default UsersTable;

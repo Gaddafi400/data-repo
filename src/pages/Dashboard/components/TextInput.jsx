@@ -8,6 +8,7 @@ const TextInput = ({
   placeholder,
   darkMode,
   required,
+  type,
 }) => {
   return (
     <div className="mb-2">
@@ -20,7 +21,7 @@ const TextInput = ({
         {label}
       </label>
       <input
-        type="text"
+        type={type ? type : 'text'}
         id={name}
         name={name}
         value={value}
@@ -45,6 +46,7 @@ TextInput.propTypes = {
   placeholder: PropTypes.string,
   darkMode: PropTypes.bool,
   required: PropTypes.bool,
+  type: PropTypes.string,
 };
 
 export default TextInput;

@@ -14,6 +14,7 @@ import market from '../../assets/market.png';
 import towns from '../../assets/towns.png';
 import state from '../../assets/state.png';
 import lga from '../../assets/lga.png';
+import users from '../../assets/users.png';
 
 const url = '/admin/index';
 
@@ -109,6 +110,20 @@ const Dashboard = () => {
                   {dashboard?.lgas}
                 </h2>
                 <p className="leading-relaxed ">LGA</p>
+              </div>
+            </div>
+
+            <div className="p-4 md:w-1/4 sm:w-1/2 w-full ">
+              <div className="border-2 border-gray-200 px-4 py-6 rounded-lg  bg-primary-50">
+                <img
+                  src={users}
+                  alt="users"
+                  className="w-14 h-14 mb-2 inline-block"
+                />
+                <h2 className="title-font font-medium text-3xl text-gray-900">
+                  {dashboard?.users?.length}
+                </h2>
+                <p className="leading-relaxed ">Users</p>
               </div>
             </div>
           </div>

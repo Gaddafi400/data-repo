@@ -5,4 +5,5 @@ export { default as LocalGov } from './LocalGov';
 export { default as Town } from './Town';
 export { default as Commodity } from './Commodity';
 export { default as Market } from './Market';
+export { default as Users } from './Users';
 export { default as ProtectedRoute } from './ProtectedRoute';

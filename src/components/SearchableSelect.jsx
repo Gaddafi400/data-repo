@@ -32,10 +32,12 @@ const SearchableSelect = ({ options }) => {
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
+    e.preventDefault();
     setSearchTerm(e.target.value);
   };
 
-  const handleOptionClick = async (option) => {
+  const handleOptionClick = async (e, option) => {
+    e.preventDefault();
     try {
       setSearchTerm(option.name);
       setIsLoading(true);
@@ -43,7 +45,6 @@ const SearchableSelect = ({ options }) => {
       setSearchData(searchData);
       setIsLoading(false);
       setSearchTerm('');
-      navigate('./search-results');
       navigate('./search-results');
     } catch (error) {
       toast.error(error.message);
@@ -63,13 +64,15 @@ const SearchableSelect = ({ options }) => {
       setSearchTerm('');
       navigate('./search-results');
     } catch (error) {
-      if (error.response.status === 404) {
+      if (error.response && error.response.status === 404) {
         setSearchData({
           results: [],
         });
         setIsLoading(false);
         setSearchTerm('');
         navigate('./search-results');
+      } else {
+        toast.error(error.message);
       }
     }
   };
@@ -81,12 +84,6 @@ const SearchableSelect = ({ options }) => {
 
   return (
     <div className="searchable-select w-full">
-      <label
-        htmlFor="default-search"
-        className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
-      >
-        Search
-      </label>
       <div className="relative">
         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
           <svg
@@ -129,7 +126,7 @@ const SearchableSelect = ({ options }) => {
             <li
               className="suggestion"
               key={option.id}
-              onClick={() => handleOptionClick(option)}
+              onClick={(e) => handleOptionClick(e, option)}
             >
               {option.name.length > 50
                 ? option.name.slice(0, 100) + '...'

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
-import { useState} from 'react';
+import { useState } from 'react';
 
 import TextInput from './TextInput';
 import { Select } from '../../../components';
@@ -117,15 +117,6 @@ const CreateTown = ({ onClose, onUserCreated }) => {
             placeholder="Select user type"
             label="User type"
           />
-
-          {/* <TextInput
-            type="password"
-            label="Town Name"
-            name="name"
-            value={formData.name}
-            onChange={handleFormChange}
-            placeholder="Town name"
-          /> */}
         </div>
         <button
           type="submit"

@@ -3,15 +3,20 @@ import PropTypes from 'prop-types';
 import { FaTrash, FaEdit } from 'react-icons/fa';
 import Pagination from './Pagination';
 import CreateMarket from './CreateMarket';
+import EditMarket from './EditMarket';
 
 const MarketTable = ({ items }) => {
   const [search, setSearch] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const totalItems = items.length;
   const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
+
   const [markets, setMarkets] = useState(items);
+
+  const totalItems = markets.length;
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [editData, setEditData] = useState(false);
 
   const openCloseModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -44,11 +49,45 @@ const MarketTable = ({ items }) => {
     setMarkets([...markets, newMarket]);
   };
 
+  const openCloseEditModal = () => {
+    setIsEditOpen(!isEditOpen);
+  };
+
+  const handleEdit = (item) => {
+    setEditData(item);
+    openCloseEditModal();
+  };
+
+  // update user state on edit
+  const updateMarket = (editedMarket) => {
+    const marketIndex = markets.findIndex(
+      (user) => user.id === editedMarket.id
+    );
+
+    if (marketIndex !== -1) {
+      // Create a new copy of the 'markets' array and replace the updated one
+      const updatedMarkets = [...markets];
+      updatedMarkets[marketIndex] = editedMarket;
+      setMarkets(updatedMarkets);
+    }
+    openCloseEditModal();
+  };
+
   if (isModalOpen) {
     return (
       <CreateMarket
         onClose={openCloseModal}
         onMarketCreated={onMarketCreated}
+      />
+    );
+  }
+
+  if (isEditOpen) {
+    return (
+      <EditMarket
+        onClose={openCloseEditModal}
+        initialData={editData}
+        updateMarket={updateMarket}
       />
     );
   }
@@ -187,7 +226,7 @@ const MarketTable = ({ items }) => {
               <td className="px-6 py-4">{item.latitude}</td>
               <td className="px-6 py-4 flex">
                 <button
-                  // onClick={() => handleEdit(item)}
+                  onClick={() => handleEdit(item)}
                   className="font-medium hover:underline flex items-center mr-3"
                 >
                   <FaEdit className="mr-1" /> Edit

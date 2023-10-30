@@ -5,11 +5,13 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import './Navbar.css';
 import { IconContext } from 'react-icons';
 import { Dropdown } from '../../../components';
+import UserProfile from './UserProfile';
 import logo from '../../../assets/logo.png';
 import { removeUserFromLocalStorage } from '../../../utils';
 
 const Navbar = () => {
   const [sidebar, setSidebar] = useState(true);
+  const [showProfile, setShowProfile] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -20,6 +22,9 @@ const Navbar = () => {
   const showSidebar = (e) => {
     e.preventDefault();
     return setSidebar(!sidebar);
+  };
+  const toggleProfile = () => {
+    setShowProfile(!showProfile);
   };
 
   const categoryClick = (e) => {
@@ -45,12 +50,12 @@ const Navbar = () => {
 
           <div className="flex space-x-4">
             {/* Profile Link */}
-            <Link
-              to="/profile"
+            <button
+              onClick={toggleProfile}
               className="text-white bg-primary-700 hover:bg-primary-800 p-2 rounded-lg px-6"
             >
               Profile
-            </Link>
+            </button>
 
             {/* Logout Button */}
             <button
@@ -66,7 +71,6 @@ const Navbar = () => {
         </div>
         {/* end nav */}
 
-        {/* sidebar {`nav-menu active ${sidebar ? 'nav-menu.active' : ''}`} */}
         <nav className={`nav-menu p-2 ${sidebar ? 'active' : ''}`}>
           <ul className="nav-menu-items">
             {/* hide on large screen */}
@@ -141,6 +145,8 @@ const Navbar = () => {
           </ul>
         </nav>
       </IconContext.Provider>
+      {/* User profile */}
+      {showProfile ? <UserProfile onClose={toggleProfile} /> : ''}
     </>
   );
 };

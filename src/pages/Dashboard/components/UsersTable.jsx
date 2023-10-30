@@ -93,7 +93,7 @@ const UsersTable = ({ usersList }) => {
     if (deletingItemId) {
       let url = `/admin/users/${deletingItemId}`;
       const token = getUserFromLocalStorage().token;
-
+      
       try {
         setDeleting(true);
         const response = await customFetchMarket.delete(url, header(token));

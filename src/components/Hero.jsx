@@ -44,25 +44,26 @@ const Hero = () => {
     }
   };
 
-  const handleCategoryClick = async (id) => {
-    setIsLoading(true);
+  const handleCategoryClick = async (e, id) => {
+    e.preventDefault();
     try {
+      setIsLoading(true);
       const queryParams = { dataCategory: id };
       const response = await customFetch(url, { params: queryParams });
 
       setSearchData({
         results: response.data?.data.data,
       });
-      setIsLoading(false);
       navigate('./search-results');
     } catch (error) {
-      // Handle any errors here
       console.error('API Error:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="hero" id='hero'>
+    <div className="hero" id="hero">
       <div className="search-container">
         <h1>Data, Knowledge, Insights all in one place </h1>
         <p>
@@ -77,7 +78,7 @@ const Hero = () => {
               <Category
                 key={category.id}
                 title={category.name}
-                handleClick={() => handleCategoryClick(category.id)}
+                handleClick={(e) => handleCategoryClick(e, category.id)}
               />
             ))}
           </div>

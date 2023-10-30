@@ -129,7 +129,6 @@
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 1rem;
-  cursor: pointer;
 }
 
 .category-button {
@@ -138,7 +137,7 @@
   color: #fff;
   border-radius: 8px;
   width: 130px;
-  cursor: pointer;
+  z-index: 50;
 }
 
 /* Hero large screen  */
@@ -209,7 +208,7 @@
 }
 
 .second-section {
-  height: 1133px;
+  height: 900px;
   background: #e8e8eb84;
   padding-left: 1rem;
   padding-right: 1rem;
@@ -240,9 +239,9 @@
 }
 
 .fourth-section {
-  height: 950px;
   padding-left: 1rem;
   padding-right: 1rem;
+  /* border: 1px solid red; */
 }
 
 .fourth-section h1 {
@@ -279,7 +278,7 @@
 }
 
 .fifth-section {
-  height: 850px;
+  height: 800px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -295,13 +294,14 @@
 .fifth-section .last-card {
   display: flex;
   flex-direction: column;
-  padding: 25px;
+  padding: 20px;
+  /* border: 1px solid red; */
 }
 
 .fifth-section .last-card p {
   max-width: 400px;
   margin-bottom: 2rem;
-  font-size: 2.2rem;
+  font-size: 2rem;
 }
 
 .fifth-section .last-card .people {
@@ -326,8 +326,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 45px;
-  height: 45px;
 }
 .fifth-section .last-card .button > div img {
   height: 80%;
@@ -336,18 +334,18 @@
 
 @media (min-width: 767px) {
   .first-section {
-    height: 1133px;
-    padding-top: 32rem;
+    height: 900px;
+    padding-top: 20rem;
   }
 
   .fourth-section {
     margin-bottom: 0rem;
-    height: 1133px;
+    height: 1000px;
     overflow: visible;
   }
 
   .fourth-section h1 {
-    font-size: 3rem;
+    font-size: 40px;
   }
 
   .fourth-section form {
@@ -361,14 +359,14 @@
     flex-grow: 1;
     padding: 1.5rem;
     border-radius: 20px 0 0 20px;
-    font-size: 22px;
+    font-size: 1.1rem;
   }
 
   .fourth-section form button {
     background: #ebb044;
     border-radius: 0 20px 20px 0;
     width: 271px;
-    font-size: 22px;
+    font-size: 1.3rem;
     margin: 0;
   }
   .fourth-section > div:nth-child(1) {
@@ -376,7 +374,7 @@
   }
 
   .fifth-section {
-    height: 1133px;
+    height: 1000px;
   }
 
   .fifth-section .last-card {
@@ -389,20 +387,20 @@
   .fifth-section .last-card p {
     max-width: 837px;
     margin-bottom: 2rem;
-    font-size: 3rem;
+    font-size: 2.2rem;
   }
   .fifth-section .last-card .button {
-    width: 300px;
-    height: 90px;
+    width: 250px;
+    height: 70px;
     border-radius: 20px;
     margin-left: 0;
   }
   .fifth-section .last-card .button span {
-    font-size: 30px;
+    font-size: 25px;
   }
   .fifth-section .last-card .button > div {
-    width: 50px;
-    height: 50px;
+    width: 35px;
+    height: 35px;
   }
 }
 
@@ -412,7 +410,7 @@
 
 .card {
   width: 100%;
-  height: 660px;
+  height: 600px;
   background: #f6f8ff;
   border: 1px #bbcaff solid;
   border-radius: 25px;
@@ -452,7 +450,7 @@
   bottom: 0;
   right: 0;
   width: 100%;
-  height: 300px;
+  height: 250px;
 }
 
 .finder {
@@ -462,12 +460,6 @@
   align-items: center;
 }
 
-.finder .content p {
-  text-align: left;
-}
-.finder .content h1 {
-  text-align: left;
-}
 .finder img {
   height: 285px;
   width: 285px;
@@ -480,7 +472,6 @@
   .card {
     border-radius: 35px;
     line-height: 1.2;
-    height: 681px;
   }
 
   .card .content {
@@ -494,26 +485,28 @@
   }
 
   .card .content h1 {
-    font-size: 3rem;
+    font-size: 2rem;
     margin-bottom: 2rem;
   }
 
   .card .content p {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     max-width: 774px;
   }
 
   .card img {
-    right: -155px;
+    right: -120px;
   }
 
   .finder {
-    justify-content: space-between;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
   }
 
   .finder .content {
-    margin-top: 12rem;
-    margin-left: 35rem;
+    /* margin-top: 8rem;
+    margin-left: 35rem; */
   }
   .finder .content p {
     text-align: unset;
@@ -523,7 +516,7 @@
     height: 450px;
     width: 450px;
     left: 100px;
-    top: 150px;
+    top: 100px;
   }
 }
 
@@ -586,7 +579,7 @@
     padding: 110px;
   }
   .card-portfolio h2 {
-    font-size: 54px;
+    font-size: 2.7rem;
     max-width: 310px;
     margin-top: -5rem;
     text-align: left;
@@ -624,20 +617,21 @@
 }
 
 .search-container {
-  max-width: 1500px;
+  max-width: 1440px;
   margin: 0 auto;
   color: '#000';
   display: flex;
   justify-content: center;
 
   @media (min-width: 1600px) {
-    margin-top: 12rem;
+    margin-top: 15rem;
   }
 }
 
 .search-container-right {
   display: none;
-  width: 100%;
+  /* width: 100%; */
+  max-width: 380px;
 
   margin-top: 3.4rem;
   margin-left: 8rem;
@@ -659,7 +653,7 @@
   border: 1px #bbcaff solid;
 
   @media (min-width: 1200px) {
-    width: 1000px;
+    width: 900px;
     gap: 1rem;
   }
 }
@@ -696,7 +690,7 @@
 }
 
 .pagination .btn {
-  border: 1px solid;
+  /* border: 1px solid; */
 }
 
 .pagination .active {
@@ -876,6 +870,7 @@
   border-top: none;
   border-bottom-left-radius: 12px;
   border-bottom-right-radius: 12px;
+  z-index: 100;
 }
 
 .suggestion {
@@ -1027,9 +1022,8 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
+  /* align-items: center; */
   flex-direction: column;
-  margin: 0;
-  padding: 0;
   gap: 1rem;
 
   @media (min-width: 767px) {
@@ -1040,7 +1034,7 @@
 
 .mfinder-form button {
   width: 100%;
-  padding: 0.8rem;
+  height: 46px;
 
   @media (min-width: 767px) {
     max-width: 200px;
@@ -1071,10 +1065,25 @@
   gap: 1rem;
 }
 
+/* For small screens */
+@media screen and (max-width: 768px) {
+  .m-data-container {
+    height: 100%;
+    overflow-y: scroll;
+  }
+}
+
+
+/* map+++++++++++++++++++++ */
+
 .map {
   height: 100%;
   width: 85%;
-  background: yellow;
+}
+.map-container {
+  height: 100%;
+  width: 100%;
+    border-radius: 16px;
 }
 
 .mfinder-sidebar {
@@ -1143,3 +1152,8 @@
     padding: 1rem;
   }
 }
+
+
+
+
+ 

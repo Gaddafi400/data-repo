@@ -28,10 +28,14 @@ const Mfinder = () => {
   const [states, setStates] = useState([]);
   const [localGovernments, setLocalGovernments] = useState([]);
   const [towns, setTowns] = useState([]);
+  const [commodities, setCommodities] = useState([]);
+  const [markets, setMarkets] = useState([]);
 
   const [selectedState, setSelectedState] = useState('');
   const [selectedLGA, setSelectedLGA] = useState('');
   const [selectedTown, setSelectedTown] = useState('');
+
+  //
 
   // get states
   useEffect(() => {
@@ -51,31 +55,33 @@ const Mfinder = () => {
 
   // get local govt
   useEffect(() => {
-    const localGovernmentUrl = `/guest/states/${selectedState}/lgas`;
-
-    customFetchMarket
-      .get(localGovernmentUrl)
-      .then((response) => {
-        setTowns([]);
-        setLocalGovernments(response.data?.data);
-      })
-      .catch((error) => {
-        console.error('Error fetching local government options:', error);
-      });
+    if (selectedState) {
+      const localGovernmentUrl = `/guest/states/${selectedState}/lgas`;
+      customFetchMarket
+        .get(localGovernmentUrl)
+        .then((response) => {
+          setTowns([]);
+          setLocalGovernments(response.data?.data);
+        })
+        .catch((error) => {
+          console.error('Error fetching local government options:', error);
+        });
+    }
   }, [selectedState]);
 
   // get towns
   useEffect(() => {
-    const townUrl = `/guest/states/${selectedState}/lgas/${selectedLGA}/towns`;
-
-    customFetchMarket
-      .get(townUrl)
-      .then((response) => {
-        setTowns(response.data?.data);
-      })
-      .catch((error) => {
-        console.error('Error fetching local government options:', error);
-      });
+    if (selectedState && selectedLGA) {
+      const townUrl = `/guest/states/${selectedState}/lgas/${selectedLGA}/towns`;
+      customFetchMarket
+        .get(townUrl)
+        .then((response) => {
+          setTowns(response.data?.data);
+        })
+        .catch((error) => {
+          console.error('Error fetching local government options:', error);
+        });
+    }
   }, [selectedState, selectedLGA]);
 
   const handleStateChange = (e) => {
@@ -99,10 +105,14 @@ const Mfinder = () => {
       lga: selectedLGA,
     };
 
-    console.log(params);
+    // console.log(params);
     try {
       const response = await customFetchMarket.get(url, params);
-      console.log(response);
+      const { commodities, markets } = response.data.data;
+      console.log(commodities)
+      
+      setMarkets(markets);
+      setCommodities(commodities);
     } catch (error) {
       return error;
     }
@@ -151,7 +161,7 @@ const Mfinder = () => {
             <button
               type="submit"
               onClick={handleSearch}
-              className="w-full  bg-fth rounded-lg  text-white  "
+              className="w-full  bg-fth rounded-lg  text-white"
             >
               Steady search
             </button>
@@ -162,7 +172,7 @@ const Mfinder = () => {
       <div className="m-data-section-container px-2">
         <section className="m-data-section w-full xx:w-[1518px] rounded-[30px] p-6">
           <Map />
-          <FinderSidebar />
+          <FinderSidebar items={commodities} />
         </section>
       </div>
       <Footer />

@@ -56,7 +56,7 @@ const Dropdown = ({ onClick, label, items }) => {
 
 Dropdown.propTypes = {
   label: PropTypes.string.isRequired,
-  items: PropTypes.arrayOf(PropTypes.string).isRequired,
+  items: PropTypes.array,
   onClick: PropTypes.func,
 };
 

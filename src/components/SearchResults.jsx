@@ -60,10 +60,13 @@ const SearchResults = ({ searchData, topSearch }) => {
 
   return (
     <div className="search-parent">
-      <div className="py-20 px-2 search-container text-black">
+      <div
+        className="py-20 px-2 search-container text-black"
+        // style={{ border: '1px solid red' }}
+      >
         {getCurrentPageData().length !== 0 ? (
           <div>
-            <h3 className="text-lg lg:text-xl xl:text-2xl">
+            <h3 className="text-lg lg:text-xl">
               We&apos;ve found{' '}
               <span className="font-semibold">{searchData.length}</span> Results
             </h3>

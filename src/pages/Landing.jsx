@@ -82,10 +82,10 @@ const Landing = () => {
             name="email"
             id="email"
             required
-            className="border border-gray-300 py-4 px-4 focus:outline-none"
+            className="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2"
           />
 
-          <button type="submit" className="px-6 py-2 text-white ">
+          <button type="submit" className="px-2 py-2 text-white ">
             subscribe now
           </button>
         </Form>
@@ -93,7 +93,7 @@ const Landing = () => {
       </section>
 
       <section className="fifth-section">
-        <div className="w-[1521px] h-[681px] bg-slate-800 xl:rounded-[35px] rounded-[25px] last-card">
+        <div className="w-[1521px] h-[600px] bg-slate-800 xl:rounded-[35px] rounded-[25px] last-card">
           <div className="last-card-content">
             <p className="text-white font-semibold">
               Your Reliable Platform For Seamless Search

@@ -10,7 +10,7 @@ import {
   header,
 } from '../../../utils';
 
-const EditTown = ({ onClose, initialData, updateUser }) => {
+const EditUser = ({ onClose, initialData, updateUser }) => {
   const initialFormState = {
     name: initialData?.name,
     phoneNumber: initialData?.phone_number,
@@ -123,10 +123,10 @@ const EditTown = ({ onClose, initialData, updateUser }) => {
   );
 };
 
-EditTown.propTypes = {
+EditUser.propTypes = {
   onClose: PropTypes.func,
   updateUser: PropTypes.func,
   initialData: PropTypes.object,
 };
 
-export default EditTown;
+export default EditUser;

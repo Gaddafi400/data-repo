@@ -14,11 +14,11 @@ const TextInput = ({
     <div className="mb-2">
       <label
         htmlFor={name}
-        className={`block mb-2 text-sm font-medium ${
-          darkMode ? 'text-white' : 'text-gray-900'
+        className={`block mb-2 text-base font-medium ${
+          darkMode ? 'text-white' : 'text-gray-600'
         }`}
       >
-        {label}
+        {label}:
       </label>
       <input
         type={type ? type : 'text'}

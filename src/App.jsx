@@ -42,6 +42,7 @@ import {
 import { loader as homeLayoutLoader } from './pages/HomeLayout';
 import { loader as singleDataLoader } from './pages/SingleData';
 // market finder
+import { loader as mFinderLoader } from './pages/Mfinder';
 import { loader as dashboardLoader } from './pages/Dashboard/Dashboard';
 import { loader as stateLoader } from './pages/Dashboard/State';
 import { loader as localGovLoader } from './pages/Dashboard/LocalGov';
@@ -88,6 +89,7 @@ const router = createBrowserRouter([
   {
     path: '/market-finder',
     element: <Mfinder />,
+    loader: mFinderLoader,
     errorElement: <Error />,
   },
   {

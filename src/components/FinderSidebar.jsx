@@ -2,7 +2,7 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 
 const FinderSidebar = ({ items }) => {
-  const [isDropdownOpen, setDropdownOpen] = useState(false);
+  const [isDropdownOpen, setDropdownOpen] = useState(true);
   const toggleDropdown = () => {
     setDropdownOpen(!isDropdownOpen);
   };
@@ -45,7 +45,7 @@ const FinderSidebar = ({ items }) => {
                   <button
                     id={`${item?.id}`}
                     // onClick={onClick}
-                    className="flex items-center w-full p-2 text-white transition duration-75 rounded-lg pl-11 group"
+                    className="flex items-center w-full p-2 text-white transition duration-75 rounded-lg pl-8 group"
                   >
                     {item?.name}
                   </button>

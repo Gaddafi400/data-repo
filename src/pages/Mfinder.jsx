@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useLoaderData } from 'react-router-dom';
 import {
   Select,
   Navbar,
@@ -10,26 +11,28 @@ import {
 
 import { customFetchMarket } from '../utils';
 
-// export const action = async ({ request }) => {
-//   const formData = await request.formData();
-//   const data = Object.fromEntries(formData);
-//   const url = '/guest/';
+export const loader = async () => {
+  const url = '/guest';
+  try {
+    const response = await customFetchMarket(url);
+    const responseData = await response.data.data;
 
-//   try {
-//     const response = await customFetchMarket.get(url);
-
-//     return {};
-//   } catch (error) {
-//     return error;
-//   }
-// };
+    return { initialData: responseData };
+  } catch (error) {
+    return error;
+  }
+};
 
 const Mfinder = () => {
+  const { initialData } = useLoaderData();
+
+  // console.log(initialData?.markets);
+
   const [states, setStates] = useState([]);
   const [localGovernments, setLocalGovernments] = useState([]);
   const [towns, setTowns] = useState([]);
-  const [commodities, setCommodities] = useState([]);
-  const [markets, setMarkets] = useState([]);
+  const [commodities, setCommodities] = useState(initialData?.commodities);
+  const [markets, setMarkets] = useState(initialData?.markets);
 
   const [selectedState, setSelectedState] = useState('');
   const [selectedLGA, setSelectedLGA] = useState('');
@@ -104,13 +107,10 @@ const Mfinder = () => {
       town: selectedTown,
       lga: selectedLGA,
     };
-
-    // console.log(params);
+    
     try {
       const response = await customFetchMarket.get(url, params);
       const { commodities, markets } = response.data.data;
-      console.log(commodities)
-      
       setMarkets(markets);
       setCommodities(commodities);
     } catch (error) {
@@ -171,10 +171,11 @@ const Mfinder = () => {
       {/* Other components and JSX */}
       <div className="m-data-section-container px-2">
         <section className="m-data-section w-full xx:w-[1518px] rounded-[30px] p-6">
-          <Map />
+          <Map markets={markets} />
           <FinderSidebar items={commodities} />
         </section>
       </div>
+
       <Footer />
     </>
   );

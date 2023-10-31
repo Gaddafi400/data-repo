@@ -1,10 +1,14 @@
+import PropTypes from 'prop-types';
 import { useMemo, useState, useEffect } from 'react';
+
 import {
   GoogleMap,
   useLoadScript,
   Marker,
   InfoWindow,
 } from '@react-google-maps/api';
+
+import marketIcon from '../assets/mapIcon.svg';
 
 const markersData = [
   {
@@ -59,10 +63,8 @@ const markersData = [
   },
 ];
 
-
-const MapContainer = () => {
+const MapContainer = ({ markets }) => {
   const center = useMemo(() => ({ lat: 9.05785, lng: 7.49508 }), []);
-
   const [markers, setMarkers] = useState(markersData);
   const [activeMarker, setActiveMarker] = useState(null);
   const [showMarkers, setShowMarkers] = useState(false);
@@ -99,25 +101,63 @@ const MapContainer = () => {
       onClick={() => setActiveMarker(null)}
     >
       {showMarkers &&
-        markers.map(({ id, name, position }) => (
-          <Marker
-            key={id}
-            position={position}
-            icon={'http://maps.google.com/mapfiles/ms/icons/green-dot.png'}
-            onClick={() => handleActiveMarker(id)}
-          >
-            {activeMarker === id ? (
-              <InfoWindow onCloseClick={() => setActiveMarker(null)}>
-                <div>{name}</div>
-              </InfoWindow>
-            ) : null}
-          </Marker>
-        ))}
+        markets.map((market) => {
+          const { id, name, alias, longitude, latitude, commodities } = market;
+          const position = {
+            lat: parseFloat(latitude),
+            lng: parseFloat(longitude),
+          };
+
+          return (
+            <Marker
+              key={id}
+              position={position}
+              onClick={() => handleActiveMarker(id)}
+              icon={{
+                url: marketIcon,
+                scaledSize: new window.google.maps.Size(40, 40),
+              }}
+            >
+              {activeMarker === id ? (
+                <InfoWindow onCloseClick={() => setActiveMarker(null)}>
+                  <div className="map-profile rounded-lg p-4">
+                    <h1 className="text-center font-medium text-1xl mb-2">
+                      Market Profile
+                    </h1>
+                    <div className="bg-white rounded-lg shadow-lg p-2">
+                      <div className="info-item p-2">
+                        <span className="info-label">Name:</span> {name}
+                      </div>
+                      <div className="info-item p-2">
+                        <span className="info-label">Alias:</span> {alias}
+                      </div>
+
+                      <div className="info-item p-2">
+                        <span className="info-label">Commodities:</span>
+                        <ul>
+                          {commodities.map((commodity) => (
+                            <li key={commodity.id}>
+                              {commodity.name}: {commodity.price}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </InfoWindow>
+              ) : null}
+            </Marker>
+          );
+        })}
     </GoogleMap>
   );
 };
 
-const Map = () => {
+MapContainer.propTypes = {
+  markets: PropTypes.array,
+};
+
+const Map = ({ markets }) => {
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: 'AIzaSyD7rfqjUrqhxFgxBsmgM68GOFsY4FCOZ-s',
   });
@@ -126,9 +166,13 @@ const Map = () => {
 
   return (
     <div className="map">
-      <MapContainer />
+      <MapContainer markets={markets} />
     </div>
   );
+};
+
+Map.propTypes = {
+  markets: PropTypes.array,
 };
 
 export default Map;

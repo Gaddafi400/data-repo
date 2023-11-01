@@ -58,14 +58,31 @@ const TownTable = ({ items }) => {
     );
   }
 
-  if (isEditOpen) {
-    return <EditTown onClose={openCloseEditModal} initialData={editData} />;
-  }
+  const updateTown = (editedTown) => {
+    const townIndex = towns.findIndex((town) => town.id === editedTown.id);
+    if (townIndex !== -1) {
+      const updatedTowns = [...towns];
+      updatedTowns[townIndex] = editedTown;
+      setTowns(updatedTowns);
+    }
+    openCloseEditModal();
+  };
+
   // handle edit
   const handleEdit = (item) => {
     setEditData(item);
     openCloseEditModal();
   };
+
+  if (isEditOpen) {
+    return (
+      <EditTown
+        onClose={openCloseEditModal}
+        initialData={editData}
+        updateTown={updateTown}
+      />
+    );
+  }
 
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-4 mb-4">

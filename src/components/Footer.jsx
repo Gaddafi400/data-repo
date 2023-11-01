@@ -81,7 +81,6 @@ const Footer = () => {
             <h3 className="text-lg font-semibold text-footer footer-header">
               Quick Links
             </h3>
-            {/* Add your content for Column 2 here */}
             <FooterLink title="about" link="/" />
             <FooterLink title="our mission" link="/" />
             <FooterLink title="our service" link="/" />

@@ -66,6 +66,7 @@ Select.propTypes = {
     PropTypes.string,
     PropTypes.bool,
     PropTypes.number,
+    PropTypes.object,
   ]),
 };
 

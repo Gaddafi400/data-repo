@@ -3,10 +3,14 @@ import PropTypes from 'prop-types';
 import { FaTrash, FaEdit } from 'react-icons/fa';
 import Pagination from './Pagination';
 import CreateCommodity from './CreateCommodity';
+import EditCommodity from './EditCommodity';
 
 const CommodityTable = ({ items }) => {
   const [search, setSearch] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [editData, setEditData] = useState(false);
+
   const itemsPerPage = 10;
   const totalItems = items.length;
   const [currentPage, setCurrentPage] = useState(1);
@@ -43,6 +47,38 @@ const CommodityTable = ({ items }) => {
   for (let i = 1; i <= Math.ceil(filteredItems.length / itemsPerPage); i++) {
     pageNumbers.push(i);
   }
+
+  const openCloseEditModal = () => {
+    setIsEditOpen(!isEditOpen);
+  };
+
+  const updateCommodity = (editedCommodity) => {
+    const commodityIndex = commodities.findIndex(
+      (commodity) => commodity.id === editedCommodity.id
+    );
+
+    if (commodityIndex !== -1) {
+      const updatedMarkets = [...commodities];
+      updatedMarkets[commodityIndex] = editedCommodity;
+      setCommodities(updatedMarkets);
+    }
+    openCloseEditModal();
+  };
+
+  if (isEditOpen) {
+    return (
+      <EditCommodity
+        onClose={openCloseEditModal}
+        initialData={editData}
+        updateCommodity={updateCommodity}
+      />
+    );
+  }
+  // handle edit
+  const handleEdit = (item) => {
+    setEditData(item);
+    openCloseEditModal();
+  };
 
   if (isModalOpen) {
     return (
@@ -167,7 +203,7 @@ const CommodityTable = ({ items }) => {
               <td className="px-6 py-4">{item.numberOfMarkets}</td>
               <td className="px-6 py-4 flex">
                 <button
-                  // onClick={() => handleEdit(item)}
+                  onClick={() => handleEdit(item)}
                   className="font-medium hover:underline flex items-center mr-3"
                 >
                   <FaEdit className="mr-1" /> Edit

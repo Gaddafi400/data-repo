@@ -107,6 +107,11 @@ const PieChart = ({ hData, label }) => {
         },
         innerSize: '60%', // Adjust the inner size as needed
       },
+      series: {
+        dataGrouping: {
+          enabled: false,
+        },
+      },
     },
     exporting: {
       buttons: {

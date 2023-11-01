@@ -1,51 +1,27 @@
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
-import { useState, useEffect } from 'react';
-import { Select } from '../../../components';
+import { useState } from 'react';
 import TextInput from './TextInput';
 
 import {
   customFetchMarket,
   getUserFromLocalStorage,
+  flattenErrorMessage,
   header,
 } from '../../../utils';
 
-const EditTown = ({ onClose, initialData, updateTown }) => {
+const EditCommodity = ({ onClose, initialData, updateCommodity }) => {
   const initialFormState = {
     name: initialData?.name,
-    lga: `${initialData?.lga?.id}`,
-    alias: '',
+    alias: initialData?.alias,
   };
 
   const [formData, setFormData] = useState(initialFormState);
-
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [localGovernments, setLocalGovernments] = useState([]);
-  const [stateId, setStateId] = useState(initialData?.state?.id);
-
-  console.log('stateId  ', stateId);
-  console.log('formData  ', formData);
-
-  // get local govt
-  useEffect(() => {
-    const localGovernmentUrl = `/guest/states/${stateId}/lgas`;
-    customFetchMarket
-      .get(localGovernmentUrl)
-      .then((response) => {
-        setLoading(true);
-        setLocalGovernments(response.data?.data);
-      })
-      .catch((error) => {
-        console.error('Error fetching local government options:', error);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, [formData.state, stateId]);
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;
+
     setFormData({
       ...formData,
       [name]: value,
@@ -55,10 +31,9 @@ const EditTown = ({ onClose, initialData, updateTown }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    let url = '/admin/towns';
-    const token = getUserFromLocalStorage().token;
 
-    url = `${url}/${initialData?.id}`;
+    const url = `/admin/commodities/${initialData?.id}`;
+    const token = getUserFromLocalStorage().token;
 
     try {
       const response = await customFetchMarket.patch(
@@ -67,12 +42,15 @@ const EditTown = ({ onClose, initialData, updateTown }) => {
         header(token)
       );
       const responseData = response.data.data;
-      toast.success('Town updated successfully!');
-      setFormData({});
-      updateTown(responseData);
+      toast.success('Commodity updated successfully!');
+      setFormData(initialFormState);
+      updateCommodity(responseData);
       return { towns: responseData };
     } catch (error) {
-      toast.error('Failed to update town. Please try again.');
+      const errorMessage = flattenErrorMessage(error.response.data?.data);
+      toast.error(
+        errorMessage || 'Failed to update commodity. Please try again.'
+      );
       return error;
     } finally {
       setIsSubmitting(false);
@@ -81,7 +59,11 @@ const EditTown = ({ onClose, initialData, updateTown }) => {
 
   return (
     <div className="create-town">
-      <form className="rounded-lg p-4" onSubmit={handleSubmit}>
+      <form
+        className="rounded-lg p-4"
+        onSubmit={handleSubmit}
+        style={{ marginTop: '2rem' }}
+      >
         <div className="text-right text-lg">
           <button
             className="close-button text-right"
@@ -92,28 +74,17 @@ const EditTown = ({ onClose, initialData, updateTown }) => {
           </button>
         </div>
         <h1 className="text-2xl font-medium  text-gray-800 dark:text-white my-4">
-          Update a new town
+          Update commodity
         </h1>
 
         <div className="mb-6">
           <TextInput
-            label="Town Name"
+            id="name"
             name="name"
+            label="name"
             value={formData.name}
             onChange={handleFormChange}
-            placeholder="Town name"
-          />
-
-          <Select
-            id="lga"
-            name="lga"
-            options={localGovernments}
-            value={formData.lga}
-            onChange={handleFormChange}
-            placeholder="Select LGA"
-            label="LGA"
-            selected={initialData && initialData?.lga?.id}
-            loading={loading}
+            placeholder="Enter Name"
           />
 
           <TextInput
@@ -122,9 +93,10 @@ const EditTown = ({ onClose, initialData, updateTown }) => {
             label="Alias"
             value={formData.alias}
             onChange={handleFormChange}
-            placeholder="Alias"
+            placeholder="Enter alias"
           />
         </div>
+
         <button
           type="submit"
           className={`bg-primary-500 text-white rounded-md px-4 py-2 w-full transition-all ${
@@ -132,7 +104,6 @@ const EditTown = ({ onClose, initialData, updateTown }) => {
               ? 'bg-gray-400 cursor-not-allowed'
               : 'hover:bg-primary-600'
           }`}
-          disabled={isSubmitting}
         >
           {isSubmitting ? 'Updating...' : 'Update'}
         </button>
@@ -141,10 +112,10 @@ const EditTown = ({ onClose, initialData, updateTown }) => {
   );
 };
 
-EditTown.propTypes = {
+EditCommodity.propTypes = {
   onClose: PropTypes.func,
+  updateCommodity: PropTypes.func,
   initialData: PropTypes.object,
-  updateTown: PropTypes.func,
 };
 
-export default EditTown;
+export default EditCommodity;

@@ -835,6 +835,7 @@
 .copy-right {
   margin-top: 22px;
   font-size: 16px;
+  letter-spacing: 0.6px;
 }
 
 @media (min-width: 640px) {
@@ -844,10 +845,6 @@
 
   .column-one img {
     margin: 0.5rem 0 1rem 0;
-  }
-
-  .copy-right {
-    font-size: 18px;
   }
 }
 
@@ -1092,8 +1089,8 @@
 }
 
 .map-profile {
-  width: 310px;
-  height: 320px;
+  width: 250px;
+  /* height: 20px; */
 }
 
 .map-container {

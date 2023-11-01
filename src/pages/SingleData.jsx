@@ -33,7 +33,7 @@ export const loader = async ({ params }) => {
 
 const SingleData = () => {
   const { result, chartLabel, chartData } = useLoaderData();
-  const [selectedItem, setSelectedItem] = useState('table');
+  const [selectedItem, setSelectedItem] = useState('Charts');
   const [isMobile, setIsMobile] = useState(false);
   const [chartType, setChartType] = useState('PieChart');
 

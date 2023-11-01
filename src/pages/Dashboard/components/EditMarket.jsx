@@ -14,18 +14,18 @@ import {
 
 const EditMarket = ({ onClose, initialData, updateMarket }) => {
   const initialFormState = {
-    name: '',
-    town: '',
-    address: '',
-    longitude: '',
-    latitude: '',
-    alias: '',
+    name: initialData?.name,
+    town: initialData?.town?.id,
+    address: initialData?.address,
+    longitude: initialData?.longitude,
+    latitude: initialData?.latitude,
+    alias: initialData?.alias,
     landmark: '',
   };
 
   const [formData, setFormData] = useState(initialFormState);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [towns, setTowns] = useState([]);
+  const [towns, setTowns] = useState([initialData?.town]);
   const [activeDays, setActiveDays] = useState([]);
 
   // Fetch towns
@@ -47,6 +47,7 @@ const EditMarket = ({ onClose, initialData, updateMarket }) => {
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;
+
     setFormData({
       ...formData,
       [name]: value,
@@ -68,25 +69,26 @@ const EditMarket = ({ onClose, initialData, updateMarket }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    let url = '/admin/users';
-
+    const url = `/admin/markets/${initialData?.id}`;
     const token = getUserFromLocalStorage().token;
-    url = `${url}/${initialData?.id}`;
+
+    const payload = { ...formData, activeDays: activeDays };
 
     try {
       const response = await customFetchMarket.patch(
         url,
-        formData,
+        payload,
         header(token)
       );
       const responseData = response.data.data;
-      toast.success('User updated successfully!');
-      setFormData({});
-      // update user state
+      toast.success('Market updated successfully!');
+      setFormData(initialFormState);
       updateMarket(responseData);
-      return { user: responseData };
+      onClose();
+      return { towns: responseData };
     } catch (error) {
-      toast.error('Failed to update user. Please try again.');
+      const errorMessage = flattenErrorMessage(error.response.data?.data);
+      toast.error(errorMessage || 'Failed to update market. Please try again.');
       return error;
     } finally {
       setIsSubmitting(false);
@@ -110,7 +112,7 @@ const EditMarket = ({ onClose, initialData, updateMarket }) => {
           </button>
         </div>
         <h1 className="text-2xl font-medium  text-gray-800 dark:text-white my-4">
-          Create a new market
+          Update market
         </h1>
 
         <div className="mb-6">
@@ -131,6 +133,7 @@ const EditMarket = ({ onClose, initialData, updateMarket }) => {
               onChange={handleFormChange}
               placeholder="Select town"
               label="Town"
+              selected={initialData?.town}
             />
           ) : (
             <div>Loading towns...</div>
@@ -214,7 +217,7 @@ const EditMarket = ({ onClose, initialData, updateMarket }) => {
               : 'hover:bg-primary-600'
           }`}
         >
-          {isSubmitting ? 'Submitting' : 'Submit'}
+          {isSubmitting ? 'Updating...' : 'Update'}
         </button>
       </form>
     </div>

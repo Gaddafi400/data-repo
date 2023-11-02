@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
 
 const Navbar = () => {
+  const style = { background: '#292949', color: 'white' };
   return (
     <div className="bg-primary-500  text-white nav">
       <div className="navbar lg:align-element">
@@ -68,18 +69,28 @@ const Navbar = () => {
         <div className="navbar-end hidden lg:flex">
           <ul className="menu menu-horizontal px-1">
             <li>
-              <Link className="hover:text-white text-base nav-link">
+              <Link
+                className="hover:text-white text-base nav-link"
+                style={style}
+              >
                 Data set
               </Link>
             </li>
             <li>
-              <Link to={'/market-finder'} className="text-base nav-link">
+              <Link
+                to={'/market-finder'}
+                className="text-base nav-link"
+                style={style}
+              >
                 Market Finder
               </Link>
             </li>
             <li tabIndex={0}>
               <details>
-                <summary className="hover:text-white text-base nav-link">
+                <summary
+                  className="hover:text-white text-base nav-link"
+                  style={style}
+                >
                   Discover More
                 </summary>
                 <ul className="p-2 bg-primary-500">
@@ -87,6 +98,7 @@ const Navbar = () => {
                     <Link
                       to="/about"
                       className="hover:text-white text-base nav-link"
+                      style={style}
                     >
                       About Us
                     </Link>
@@ -95,6 +107,7 @@ const Navbar = () => {
                     <Link
                       to="/contact"
                       className="hover:text-white text-base nav-link"
+                      style={style}
                     >
                       Contact Us
                     </Link>
@@ -110,4 +123,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-

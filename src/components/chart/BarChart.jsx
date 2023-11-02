@@ -23,8 +23,8 @@ const BarChart = ({ hData, label }) => {
     chart: {
       type: 'bar',
       backgroundColor: 'transparent',
-      width: 1000,
-      height: 700,
+      width: 1200,
+      height: 720,
     },
     title: {
       text: label,

@@ -66,7 +66,7 @@ const SearchResults = ({ searchData, topSearch }) => {
       >
         {getCurrentPageData().length !== 0 ? (
           <div>
-            <h3 className="text-lg lg:text-xl">
+            <h3 className="text-lg">
               We&apos;ve found{' '}
               <span className="font-semibold">{searchData.length}</span> Results
             </h3>
@@ -74,7 +74,7 @@ const SearchResults = ({ searchData, topSearch }) => {
               <SearchCard
                 key={result.id}
                 heading={result.name}
-                description="remove a person even though it’s the only component that will use it. we have no way to access it until it goes through this drilling"
+                description={result.description}
                 handleClick={(e) => handleClick(e, result.id)}
               />
             ))}

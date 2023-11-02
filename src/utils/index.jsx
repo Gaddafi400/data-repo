@@ -126,10 +126,19 @@ export const formatDataHeightChart = (chartLabel, chartData) => {
     }
   }
 
-  const mappedData = labels.map((label, index) => ({
-    name: label,
-    y: data[index],
-  }));
+  // const mappedData = labels.map((label, index) => ({
+  //   name: label,
+  //   y: data[index],
+  // }));
+
+  const mappedData = labels
+    .map((label, index) => ({ label, data: data[index] }))
+    .sort((a, b) => a.label.localeCompare(b.label))
+    .map(({ label, data }) => ({ name: label, y: data }));
+
+
+  // // Sort the data by the 'y' property in descending order
+  // mappedData.sort((a, b) => b.y - a.y);
 
   // Find the index of the data point with the largest value
   const maxIndex = data.indexOf(Math.max(...data));

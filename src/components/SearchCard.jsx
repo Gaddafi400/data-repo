@@ -1,11 +1,18 @@
 import PropTypes from 'prop-types';
 
+const MAX_DESCRIPTION_LENGTH = 200;
+
 const SearchCard = ({ heading, description, handleClick }) => {
+  const truncatedDescription =
+    description.length > MAX_DESCRIPTION_LENGTH
+      ? `${description.slice(0, MAX_DESCRIPTION_LENGTH)}...`
+      : description;
+
   return (
-    <div className="align-element py-12  search-card ">
+    <div className="px-4 py-6  search-card ">
       <h1>{heading}</h1>
-      <p>{description}</p>
-      <button onClick={handleClick} className="">
+      <p>{truncatedDescription}</p>
+      <button onClick={handleClick} className="text-sm">
         Read more {'>>>'}
       </button>
     </div>

@@ -41,6 +41,7 @@ const SingleData = () => {
 
   const hData = formatDataHeightChart(chartLabel, chartData);
 
+ 
   useEffect(() => {
     const handleResize = () => {
       // Check if the screen width is less than a mobile breakpoint (e.g., 640px)
@@ -99,14 +100,14 @@ const SingleData = () => {
   return (
     <>
       <Navbar />
-      <div className="data-set-hero h-[100px]">
+      <div className="data-set-hero min-h-[490px]">
         <div className="w-full xx:w-[1518px] flex items-center xl:px-12">
           <Heading text="Home" />
           <Heading text="Data Sets" />
           <Heading text={result?.category} />
         </div>
-        <div className="w-full xx:w-[1518px] h-[292px] bg-white rounded-[25px]">
-          <p className="p-14 text-zinc-500" style={{ fontSize: '18px' }}>
+        <div className="w-full xx:w-[1518px] min-h-[292px] bordered bg-white rounded-2xl">
+          <p className="py-8 px-6 text-zinc-700 text-lg">
             {result?.description}
           </p>
         </div>

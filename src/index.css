@@ -42,7 +42,7 @@
 /* Hero */
 
 .nav {
-  border-bottom: 1px solid #181831;
+  border-bottom: 0.5px solid #181831;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.307);
 }
 .nav-link:hover {
@@ -50,11 +50,6 @@
   border-radius: 12px;
   color: white !important;
 }
-
-/* a:visited {
-  background: #292949 !important;
-  color: white !important;
-} */
 
 .hero {
   width: 100%;
@@ -652,7 +647,7 @@
 .search-card {
   margin: 1.5rem 0;
   width: 100%;
-  border-radius: 25px;
+  border-radius: 1rem;
   display: flex;
   flex-direction: column;
   justify-content: start;
@@ -666,22 +661,21 @@
   }
 }
 .search-card h1 {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
+  font-weight: 500;
 }
 .search-card p {
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
 .search-card button {
   background: #292949;
   color: #fff;
-  padding: 0.5rem;
+  padding: 0.6rem;
   border-radius: 10px;
-  width: 50%;
-  font-size: 1rem;
+  width: 100%;
   @media (min-width: 750px) {
-    width: 18%;
-    padding: 0.8rem;
+    width: 140px;
   }
 }
 
@@ -714,7 +708,7 @@
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  padding: 2rem;
+  padding: 1.5rem;
 }
 
 /* end search card */
@@ -724,7 +718,6 @@
   width: 100%;
 
   margin-bottom: 5rem;
-  height: 490px;
   padding: 0.5rem;
   background: url('./assets/412.png'),
     linear-gradient(
@@ -1176,4 +1169,8 @@
     margin-left: auto;
     padding: 1rem;
   }
+}
+
+.highcharts-credits {
+  display: none !important;
 }

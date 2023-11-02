@@ -10,13 +10,13 @@ const TopSearch = ({ topSearch }) => {
   };
   return (
     <div className="subscribe-right rounded-lg" style={{ marginTop: '6rem' }}>
-      <h3 className="text-black text-[26px] font-medium">Top Search</h3>
+      <h3 className="text-black text-2xl font-medium">Top Search</h3>
 
       {topSearch.map((item, index) => (
         <p
           onClick={(e) => handleClick(e, item?.id)}
           key={index}
-          className="text-black text-[16px] font-light p-4 rounded-lg cursor-pointer bg-primary-50 hover:bg-primary-100"
+          className="text-black text-base font-light p-4 rounded-lg cursor-pointer bg-primary-50 hover:bg-primary-100"
         >
           {item?.name}
         </p>

@@ -1,59 +1,3 @@
-// import PropTypes from 'prop-types';
-// import { Pie } from 'react-chartjs-2';
-// import { Chart, registerables } from 'chart.js';
-// Chart.register(...registerables);
-
-// const data = {
-//   labels: ['January', 'February', 'March', 'April', 'May'],
-//   datasets: [
-//     {
-//       label: 'Sales',
-//       data: [50, 30, 60, 70, 40],
-//       backgroundColor: [
-//         getRandomColor(),
-//         getRandomColor(),
-//         getRandomColor(),
-//         getRandomColor(),
-//         getRandomColor(),
-//       ],
-//       borderColor: 'rgba(75, 192, 192, 1)',
-//       borderWidth: 1,
-//     },
-//   ],
-// };
-
-// const PieChart = ({ cData }) => {
-//   return <Pie data={cData} />;
-// };
-
-// PieChart.propTypes = {
-//   cData: PropTypes.object,
-// };
-
-// export default PieChart;
-
-// import Highcharts from 'highcharts';
-// import HighchartsReact from 'highcharts-react-official';
-
-// const options = {
-//   title: {
-//     text: 'My chart',
-//   },
-//   series: [
-//     {
-//       data: [1, 2, 3],
-//     },
-//   ],
-// };
-
-// const PieChart = () => (
-//   <div>
-//     <HighchartsReact highcharts={Highcharts} options={options} />
-//   </div>
-// );
-
-// export default PieChart;
-
 import PropTypes from 'prop-types';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
@@ -65,15 +9,16 @@ exportingInit(Highcharts);
 offlineExportingInit(Highcharts);
 
 const PieChart = ({ hData, label }) => {
+ 
   const options = {
     chart: {
       type: 'pie',
       backgroundColor: null,
       plotBackgroundColor: null,
       plotBorderWidth: null,
-      plotShadow: false,
-      width: 1000, // Set the width of the chart (in pixels)
-      height: 650, // Set the height of the chart (in pixels)
+      plotShadow: true,
+      width: 1200,
+      height: 700,
       borderWidth: 1,
       borderColor: 'gray',
     },
@@ -81,7 +26,7 @@ const PieChart = ({ hData, label }) => {
       text: label,
       align: 'center',
       style: {
-        color: 'black',
+        color: '#333',
         fontSize: '18px',
         fontFamily: 'Arial, sans-serif',
       },
@@ -89,8 +34,8 @@ const PieChart = ({ hData, label }) => {
     tooltip: {
       pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>',
       style: {
-        color: 'black',
-        fontSize: '14px',
+        color: '#333',
+        fontSize: '16px',
       },
     },
     plotOptions: {
@@ -101,16 +46,19 @@ const PieChart = ({ hData, label }) => {
           enabled: true,
           format: '<b>{point.name}</b>: {point.percentage:.1f} %',
           style: {
-            color: 'black',
+            color: '#333',
             fontSize: '12px',
           },
+          distance: 10,
+          allowOverlap: true,
         },
-        innerSize: '60%', // Adjust the inner size as needed
-      },
-      series: {
-        dataGrouping: {
-          enabled: false,
+        series: {
+          dataGrouping: {
+            enabled: false,
+          },
         },
+
+        innerSize: '65%', // Adjust the inner size as needed
       },
     },
     exporting: {
@@ -129,7 +77,7 @@ const PieChart = ({ hData, label }) => {
     ],
     legend: {
       itemStyle: {
-        color: 'black',
+        color: '#333',
         fontSize: '14px',
       },
     },

@@ -319,10 +319,13 @@
   padding: 0.8rem 1rem;
   align-items: center;
   gap: 1rem;
-  border-radius: 18px;
+  border-radius: 10px;
+
+  width: 170px;
+  height: 50px;
 }
 .fifth-section .last-card .button span {
-  font-size: 20px;
+  font-size: 16px;
 }
 
 .fifth-section .last-card .button > div {
@@ -393,13 +396,13 @@
     font-size: 2.2rem;
   }
   .fifth-section .last-card .button {
-    width: 250px;
-    height: 70px;
-    border-radius: 20px;
+    width: 180px;
+    height: 60px;
+    border-radius: 16px;
     margin-left: 0;
   }
   .fifth-section .last-card .button span {
-    font-size: 25px;
+    font-size: 18px;
   }
   .fifth-section .last-card .button > div {
     width: 35px;
@@ -773,9 +776,7 @@
   display: flex;
 
   @media (max-width: 767px) {
-
   }
-
 }
 
 .chart-container {

@@ -1,4 +1,4 @@
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData, redirect } from 'react-router-dom';
 import { TownTable } from './components';
 
 import {
@@ -18,6 +18,9 @@ export const loader = async () => {
 
     return { towns: responseData };
   } catch (error) {
+    if (error.response.status === 401) {
+      return redirect('/login');
+    }
     return error;
   }
 };

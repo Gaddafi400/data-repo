@@ -9,7 +9,7 @@ const VariableTable = ({ items }) => {
   const [search, setSearch] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const itemsPerPage = 10;
-  const totalItems = items.length;
+  const totalItems = items?.length;
   const [currentPage, setCurrentPage] = useState(1);
 
   const [variables, setVariables] = useState(items);
@@ -23,7 +23,7 @@ const VariableTable = ({ items }) => {
   // };
 
   // Filter items based on the search input
-  const filteredVariable = variables.filter((item) =>
+  const filteredVariable = variables?.filter((item) =>
     item.variable.toLowerCase().includes(search.toLowerCase())
   );
 

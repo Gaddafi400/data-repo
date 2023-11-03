@@ -11,16 +11,16 @@ offlineExportingInit(Highcharts);
 const BubbleChart = ({ hData, label }) => {
   const options = {
     chart: {
-      type: 'scatter', // Set the chart type to 'scatter'
+      type: 'scatter',
       backgroundColor: null,
-      width: 1000, // Set the width of the chart (in pixels)
-      height: 650, // Set the height of the chart (in pixels)
+      width: 1200,
+      height: 650,
     },
     title: {
       text: label,
-      align: 'left',
+      align: 'center',
       style: {
-        color: 'black', // Set the title text color to black
+        color: 'black',
       },
     },
     xAxis: {
@@ -42,7 +42,7 @@ const BubbleChart = ({ hData, label }) => {
     plotOptions: {
       scatter: {
         marker: {
-          radius: 10, // Adjust the marker size to control the bubble appearance
+          radius: 8,
         },
         dataLabels: {
           enabled: true,

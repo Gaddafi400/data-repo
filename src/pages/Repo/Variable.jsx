@@ -1,4 +1,4 @@
-import { useLoaderData } from 'react-router-dom';
+import { redirect, useLoaderData } from 'react-router-dom';
 import { VariableTable } from './components';
 
 import { customFetch, header, getUserFromLocalStorage } from '../../utils';
@@ -13,6 +13,9 @@ export const loader = async () => {
     const responseData = await response.data.data;
     return { variables: responseData };
   } catch (error) {
+    if (error.response.status === 401) {
+      return redirect('/login');
+    }
     return error;
   }
 };

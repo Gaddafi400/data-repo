@@ -1,10 +1,9 @@
 import { FiLayers, FiBox, FiDatabase, FiBookOpen } from 'react-icons/fi';
-
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData, redirect } from 'react-router-dom';
 
 import { customFetch, header, getUserFromLocalStorage } from '../../utils';
-
 import subscribers from '../../assets/subscribe.png';
+
 
 const url = '/admin/index';
 
@@ -17,6 +16,9 @@ export const loader = async () => {
 
     return { dashboard: responseData };
   } catch (error) {
+    if (error.response.status === 401) {
+      return redirect('/login');
+    }
     return error;
   }
 };

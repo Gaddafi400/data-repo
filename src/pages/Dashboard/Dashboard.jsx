@@ -1,8 +1,4 @@
-import { FiLayers, FiDatabase } from 'react-icons/fi';
-import { FaShoppingCart } from 'react-icons/fa';
-
-import { useLoaderData } from 'react-router-dom';
-
+import { useLoaderData, redirect } from 'react-router-dom';
 import {
   customFetchMarket,
   header,
@@ -26,6 +22,9 @@ export const loader = async () => {
 
     return { dashboard: responseData };
   } catch (error) {
+    if (error.response.status === 401) {
+      return redirect('/login');
+    }
     return error;
   }
 };

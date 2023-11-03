@@ -2,14 +2,15 @@ import PropTypes from 'prop-types';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import exportingInit from 'highcharts/modules/exporting';
+import fullscreenInit from 'highcharts/modules/full-screen';
 import offlineExportingInit from 'highcharts/modules/offline-exporting';
 
 // Initialize the exporting module
 exportingInit(Highcharts);
 offlineExportingInit(Highcharts);
+fullscreenInit(Highcharts);
 
 const PieChart = ({ hData, label }) => {
- 
   const options = {
     chart: {
       type: 'pie',
@@ -46,11 +47,12 @@ const PieChart = ({ hData, label }) => {
           enabled: true,
           format: '<b>{point.name}</b>: {point.percentage:.1f} %',
           style: {
-            color: '#333',
+            color: 'black',
             fontSize: '12px',
+            textOutline: 'none',
+            opacity: 0.8,
           },
-          distance: 10,
-          allowOverlap: true,
+          distance: 20,
         },
         series: {
           dataGrouping: {
@@ -64,7 +66,13 @@ const PieChart = ({ hData, label }) => {
     exporting: {
       buttons: {
         contextButton: {
-          menuItems: ['downloadPNG', 'downloadJPEG', 'downloadSVG'],
+          menuItems: [
+            'viewFullscreen',
+            'separator',
+            'downloadPNG',
+            'downloadJPEG',
+            'downloadSVG',
+          ],
         },
       },
     },
@@ -88,6 +96,13 @@ const PieChart = ({ hData, label }) => {
       '#33FF33',
       '#FF6633',
       '#ff33a081',
+      '#4caefe',
+      '#3dc3e8',
+      '#2dd9db',
+      '#1feeaf',
+      '#0ff3a0',
+      '#00e887',
+      '#23e274',
     ],
   };
 

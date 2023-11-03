@@ -769,6 +769,13 @@
   height: 875px;
   margin: 0 auto;
   margin-bottom: 10rem;
+
+  display: flex;
+
+  @media (max-width: 767px) {
+
+  }
+
 }
 
 .chart-container {

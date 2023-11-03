@@ -17,6 +17,13 @@ const BarChart = ({ hData, label }) => {
     '#33FF33',
     '#FF6633',
     '#ff33a081',
+    '#4caefe',
+    '#3dc3e8',
+    '#2dd9db',
+    '#1feeaf',
+    '#0ff3a0',
+    '#00e887',
+    '#23e274',
   ];
 
   const options = {
@@ -24,14 +31,15 @@ const BarChart = ({ hData, label }) => {
       type: 'bar',
       backgroundColor: 'transparent',
       width: 1200,
-      height: 720,
+      height: 710,
     },
     title: {
       text: label,
-      align: 'left',
+      align: 'center',
       style: {
         color: 'black',
-        fontSize: '24px',
+        fontSize: '20px',
+        opacity: 0.8,
       },
     },
     xAxis: {
@@ -39,7 +47,7 @@ const BarChart = ({ hData, label }) => {
       labels: {
         style: {
           color: 'black',
-          fontSize: '14px',
+          fontSize: '12px',
         },
       },
     },
@@ -48,7 +56,7 @@ const BarChart = ({ hData, label }) => {
         text: 'Value',
         style: {
           color: 'black',
-          fontSize: '14px',
+          fontSize: '12px',
         },
       },
       labels: {
@@ -67,7 +75,7 @@ const BarChart = ({ hData, label }) => {
           enabled: true,
           style: {
             color: 'black',
-            fontSize: '13px',
+            fontSize: '12px',
           },
         },
       },

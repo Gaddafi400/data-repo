@@ -11,17 +11,17 @@ offlineExportingInit(Highcharts);
 const AreaChart = ({ hData, label }) => {
   const options = {
     chart: {
-      type: 'area', // Change the chart type to 'area'
+      type: 'area',
       backgroundColor: 'transparent',
-      width: 1000,
-      height: 720,
+      width: 1200,
+      height: 710,
     },
     title: {
       text: label,
-      align: 'left',
+      align: 'center',
       style: {
         color: 'black',
-        fontSize: '24px',
+        fontSize: '20px',
       },
     },
     xAxis: {
@@ -29,7 +29,7 @@ const AreaChart = ({ hData, label }) => {
       labels: {
         style: {
           color: 'black',
-          fontSize: '14px',
+          fontSize: '12px',
         },
         rotation: -45,
       },
@@ -39,7 +39,7 @@ const AreaChart = ({ hData, label }) => {
         text: 'Value',
         style: {
           color: 'black',
-          fontSize: '14px',
+          fontSize: '12px',
         },
       },
       labels: {
@@ -51,7 +51,7 @@ const AreaChart = ({ hData, label }) => {
     },
     plotOptions: {
       area: {
-        fillOpacity: 0.5, // Adjust fill opacity for the area chart
+        fillOpacity: 0.8,
         dataLabels: {
           enabled: true,
           style: {
@@ -72,7 +72,7 @@ const AreaChart = ({ hData, label }) => {
       {
         name: 'Values',
         data: hData.map((item) => item.y),
-        color: 'rgba(41, 41, 73, 0.5)', 
+        color: 'rgba(41, 41, 73, 0.5)',
       },
     ],
   };

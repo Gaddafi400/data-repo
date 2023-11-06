@@ -129,7 +129,7 @@ const Mfinder = () => {
         </div>
 
         <div className="mfinder-form-container">
-          <h1 className=" text-white font-medium text-center">
+          <h1 className=" text-white font-semibold sm:text-center text-3xl sm:text-5xl">
             Find Local Markets and Commodities in Nigeria
           </h1>
           <form className="mfinder-form">

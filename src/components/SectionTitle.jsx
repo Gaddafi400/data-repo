@@ -2,13 +2,12 @@ import PropTypes from 'prop-types';
 
 const SectionTitle = ({ title, subtitle }) => {
   return (
-    <div className="text-primary-500 text-center section-title">
-      <h2 className="capitalize text-slate-800  font-bold">
+    <div className="text-primary-500 text-center">
+      <h2 className="capitalize text-slate-800  py-8 font-semibold text-3xl sm:text-4xl ">
         {title}
       </h2>
-      <span className="text-center text-slate-800 font-normal">
-        {subtitle}
-      </span>
+
+      <span className="text-slate-800 text-2xl sm:text-center">{subtitle}</span>
     </div>
   );
 };

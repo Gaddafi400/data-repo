@@ -65,13 +65,15 @@ const Hero = () => {
   return (
     <div className="hero" id="hero">
       <div className="search-container">
-        <h1>Data, Knowledge, Insights all in one place </h1>
-        <p>
+        <h1 className="text-slate-800 text-center text-2xl sm:text-4xl">
+          Data, Knowledge, Insights all in one place{' '}
+        </h1>
+        <p className="text-slate-800 text-center text-xl sm:text-2xl">
           Comprehensive Data and Knowledge Spanning 36 States and Over 774 Local
           Government in Nigeria
         </p>
 
-        <div className="flex flex-col gap-4 py-4 px-4">
+        <div className="flex flex-col gap-4 py-12 px-4">
           <SearchableSelect options={datasets} />
           <div className="category">
             {categories.map((category) => (

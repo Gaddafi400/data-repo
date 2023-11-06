@@ -29,7 +29,7 @@ const Navbar = () => {
               className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-primary-500 rounded-box w-52"
             >
               <li>
-                <Link to="/data-set" className="nav-link" style={style}>
+                <Link to="/" className="nav-link" style={style}>
                   Data set
                 </Link>
               </li>
@@ -72,6 +72,7 @@ const Navbar = () => {
           <ul className="menu menu-horizontal px-1">
             <li>
               <Link
+                to="/"
                 className="hover:text-white text-base nav-link"
                 style={style}
               >

@@ -4,7 +4,7 @@ const Category = ({ title, handleClick }) => {
   return (
     <button
       onClick={handleClick}
-      className="category-button hover:bg-primary-700"
+      className="category-button hover:bg-primary-700 text-sm sm:text-base"
     >
       {title}
     </button>

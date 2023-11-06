@@ -16,7 +16,6 @@ function getRandomImage() {
 }
 
 const MyCarousel = ({ data }) => {
-
   const slideContentStyles = {
     display: 'flex',
     flexDirection: 'column',
@@ -45,7 +44,7 @@ const MyCarousel = ({ data }) => {
           <div style={slideContentStyles}>
             <div className="circle-with-ding">
               <img src={getRandomImage()} alt="Icon 1" style={imageStyles} />
-              <h2 className="font-bold">DID YOU KNOW?</h2>
+              <h2 className="font-semibold text-slate-800">DID YOU KNOW?</h2>
               <p>{item?.message}</p>
             </div>
           </div>

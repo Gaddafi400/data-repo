@@ -162,7 +162,12 @@ const Map = ({ markets }) => {
     googleMapsApiKey: 'AIzaSyD7rfqjUrqhxFgxBsmgM68GOFsY4FCOZ-s',
   });
 
-  if (!isLoaded) return <div>Loading...</div>;
+  if (!isLoaded)
+    return (
+      <div className="flex items-center justify-center w-full h-full">
+        <span className="loading loading-ring loading-xl bg-white" />
+      </div>
+    );
 
   return (
     <div className="map">

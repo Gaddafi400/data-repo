@@ -39,31 +39,35 @@ const Landing = () => {
   return (
     <div>
       <section className="first-section">
-        <Card
-          title="Data Repository"
-          imageUrl={location}
-          description="
+        <div className="px-4">
+          <Card
+            title="Data Repository"
+            imageUrl={location}
+            description="
         Our platform serves as a comprehensive data repository where users 
         can easily access a wealth of valuable information on topics 
         ranging from the economy and the environment to education and more."
-        />
+          />
+        </div>
       </section>
 
       <section className="second-section">
-        <Finder
-          title="Market Finder"
-          imageUrl={finder}
-          description="
+        <div className="px-4">
+          <Finder
+            title="Market Finder"
+            imageUrl={finder}
+            description="
             Our platform serves as a comprehensive data repository 
             where users can easily access a wealth of valuable information 
             on topics ranging from the economy and the environment to 
             education and more. "
-          position="right"
-        />
-        <SectionTitle
-          title="Uncommon Knowledge"
-          subtitle="Collect vital data and thought-provoking insights into meaningful subjects."
-        />
+            position="right"
+          />
+          <SectionTitle
+            title="Uncommon Knowledge"
+            subtitle="Collect vital data and thought-provoking insights into meaningful subjects."
+          />
+        </div>
       </section>
 
       <section className="third-section">
@@ -71,29 +75,31 @@ const Landing = () => {
       </section>
 
       <section className="fourth-section">
-        <h1 className="text-slate-800 font-bold  text-center">
-          Stay updated with Data Insights
-        </h1>
+        <div className="px-4">
+          <h1 className="text-slate-800 font-semibold text-center text-3xl sm:text-4xl">
+            Stay updated with Data Insights
+          </h1>
 
-        <Form className="flex align-element" method="POST">
-          <input
-            type="email"
-            placeholder="Email address"
-            name="email"
-            id="email"
-            required
-            className="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2"
-          />
+          <Form className="flex align-element" method="POST">
+            <input
+              type="email"
+              placeholder="Email address"
+              name="email"
+              id="email"
+              required
+              className="bg-gray-50 border border-primary-300 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full"
+            />
 
-          <button type="submit" className="px-2 py-2 text-white ">
-            subscribe now
-          </button>
-        </Form>
-        <Portfolio />
+            <button type="submit" className="text-white ">
+              subscribe now
+            </button>
+          </Form>
+          <Portfolio />
+        </div>
       </section>
 
       <section className="fifth-section">
-        <div className="w-[1521px] h-[600px] bg-slate-800 xl:rounded-[35px] rounded-[25px] last-card">
+        <div className="xl:rounded-[35px] rounded-[25px] last-card">
           <div className="last-card-content">
             <p className="text-white font-semibold">
               Your Reliable Platform For Seamless Search
@@ -112,8 +118,8 @@ const Landing = () => {
                 });
               }}
             >
-              <span className="text-black font-base">Start Now</span>
-              <div className="w-[25px] h-[25px] bg-slate-800 rounded-full">
+              <span className="text-slate-800 font-base">Start Now</span>
+              <div className="w-[25px] h-[25px] bg-primary-600 rounded-full">
                 <img
                   src={btnarrow}
                   alt="btnarrow"

@@ -2,6 +2,8 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 
 const FinderSidebar = ({ items }) => {
+
+  
   const [isDropdownOpen, setDropdownOpen] = useState(true);
   const toggleDropdown = () => {
     setDropdownOpen(!isDropdownOpen);

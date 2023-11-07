@@ -21,7 +21,7 @@ export const loader = async () => {
   }
 };
 
-const Market = () => {
+const SingleMarket = () => {
   const { markets } = useLoaderData();
 
   return (
@@ -31,4 +31,4 @@ const Market = () => {
   );
 };
 
-export default Market;
+export default SingleMarket;

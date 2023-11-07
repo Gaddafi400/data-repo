@@ -135,7 +135,7 @@ const SingleData = () => {
               {/* Add conditionals for other components */}
 
               {selectedItem === 'charts' && (
-                <div className="bg-white h-full p-4 rounded-lg overflow-scroll">
+                <div className="bg-white h-full p-4 rounded-lg overflow-none">
                   <div className="chart-container">
                     {/* display chart here base on the button click under the container */}
                     {chartType === 'BarChart' ? (

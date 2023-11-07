@@ -13,8 +13,8 @@ const AreaChart = ({ hData, label }) => {
     chart: {
       type: 'area',
       backgroundColor: 'transparent',
-      width: 1200,
-      height: 710,
+      width: 1100,
+      height: 600,
     },
     title: {
       text: label,

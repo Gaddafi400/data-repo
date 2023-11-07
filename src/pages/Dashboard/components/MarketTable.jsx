@@ -1,11 +1,23 @@
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
-import { FaTrash, FaEdit } from 'react-icons/fa';
+import { FaTrash, FaEdit, FaEye } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
+
 import Pagination from './Pagination';
 import CreateMarket from './CreateMarket';
 import EditMarket from './EditMarket';
+import Confirm from './Confirm';
+
+import {
+  customFetchMarket,
+  getUserFromLocalStorage,
+  flattenErrorMessage,
+  header,
+} from '../../../utils';
 
 const MarketTable = ({ items }) => {
+  const navigate = useNavigate();
   const [search, setSearch] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -18,6 +30,10 @@ const MarketTable = ({ items }) => {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [editData, setEditData] = useState(false);
 
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [deletingItemId, setDeletingItemId] = useState(null);
+  const [deleting, setDeleting] = useState(false);
+
   const openCloseModal = () => {
     setIsModalOpen(!isModalOpen);
   };
@@ -27,7 +43,6 @@ const MarketTable = ({ items }) => {
     item.name.toLowerCase().includes(search.toLowerCase())
   );
 
-  // Calculate the index of the first and last item to display on the current page
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredMarkets.slice(indexOfFirstItem, indexOfLastItem);
@@ -73,6 +88,51 @@ const MarketTable = ({ items }) => {
     openCloseEditModal();
   };
 
+  const handleConfirmDelete = (e) => {
+    e.preventDefault();
+    setConfirmDelete(!confirmDelete);
+  };
+
+  // delete user
+  const deleteUser = async () => {
+    if (deletingItemId) {
+      let url = `/admin/markets/${deletingItemId}`;
+      const token = getUserFromLocalStorage().token;
+
+      setDeleting(true);
+      try {
+        const response = await customFetchMarket.delete(url, header(token));
+        const responseData = response.data.data;
+        toast.success('Market deleted successfully!');
+
+        // Filter out the market with the specified ID from the 'markets' state
+        const updatedMarkets = markets.filter(
+          (user) => user.id !== deletingItemId
+        );
+        setMarkets(updatedMarkets);
+        setDeletingItemId(null);
+
+        // Check if the current page exceeds the new total number of pages to update pagination
+        if (currentPage > Math.ceil(updatedMarkets.length / itemsPerPage)) {
+          // If so, set the current page to the last page
+          setCurrentPage(Math.ceil(updatedMarkets.length / itemsPerPage));
+        }
+        // close the modal
+        setConfirmDelete(!confirmDelete);
+
+        return { user: responseData };
+      } catch (error) {
+        const errorMessage = flattenErrorMessage(error.response.data?.data);
+        toast.error(
+          errorMessage || 'Failed to delete market. Please try again.'
+        );
+        return error;
+      } finally {
+        setDeleting(false);
+      }
+    }
+  };
+
   if (isModalOpen) {
     return (
       <CreateMarket
@@ -88,6 +148,17 @@ const MarketTable = ({ items }) => {
         onClose={openCloseEditModal}
         initialData={editData}
         updateMarket={updateMarket}
+      />
+    );
+  }
+
+  if (confirmDelete) {
+    return (
+      <Confirm
+        onClose={handleConfirmDelete}
+        message="Are you sure you want to delete this market?"
+        onConfirm={deleteUser}
+        deleting={deleting}
       />
     );
   }
@@ -232,8 +303,26 @@ const MarketTable = ({ items }) => {
                   <FaEdit className="mr-1" /> Edit
                 </button>
 
-                <button className="font-medium hover:underline flex items-center">
-                  <FaTrash className="mr-1 text-red-600" /> Delete
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const targetUrl = `/dashboard/market/${item?.id}`;
+                    navigate(targetUrl);
+                  }}
+                  className="font-medium hover:underline flex items-center mr-3"
+                >
+                  <FaEye className="mr-1" /> View
+                </button>
+
+                <button
+                  className={`font-medium hover:underline flex items-center`}
+                  onClick={(e) => {
+                    handleConfirmDelete(e);
+                    setDeletingItemId(item.id);
+                  }}
+                >
+                  <FaTrash className="mr-1  animate-spin text-red-600" />
+                  Delete
                 </button>
               </td>
             </tr>

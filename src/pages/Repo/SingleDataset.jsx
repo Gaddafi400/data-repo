@@ -1,7 +1,7 @@
-import { useLoaderData, redirect } from 'react-router-dom';
+import { useLoaderData, redirect, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
-import { FaTrash } from 'react-icons/fa';
+import { FaTrash, FaArrowLeft } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import {
   customFetch,
@@ -33,6 +33,7 @@ export const loader = async ({ params }) => {
 
 const SingleDataset = () => {
   const { singleRecord } = useLoaderData();
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAddOperation, setIsAddOperation] = useState(false);
   const [isAddVariable, setIsVariable] = useState(false);
@@ -141,26 +142,35 @@ const SingleDataset = () => {
     <div className="admin-container container-with-sidebar">
       <div className="">
         {/* download and upload dataset */}
-        <div className="flex flex-col lg:flex-row justify-end gap-3 mb-2">
+        <div className="flex flex-col lg:flex-row justify-between gap-3 mb-6">
           <button
-            className="bg-primary-500 text-white rounded-md px-3 py-2 hover:bg-primary-700"
-            onClick={openCloseModal}
+            className=" text-white bg-primary-400 hover:bg-primary-700 font-medium rounded-md text-sm px-4 py-2 flex items-center w-[90px]"
+            onClick={() => navigate(-1)}
           >
-            Upload dataset
+            <FaArrowLeft className="inline mr-2" /> Back
           </button>
-          <button
-            className={`bg-primary-500 text-white rounded-md px-3 py-2 hover:bg-primary-700 ${
-              isDownloading ? 'cursor-not-allowed' : 'cursor-pointer'
-            }`}
-            onClick={handleDownload}
-            disabled={isDownloading}
-          >
-            {isDownloading ? 'Downloading...' : 'Download template'}
-          </button>
+
+          <div className="flex gap-2 justify-end">
+            <button
+              className="bg-primary-400 text-white font-medium text-sm rounded-md px-3 py-2 hover:bg-primary-700"
+              onClick={openCloseModal}
+            >
+              Upload dataset
+            </button>
+            <button
+              className={`bg-primary-400 text-white font-medium text-sm  rounded-md px-3 py-2 hover:bg-primary-700 ${
+                isDownloading ? 'cursor-not-allowed' : 'cursor-pointer'
+              }`}
+              onClick={handleDownload}
+              disabled={isDownloading}
+            >
+              {isDownloading ? 'Downloading...' : 'Download template'}
+            </button>
+          </div>
         </div>
-        <h1 className="text-3xl font-bold mb-4">{name}</h1>
-        <p className="text-lg text-gray-700 mb-4">{category}</p>
-        <p className="text-gray-600 mb-4">{description}</p>
+        <h1 className="text-2xl md:text-3xl font-semibold text-slate-800 mb-4">{name}</h1>
+        <p className="text-lg text-slate-800 mb-4">{category}</p>
+        <p className="text-slate-800mb-4">{description}</p>
 
         {/* Variables */}
         <div className="flex items-center justify-between gap-4">
@@ -168,7 +178,7 @@ const SingleDataset = () => {
             Variables
           </h2>
           <div
-            className=" text-black rounded-lg h-[28px] px-2   flex items-center border  border-black cursor-pointer  hover:bg-primary-400 hover:text-white"
+            className=" text-black rounded-lg h-[28px] px-2 flex items-center border  border-black cursor-pointer  hover:bg-primary-400 hover:text-white"
             onClick={handleAddVariable}
           >
             <AiOutlinePlus
@@ -179,9 +189,9 @@ const SingleDataset = () => {
           </div>
         </div>
 
-        <div className="border border-primary-200 rounded-lg p-1 mb-12">
+        <div className="border border-primary-100 rounded-lg p-1 mb-12">
           <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 ">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <thead className="text-xs text-slate-800 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
                 <th scope="col" className="px-6 py-3  border-gray-300">
                   Variables
@@ -228,9 +238,9 @@ const SingleDataset = () => {
           </div>
         </div>
 
-        <div className="border border-primary-200 rounded-lg p-1 mb-12">
+        <div className="border border-primary-100 rounded-lg p-1 mb-12">
           <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 overflow-y-auto">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <thead className="text-xs text-slate-800 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
                 <th scope="col" className="px-6 py-3 border-gray-300">
                   Variables
@@ -268,7 +278,7 @@ const SingleDataset = () => {
           Dataset Records
         </h2>
         <div
-          className="border border-primary-200 rounded-lg"
+          className="border border-primary-100 rounded-lg"
           style={{ maxHeight: '500px', overflowX: 'auto' }}
         >
           <Table data={tableData} />

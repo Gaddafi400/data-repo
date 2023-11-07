@@ -588,19 +588,9 @@
     gap: 1rem;
   }
 }
-.search-card h1 {
-  font-size: 1.2rem;
-  font-weight: 500;
-}
-.search-card p {
-  font-size: 1rem;
-}
 
 .search-card button {
-  background: #292949;
   color: #fff;
-  padding: 0.6rem;
-  border-radius: 10px;
   width: 100%;
   @media (min-width: 750px) {
     width: 140px;
@@ -929,7 +919,6 @@
 }
 
 .mfinder-hero h1 {
-
   max-width: 1200px;
   margin: 1rem 0 4rem 0;
 
@@ -990,7 +979,7 @@
   height: 875px;
   margin: 2rem auto;
   margin-bottom: 10rem;
-  overflow-x: scroll;
+  overflow-x: none;
   display: flex;
   gap: 1rem;
 
@@ -1001,9 +990,14 @@
 
 /* map+++++++++++++++++++++ */
 
+/* parent */
+
 .gm-style-iw-c {
   background: #ebb044 !important;
+  min-width: 350px !important;
 }
+
+
 .gm-ui-hover-effect {
   height: 45px !important;
   width: 45px !important;
@@ -1013,8 +1007,19 @@
   background: none !important;
 }
 
+.gm-style-iw-d {
+  overflow: hidden !important;
+  margin: 0 auto !important;
+}
+.gm-style-iw .gm-style-iw-c
+.gm-style-iw .gm-style-iw-c {
+  display: none !important;
+}
+
 .map-profile {
-  width: 250px;
+  margin: 0 auto;
+  margin-right: 1rem;
+  /* width: 250px; */
   /* height: 20px; */
 }
 

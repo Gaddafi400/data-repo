@@ -26,8 +26,6 @@ export const loader = async () => {
 const Mfinder = () => {
   const { initialData } = useLoaderData();
 
-  // console.log(initialData?.markets);
-
   const [states, setStates] = useState([]);
   const [localGovernments, setLocalGovernments] = useState([]);
   const [towns, setTowns] = useState([]);
@@ -43,7 +41,6 @@ const Mfinder = () => {
   // get states
   useEffect(() => {
     const stateUrl = '/guest/states/';
-
     customFetchMarket
       .get(stateUrl)
       .then((response) => {
@@ -107,9 +104,9 @@ const Mfinder = () => {
       town: selectedTown,
       lga: selectedLGA,
     };
-    
+
     try {
-      const response = await customFetchMarket.get(url, params);
+      const response = await customFetchMarket.get(url, { params });
       const { commodities, markets } = response.data.data;
       setMarkets(markets);
       setCommodities(commodities);

@@ -120,7 +120,7 @@ const MapContainer = ({ markets }) => {
             >
               {activeMarker === id ? (
                 <InfoWindow onCloseClick={() => setActiveMarker(null)}>
-                  <div className="map-profile rounded-lg p-4">
+                  <div className="map-profile rounded-lg p-4 ">
                     <h1 className="text-center font-medium text-1xl mb-2">
                       Market Profile
                     </h1>

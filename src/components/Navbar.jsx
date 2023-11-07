@@ -30,7 +30,7 @@ const Navbar = () => {
             >
               <li>
                 <Link to="/" className="nav-link" style={style}>
-                  Data set
+                  Data Repo
                 </Link>
               </li>
               <li>
@@ -76,7 +76,7 @@ const Navbar = () => {
                 className="hover:text-white text-base nav-link"
                 style={style}
               >
-                Data set
+                Data Repo
               </Link>
             </li>
             <li>

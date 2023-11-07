@@ -17,7 +17,7 @@ const SearchResults = ({ searchData, topSearch }) => {
   const navigate = useNavigate();
 
   // Calculate total pages based on data length and itemsPerPage
-  const totalPages = Math.ceil(searchData.length / itemsPerPage);
+  const totalPages = Math.ceil(searchData?.length / itemsPerPage);
 
   // Function to slice data for the current page
   const getCurrentPageData = () => {

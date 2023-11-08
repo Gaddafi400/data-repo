@@ -1,9 +1,18 @@
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
 import { FaTrash, FaEdit } from 'react-icons/fa';
 import Pagination from './Pagination';
 import CreateCommodity from './CreateCommodity';
 import EditCommodity from './EditCommodity';
+import Confirm from './Confirm';
+
+import {
+  customFetchMarket,
+  getUserFromLocalStorage,
+  flattenErrorMessage,
+  header,
+} from '../../../utils';
 
 const CommodityTable = ({ items }) => {
   const [search, setSearch] = useState('');
@@ -14,8 +23,11 @@ const CommodityTable = ({ items }) => {
   const itemsPerPage = 10;
   const totalItems = items.length;
   const [currentPage, setCurrentPage] = useState(1);
-
   const [commodities, setCommodities] = useState(items);
+
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [deletingItemId, setDeletingItemId] = useState(null);
+  const [deleting, setDeleting] = useState(false);
 
   const openCloseModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -64,6 +76,62 @@ const CommodityTable = ({ items }) => {
     }
     openCloseEditModal();
   };
+
+  const handleConfirmDelete = (e) => {
+    e.preventDefault();
+    setConfirmDelete(!confirmDelete);
+  };
+
+  // delete commodity
+  const deleteCommodity = async () => {
+    if (deletingItemId) {
+      let url = `/admin/commodities/${deletingItemId}`;
+      const token = getUserFromLocalStorage().token;
+
+      setDeleting(true);
+      try {
+        const response = await customFetchMarket.delete(url, header(token));
+        const responseData = response.data.data;
+        toast.success('Commodity deleted successfully!');
+
+        // Filter out the commodity with the specified ID from the 'commodities' state
+        const updatedCommodities = commodities.filter(
+          (user) => user.id !== deletingItemId
+        );
+        setCommodities(updatedCommodities);
+        setDeletingItemId(null);
+
+        // Check if the current page exceeds the new total number of pages to update pagination
+        if (currentPage > Math.ceil(updatedCommodities.length / itemsPerPage)) {
+          // If so, set the current page to the last page
+          setCurrentPage(Math.ceil(updatedCommodities.length / itemsPerPage));
+        }
+        // close the modal
+        setConfirmDelete(!confirmDelete);
+
+        return { user: responseData };
+      } catch (error) {
+        const errorMessage = flattenErrorMessage(error.response.data?.data);
+        toast.error(
+          errorMessage || 'Failed to delete commodity. Please try again.'
+        );
+        return error;
+      } finally {
+        setDeleting(false);
+      }
+    }
+  };
+
+  if (confirmDelete) {
+    return (
+      <Confirm
+        onClose={handleConfirmDelete}
+        message="Are you sure you want to delete this commodity?"
+        onConfirm={deleteCommodity}
+        deleting={deleting}
+      />
+    );
+  }
 
   if (isEditOpen) {
     return (
@@ -209,8 +277,15 @@ const CommodityTable = ({ items }) => {
                   <FaEdit className="mr-1" /> Edit
                 </button>
 
-                <button className="font-medium hover:underline flex items-center">
-                  <FaTrash className="mr-1 text-red-600" /> Delete
+                <button
+                  className={`font-medium hover:underline flex items-center`}
+                  onClick={(e) => {
+                    handleConfirmDelete(e);
+                    setDeletingItemId(item.id);
+                  }}
+                >
+                  <FaTrash className="mr-1  animate-spin text-red-600" />
+                  Delete
                 </button>
               </td>
             </tr>

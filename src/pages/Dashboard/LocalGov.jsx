@@ -1,12 +1,14 @@
 import { useLoaderData } from 'react-router-dom';
 
+import { LocalGovTable } from './components';
+
 import {
   customFetchMarket,
   header,
   getUserFromLocalStorage,
 } from '../../utils';
 
-const url = '/admin/states';
+const url = '/admin/lgas';
 
 export const loader = async () => {
   const token = getUserFromLocalStorage().token;
@@ -24,7 +26,11 @@ export const loader = async () => {
 const LocalGov = () => {
   const { localGov } = useLoaderData();
 
-  return <div className="admin-container container-with-sidebar">LocalGov</div>;
+  return (
+    <div className="admin-container container-with-sidebar">
+      <LocalGovTable items={localGov} />
+    </div>
+  );
 };
 
 export default LocalGov;

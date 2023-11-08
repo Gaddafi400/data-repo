@@ -35,7 +35,7 @@ const Navbar = () => {
     } else if (e.target.id.toLowerCase() === 'town') {
       navigate('/dashboard/town');
     } else {
-      navigate('/dashboard/town');
+      navigate('/dashboard/local-govt');
     }
   };
 

@@ -93,8 +93,8 @@ const MarketTable = ({ items }) => {
     setConfirmDelete(!confirmDelete);
   };
 
-  // delete user
-  const deleteUser = async () => {
+  // delete market
+  const deleteMarket = async () => {
     if (deletingItemId) {
       let url = `/admin/markets/${deletingItemId}`;
       const token = getUserFromLocalStorage().token;
@@ -133,6 +133,18 @@ const MarketTable = ({ items }) => {
     }
   };
 
+
+  if (confirmDelete) {
+    return (
+      <Confirm
+        onClose={handleConfirmDelete}
+        message="Are you sure you want to delete this market?"
+        onConfirm={deleteMarket}
+        deleting={deleting}
+      />
+    );
+  }
+
   if (isModalOpen) {
     return (
       <CreateMarket
@@ -152,16 +164,6 @@ const MarketTable = ({ items }) => {
     );
   }
 
-  if (confirmDelete) {
-    return (
-      <Confirm
-        onClose={handleConfirmDelete}
-        message="Are you sure you want to delete this market?"
-        onConfirm={deleteUser}
-        deleting={deleting}
-      />
-    );
-  }
 
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">

@@ -1,11 +1,18 @@
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
 import { FaTrash, FaEdit } from 'react-icons/fa';
-
 import Pagination from './Pagination';
-
 import CreateTown from './CreateTown';
 import EditTown from './EditTown';
+import Confirm from './Confirm';
+
+import {
+  customFetchMarket,
+  getUserFromLocalStorage,
+  flattenErrorMessage,
+  header,
+} from '../../../utils';
 
 const TownTable = ({ items }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -13,6 +20,10 @@ const TownTable = ({ items }) => {
 
   const [editData, setEditData] = useState(false);
   const [towns, setTowns] = useState(items);
+
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [deletingItemId, setDeletingItemId] = useState(null);
+  const [deleting, setDeleting] = useState(false);
 
   const [search, setSearch] = useState('');
   const itemsPerPage = 10;
@@ -50,6 +61,58 @@ const TownTable = ({ items }) => {
   const pageNumbers = [];
   for (let i = 1; i <= Math.ceil(filteredTowns.length / itemsPerPage); i++) {
     pageNumbers.push(i);
+  }
+
+  const handleConfirmDelete = (e) => {
+    e.preventDefault();
+    setConfirmDelete(!confirmDelete);
+  };
+
+  // delete town
+  const deleteTown = async () => {
+    if (deletingItemId) {
+      let url = `/admin/towns/${deletingItemId}`;
+      const token = getUserFromLocalStorage().token;
+
+      setDeleting(true);
+      try {
+        const response = await customFetchMarket.delete(url, header(token));
+        const responseData = response.data.data;
+        toast.success('Town deleted successfully!');
+
+        // Filter out the town with the specified ID from the 'towns' state
+        const updatedTowns = towns.filter((town) => town.id !== deletingItemId);
+        setTowns(updatedTowns);
+        setDeletingItemId(null);
+
+        // Check if the current page exceeds the new total number of pages to update pagination
+        if (currentPage > Math.ceil(updatedTowns.length / itemsPerPage)) {
+          // If so, set the current page to the last page
+          setCurrentPage(Math.ceil(updatedTowns.length / itemsPerPage));
+        }
+        // close the modal
+        setConfirmDelete(!confirmDelete);
+
+        return { user: responseData };
+      } catch (error) {
+        const errorMessage = flattenErrorMessage(error.response.data?.data);
+        toast.error(errorMessage || 'Failed to delete town. Please try again.');
+        return error;
+      } finally {
+        setDeleting(false);
+      }
+    }
+  };
+
+  if (confirmDelete) {
+    return (
+      <Confirm
+        onClose={handleConfirmDelete}
+        message="Are you sure you want to delete this town?"
+        onConfirm={deleteTown}
+        deleting={deleting}
+      />
+    );
   }
 
   if (isModalOpen) {
@@ -207,8 +270,15 @@ const TownTable = ({ items }) => {
                   <FaEdit className="mr-1" /> Edit
                 </button>
 
-                <button className="font-medium hover:underline flex items-center">
-                  <FaTrash className="mr-1 text-red-600" /> Delete
+                <button
+                  className={`font-medium hover:underline flex items-center`}
+                  onClick={(e) => {
+                    handleConfirmDelete(e);
+                    setDeletingItemId(item.id);
+                  }}
+                >
+                  <FaTrash className="mr-1  animate-spin text-red-600" />
+                  Delete
                 </button>
               </td>
             </tr>

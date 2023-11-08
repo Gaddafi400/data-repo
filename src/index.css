@@ -1016,6 +1016,8 @@
   display: none !important;
 }
 
+/* admin-container container-with-sidebar */
+
 .map-profile {
   margin: 0 auto;
   margin-right: 1rem;
@@ -1101,12 +1103,15 @@
   position: relative;
   width: calc(100% - 250px);
   margin: 0 auto;
+  max-height: calc(100vh - 100px);;
+
 }
 
 .container-with-sidebar {
   margin-left: 250px;
   padding: 2rem;
   /* border: 1px solid red; */
+  overflow: scroll;
 }
 
 @media (max-width: 640px) {

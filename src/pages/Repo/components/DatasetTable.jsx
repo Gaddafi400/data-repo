@@ -113,6 +113,21 @@ const DatasetTable = ({ items }) => {
     openCloseEditModal();
   };
 
+  // update dataset state on edit
+  const updateDataset = (editedDataset) => {
+    const datasetIndex = datasets.findIndex(
+      (dataset) => dataset.id === editedDataset.id
+    );
+
+    if (datasetIndex !== -1) {
+      // Create a new copy of the 'datasets' array and replace the updated one
+      const updatedDatasets = [...datasets];
+      updatedDatasets[datasetIndex] = editedDataset;
+      setDataset(updatedDatasets);
+    }
+    openCloseEditModal();
+  };
+
   const handleConfirmDelete = (e) => {
     e.preventDefault();
     setConfirmDelete(!confirmDelete);
@@ -128,7 +143,13 @@ const DatasetTable = ({ items }) => {
   }
 
   if (isEditOpen) {
-    return <EditDataset onClose={openCloseEditModal} initialData={editData} />;
+    return (
+      <EditDataset
+        onClose={openCloseEditModal}
+        initialData={editData}
+        updateDataset={updateDataset}
+      />
+    );
   }
 
   if (confirmDelete) {

@@ -1,9 +1,19 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { toast } from 'react-toastify';
 import { FaTrash, FaEdit } from 'react-icons/fa';
 
 import Pagination from '../../Dashboard/components/Pagination';
 import { CreateCategory } from '../components';
+import { Confirm } from '../../Dashboard/components';
+import EditCategory from './EditCategory';
+
+import {
+  customFetch,
+  getUserFromLocalStorage,
+  flattenErrorMessage,
+  header,
+} from '../../../utils';
 
 const CategoriesTable = ({ items }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -11,6 +21,10 @@ const CategoriesTable = ({ items }) => {
 
   const [editData, setEditData] = useState(false);
   const [categories, setCategories] = useState(items);
+
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [deletingItemId, setDeletingItemId] = useState(null);
+  const [deleting, setDeleting] = useState(false);
 
   const [search, setSearch] = useState('');
   const itemsPerPage = 10;
@@ -57,6 +71,92 @@ const CategoriesTable = ({ items }) => {
     pageNumbers.push(i);
   }
 
+  const handleConfirmDelete = (e) => {
+    e.preventDefault();
+    setConfirmDelete(!confirmDelete);
+  };
+
+  const handleEdit = (item) => {
+    setEditData(item);
+    openCloseEditModal();
+  };
+
+  // update category state on edit
+  const updateCategory = (editedCategory) => {
+    const categoryIndex = categories.findIndex(
+      (dataset) => dataset.id === editedCategory.id
+    );
+
+    if (categoryIndex !== -1) {
+      // Create a new copy of the 'categories' array and replace the updated one
+      const updatedCategories = [...categories];
+      updatedCategories[categoryIndex] = editedCategory;
+      setCategories(updatedCategories);
+    }
+    openCloseEditModal();
+  };
+
+  // delete categories
+  const deleteMarket = async () => {
+    if (deletingItemId) {
+      let url = `/admin/categories/${deletingItemId}`;
+      const token = getUserFromLocalStorage().token;
+
+      setDeleting(true);
+      try {
+        const response = await customFetch.delete(url, header(token));
+        const responseData = response.data.data;
+        toast.success('Category deleted successfully!');
+
+        // Filter out the category with the specified ID from the 'categories' state
+        const updatedCategories = categories.filter(
+          (category) => category.id !== deletingItemId
+        );
+        setCategories(updatedCategories);
+        setDeletingItemId(null);
+
+        // Check if the current page exceeds the new total number of pages to update pagination
+        if (currentPage > Math.ceil(updatedCategories.length / itemsPerPage)) {
+          // If so, set the current page to the last page
+          setCurrentPage(Math.ceil(updatedCategories.length / itemsPerPage));
+        }
+        // close the modal
+        setConfirmDelete(!confirmDelete);
+
+        return { user: responseData };
+      } catch (error) {
+        const errorMessage = flattenErrorMessage(error.response.data?.data);
+        toast.error(
+          errorMessage || 'Failed to delete category. Please try again.'
+        );
+        return error;
+      } finally {
+        setDeleting(false);
+      }
+    }
+  };
+
+  if (confirmDelete) {
+    return (
+      <Confirm
+        onClose={handleConfirmDelete}
+        message="Are you sure you want to delete this category?"
+        onConfirm={deleteMarket}
+        deleting={deleting}
+      />
+    );
+  }
+
+  if (isEditOpen) {
+    return (
+      <EditCategory
+        onClose={openCloseEditModal}
+        initialData={editData}
+        updateCategory={updateCategory}
+      />
+    );
+  }
+
   if (isModalOpen) {
     return (
       <CreateCategory
@@ -65,15 +165,6 @@ const CategoriesTable = ({ items }) => {
       />
     );
   }
-
-  // if (isEditOpen) {
-  //   return <EditTown onClose={openCloseEditModal} initialData={editData} />;
-  // }
-  // handle edit
-  // const handleEdit = (item) => {
-  //   setEditData(item);
-  //   openCloseEditModal();
-  // };
 
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-4 mb-4">
@@ -185,14 +276,21 @@ const CategoriesTable = ({ items }) => {
 
               <td className="px-6 py-4 flex">
                 <button
-                  // onClick={() => handleEdit(item)}
+                  onClick={() => handleEdit(item)}
                   className="font-medium hover:underline flex items-center mr-3"
                 >
                   <FaEdit className="mr-1" /> Edit
                 </button>
 
-                <button className="font-medium hover:underline flex items-center">
-                  <FaTrash className="mr-1 text-red-600" /> Delete
+                <button
+                  className={`font-medium hover:underline flex items-center`}
+                  onClick={(e) => {
+                    handleConfirmDelete(e);
+                    setDeletingItemId(item.id);
+                  }}
+                >
+                  <FaTrash className="mr-1  animate-spin text-red-600" />
+                  Delete
                 </button>
               </td>
             </tr>

@@ -1,10 +1,18 @@
 import PropTypes from 'prop-types';
-
+import { toast } from 'react-toastify';
 import { useState } from 'react';
 
 import { FaTrash, FaEdit } from 'react-icons/fa';
 import Pagination from '../../Dashboard/components/Pagination';
 import { CreateCknowledge } from '../components';
+import { Confirm } from '../../Dashboard/components';
+
+import {
+  customFetch,
+  getUserFromLocalStorage,
+  flattenErrorMessage,
+  header,
+} from '../../../utils';
 
 const CknowledgeTable = ({ items }) => {
   const [search, setSearch] = useState('');
@@ -14,6 +22,10 @@ const CknowledgeTable = ({ items }) => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const [cKnowledge, SetCKnowledge] = useState(items);
+
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [deletingItemId, setDeletingItemId] = useState(null);
+  const [deleting, setDeleting] = useState(false);
 
   const openCloseModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -53,6 +65,62 @@ const CknowledgeTable = ({ items }) => {
     pageNumbers.push(i);
   }
 
+  const handleConfirmDelete = (e) => {
+    e.preventDefault();
+    setConfirmDelete(!confirmDelete);
+  };
+
+  // delete Cknowledge
+  const deleteCknowledge = async () => {
+    if (deletingItemId) {
+      let url = `/admin/knowledge/${deletingItemId}`;
+      const token = getUserFromLocalStorage().token;
+
+      setDeleting(true);
+      try {
+        const response = await customFetch.delete(url, header(token));
+        const responseData = response.data.data;
+        toast.success('Cknowledge deleted successfully!');
+
+        // Filter out the Cknowledge with the specified ID from the 'Cknowledge' state
+        const updatedCknowledges = cKnowledge.filter(
+          (cknowledge) => cknowledge.id !== deletingItemId
+        );
+        SetCKnowledge(updatedCknowledges);
+        setDeletingItemId(null);
+
+        // Check if the current page exceeds the new total number of pages to update pagination
+        if (currentPage > Math.ceil(updatedCknowledges.length / itemsPerPage)) {
+          // If so, set the current page to the last page
+          setCurrentPage(Math.ceil(updatedCknowledges.length / itemsPerPage));
+        }
+        // close the modal
+        setConfirmDelete(!confirmDelete);
+
+        return { user: responseData };
+      } catch (error) {
+        const errorMessage = flattenErrorMessage(error.response.data?.data);
+        toast.error(
+          errorMessage || 'Failed to delete Cknowledge. Please try again.'
+        );
+        return error;
+      } finally {
+        setDeleting(false);
+      }
+    }
+  };
+
+  if (confirmDelete) {
+    return (
+      <Confirm
+        onClose={handleConfirmDelete}
+        message="Are you sure you want to delete this Cknowledge?"
+        onConfirm={deleteCknowledge}
+        deleting={deleting}
+      />
+    );
+  }
+
   if (isModalOpen) {
     return (
       <CreateCknowledge
@@ -64,8 +132,6 @@ const CknowledgeTable = ({ items }) => {
 
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-5">
-   
-
       <div className="pb-4 bg-white dark:bg-gray-900 flex flex-col sm:flex-row justify-between items-center px-4 mt-2">
         <div className="mb-2 sm:mb-0 sm:mr-2">
           <label htmlFor="table-search" className="sr-only">
@@ -181,8 +247,15 @@ const CknowledgeTable = ({ items }) => {
                   <FaEdit className="mr-1" /> Edit
                 </button>
 
-                <button className="font-medium hover:underline flex items-center">
-                  <FaTrash className="mr-1 text-red-600" /> Delete
+                <button
+                  className={`font-medium hover:underline flex items-center`}
+                  onClick={(e) => {
+                    handleConfirmDelete(e);
+                    setDeletingItemId(item.id);
+                  }}
+                >
+                  <FaTrash className="mr-1  animate-spin text-red-600" />
+                  Delete
                 </button>
               </td>
             </tr>

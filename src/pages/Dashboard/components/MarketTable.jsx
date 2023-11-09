@@ -73,7 +73,7 @@ const MarketTable = ({ items }) => {
     openCloseEditModal();
   };
 
-  // update user state on edit
+  // update market state on edit
   const updateMarket = (editedMarket) => {
     const marketIndex = markets.findIndex(
       (user) => user.id === editedMarket.id
@@ -107,7 +107,7 @@ const MarketTable = ({ items }) => {
 
         // Filter out the market with the specified ID from the 'markets' state
         const updatedMarkets = markets.filter(
-          (user) => user.id !== deletingItemId
+          (market) => market.id !== deletingItemId
         );
         setMarkets(updatedMarkets);
         setDeletingItemId(null);

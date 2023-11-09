@@ -1,4 +1,4 @@
-import { redirect, Form } from 'react-router-dom';
+import { redirect, Form, useActionData } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Card, SectionTitle, Portfolio, Carousel, Finder } from '../components';
 import location from '../assets/location.png';
@@ -35,6 +35,9 @@ export const action = async ({ request }) => {
 
 const Landing = () => {
   const { knowledge } = useGlobalContext();
+  const data = useActionData();
+
+  console.log('data?.subscribing', data);
 
   return (
     <div>
@@ -90,7 +93,7 @@ const Landing = () => {
               className="bg-gray-50 border border-primary-300 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full"
             />
 
-            <button type="submit" className="text-white ">
+            <button type="submit" className="text-white cursor-pointer">
               subscribe now
             </button>
           </Form>

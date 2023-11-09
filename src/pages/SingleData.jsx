@@ -22,8 +22,6 @@ export const loader = async ({ params }) => {
     const url = '/guest/subcategories';
     const response = await customFetch(`${url}/${params.id}`);
 
-    console.log(response);
-
     return {
       result: response.data.data?.dataset,
       chartLabel: response.data.data?.chartLabel,
@@ -36,13 +34,13 @@ export const loader = async ({ params }) => {
 };
 
 const SingleData = () => {
-  const { result, chartLabel, chartData } = useLoaderData();
+  const { result, operations, chartLabel, chartData } = useLoaderData();
+
+  console.log('operations', operations);
 
   const [selectedItem, setSelectedItem] = useState('charts');
 
   const [chartType, setChartType] = useState('PieChart');
-
-  const cData = extractLabelsAndData(chartLabel, chartData, result?.name);
 
   const hData = formatDataHeightChart(chartLabel, chartData);
 
@@ -96,11 +94,11 @@ const SingleData = () => {
     <>
       <Navbar />
       <div className="data-set-hero min-h-[490px]">
-        <div className="w-full xx:w-[1518px] flex items-center xl:px-12">
+        {/* <div className="w-full xx:w-[1518px] flex items-center xl:px-12">
           <Heading text="Home" />
           <Heading text="Data Sets" />
           <Heading text={result?.category} />
-        </div>
+        </div> */}
         <div className="w-full xx:w-[1518px] min-h-[292px] bordered bg-white rounded-2xl">
           <p className="py-8 px-6 text-zinc-700 text-lg">
             {result?.description}
@@ -190,8 +188,37 @@ const SingleData = () => {
               )}
 
               {selectedItem === 'operation' && (
-                <div className="bg-white h-full p-4 rounded-lg w-full overflow-scroll">
-                  <h1>Operations</h1>
+                <div className="bg-white h-full p-4 rounded-lg w-full">
+                  <h1 className="text-2xl font-medium mb-4">Operations</h1>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="border p-4 rounded-lg">
+                      <h2 className="text-xl font-semibold">Mean</h2>
+                      <p>
+                        {operations.mean !== null
+                          ? parseFloat(operations.mean).toFixed(2)
+                          : 'N/A'}
+                      </p>
+                    </div>
+
+                    <div className="border p-4 rounded-lg">
+                      <h2 className="text-xl font-semibold">Mode</h2>
+                      <p>
+                        {operations.mode !== null
+                          ? parseFloat(operations.mode).toFixed(2)
+                          : 'N/A'}
+                      </p>
+                    </div>
+
+                    <div className="border p-4 rounded-lg">
+                      <h2 className="text-xl font-semibold">Median</h2>
+                      <p>
+                        {operations.median !== null
+                          ? parseFloat(operations.median).toFixed(2)
+                          : 'N/A'}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               )}
             </div>

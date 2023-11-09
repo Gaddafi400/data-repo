@@ -673,9 +673,9 @@
 }
 
 .data-section-container {
-  background: linear-gradient(to top, rgba(255, 255, 255, 1), transparent 50%),
-    linear-gradient(to bottom, rgba(255, 255, 255, 1), transparent 50%),
-    url('./assets/bg3.png');
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.8), transparent 40%),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.8), transparent 40%),
+    url('./assets/bg-group.svg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -965,9 +965,13 @@
 }
 
 .m-data-section-container {
-  background: linear-gradient(to top, rgba(255, 255, 255, 1), transparent 50%),
-    linear-gradient(to bottom, rgba(255, 255, 255, 1), transparent 50%),
-    url('./assets/bg3.png');
+  background: linear-gradient(
+      to top,
+      rgba(255, 255, 255, 0.809),
+      transparent 50%
+    ),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.809), transparent 50%),
+    url('./assets/bg-group.svg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -997,7 +1001,6 @@
   min-width: 350px !important;
 }
 
-
 .gm-ui-hover-effect {
   height: 45px !important;
   width: 45px !important;
@@ -1011,8 +1014,7 @@
   overflow: hidden !important;
   margin: 0 auto !important;
 }
-.gm-style-iw .gm-style-iw-c
-.gm-style-iw .gm-style-iw-c {
+.gm-style-iw .gm-style-iw-c .gm-style-iw .gm-style-iw-c {
   display: none !important;
 }
 
@@ -1103,8 +1105,7 @@
   position: relative;
   width: calc(100% - 250px);
   margin: 0 auto;
-  max-height: calc(100vh - 100px);;
-
+  max-height: calc(100vh - 100px);
 }
 
 .container-with-sidebar {

@@ -1,9 +1,19 @@
 import PropTypes from 'prop-types';
-
+import { toast } from 'react-toastify';
 import { useState } from 'react';
 
 import { FaTrash, FaEdit } from 'react-icons/fa';
 import Pagination from '../../Dashboard/components/Pagination';
+import { Confirm } from '../../Dashboard/components';
+import CreateVariable from './CreateVariable';
+import EditVariable from './EditVariable';
+
+import {
+  customFetch,
+  getUserFromLocalStorage,
+  flattenErrorMessage,
+  header,
+} from '../../../utils';
 
 const VariableTable = ({ items }) => {
   const [search, setSearch] = useState('');
@@ -11,16 +21,18 @@ const VariableTable = ({ items }) => {
   const itemsPerPage = 10;
   const totalItems = items?.length;
   const [currentPage, setCurrentPage] = useState(1);
-
   const [variables, setVariables] = useState(items);
+
+  const [editData, setEditData] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [deletingItemId, setDeletingItemId] = useState(null);
+  const [deleting, setDeleting] = useState(false);
 
   const openCloseModal = () => {
     setIsModalOpen(!isModalOpen);
   };
-
-  // const onCommodityCreated = (newVariable) => {
-  //   setVariables([...variables, newVariable]);
-  // };
 
   // Filter items based on the search input
   const filteredVariable = variables?.filter((item) =>
@@ -48,14 +60,109 @@ const VariableTable = ({ items }) => {
     pageNumbers.push(i);
   }
 
-  // if (isModalOpen) {
-  //   return (
-  //     <CreateCommodity
-  //       onCommodityCreated={onCommodityCreated}
-  //       onClose={openCloseModal}
-  //     />
-  //   );
-  // }
+  const onVariableCreated = (newVariable) => {
+    setVariables([...variables, newVariable]);
+  };
+
+  // handle edits
+  const openCloseEditModal = () => {
+    setIsEditOpen(!isEditOpen);
+  };
+
+  const handleEdit = (item) => {
+    setEditData(item);
+    openCloseEditModal();
+  };
+
+  // update dataset state on edit
+  const updateVariable = (editedDataset) => {
+    const datasetIndex = datasets.findIndex(
+      (dataset) => dataset.id === editedDataset.id
+    );
+
+    if (datasetIndex !== -1) {
+      // Create a new copy of the 'datasets' array and replace the updated one
+      const updatedDatasets = [...datasets];
+      updatedDatasets[datasetIndex] = editedDataset;
+      setDataset(updatedDatasets);
+    }
+    openCloseEditModal();
+  };
+
+  const handleConfirmDelete = (e) => {
+    e.preventDefault();
+    setConfirmDelete(!confirmDelete);
+  };
+
+  // delete variable
+  const deleteMarket = async () => {
+    if (deletingItemId) {
+      let url = `/admin/variables/${deletingItemId}`;
+      const token = getUserFromLocalStorage().token;
+
+      setDeleting(true);
+      try {
+        const response = await customFetch.delete(url, header(token));
+        const responseData = response.data.data;
+        toast.success('Variable deleted successfully!');
+
+        // Filter out the variable with the specified ID from the 'variables' state
+        const updatedVariables = variables.filter(
+          (variable) => variable.id !== deletingItemId
+        );
+        setVariables(updatedVariables);
+        setDeletingItemId(null);
+
+        // Check if the current page exceeds the new total number of pages to update pagination
+        if (currentPage > Math.ceil(updatedVariables.length / itemsPerPage)) {
+          // If so, set the current page to the last page
+          setCurrentPage(Math.ceil(updatedVariables.length / itemsPerPage));
+        }
+        // close the modal
+        setConfirmDelete(!confirmDelete);
+
+        return { user: responseData };
+      } catch (error) {
+        const errorMessage = flattenErrorMessage(error.response.data?.data);
+        toast.error(
+          errorMessage || 'Failed to delete variable. Please try again.'
+        );
+        return error;
+      } finally {
+        setDeleting(false);
+      }
+    }
+  };
+
+  if (confirmDelete) {
+    return (
+      <Confirm
+        onClose={handleConfirmDelete}
+        message="Are you sure you want to delete this variable?"
+        onConfirm={deleteMarket}
+        deleting={deleting}
+      />
+    );
+  }
+
+  if (isEditOpen) {
+    return (
+      <EditVariable
+        onClose={openCloseEditModal}
+        initialData={editData}
+        updateVariable={updateVariable}
+      />
+    );
+  }
+
+  if (isModalOpen) {
+    return (
+      <CreateVariable
+        onClose={openCloseModal}
+        onVariableCreated={onVariableCreated}
+      />
+    );
+  }
 
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-5">
@@ -163,14 +270,21 @@ const VariableTable = ({ items }) => {
 
               <td className="px-6 py-4 flex">
                 <button
-                  // onClick={() => handleEdit(item)}
+                  onClick={() => handleEdit(item)}
                   className="font-medium hover:underline flex items-center mr-3"
                 >
                   <FaEdit className="mr-1" /> Edit
                 </button>
 
-                <button className="font-medium hover:underline flex items-center">
-                  <FaTrash className="mr-1 text-red-600" /> Delete
+                <button
+                  className={`font-medium hover:underline flex items-center`}
+                  onClick={(e) => {
+                    handleConfirmDelete(e);
+                    setDeletingItemId(item.id);
+                  }}
+                >
+                  <FaTrash className="mr-1  animate-spin text-red-600" />
+                  Delete
                 </button>
               </td>
             </tr>

@@ -10,10 +10,11 @@ import {
   flattenErrorMessage,
 } from '../../../utils';
 
-const EditDataset = ({ onClose, initialData, updateDataset }) => {
+const EditCategory = ({ onClose, initialData, updateCategory }) => {
+  console.log('initialData', initialData);
+
   const initialFormState = {
     name: initialData?.name,
-    description: `${initialData?.description}`,
   };
 
   const [formData, setFormData] = useState(initialFormState);
@@ -30,7 +31,7 @@ const EditDataset = ({ onClose, initialData, updateDataset }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    let url = '/admin/subcategories';
+    let url = '/admin/variables';
     const token = getUserFromLocalStorage().token;
 
     url = `${url}/${initialData?.id}`;
@@ -39,19 +40,14 @@ const EditDataset = ({ onClose, initialData, updateDataset }) => {
       const response = await customFetch.patch(url, formData, header(token));
       const responseData = response.data.data;
       console.log(responseData);
-      toast.success('Dataset updated successfully!');
+      toast.success('Category updated successfully!');
       setFormData({});
-      updateDataset({
-        id: responseData?.id,
-        name: responseData.name,
-        category: responseData.category,
-        variables: responseData.variables.length,
-      });
+      updateCategory(responseData);
       return { dataset: responseData };
     } catch (error) {
       const errorMessage = flattenErrorMessage(error.response.data?.data);
       toast.error(
-        errorMessage || 'Failed to update dateset. Please try again.'
+        errorMessage || 'Failed to update category. Please try again.'
       );
       return error;
     } finally {
@@ -72,39 +68,17 @@ const EditDataset = ({ onClose, initialData, updateDataset }) => {
           </button>
         </div>
         <h1 className="text-2xl font-medium  text-gray-800 dark:text-white my-4">
-          Update a dataset
+          Update a category
         </h1>
 
         <div className="mb-6">
           <TextInput
-            label="Name"
+            label="Category"
             name="name"
             value={formData.name}
             onChange={handleFormChange}
-            placeholder="Name"
+            placeholder="Category Name"
           />
-
-          <div className="col-span-full mb-4">
-            <label
-              htmlFor="about"
-              className="block text-sm font-medium leading-6 text-gray-900"
-            >
-              Description
-            </label>
-            <div className="mt-2">
-              <textarea
-                id="description"
-                name="description"
-                value={formData.description}
-                onChange={handleFormChange}
-                rows="3"
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6"
-              ></textarea>
-            </div>
-            <p className="mt-3 text-sm leading-6 text-gray-600">
-              Write a few sentences about the dataset.
-            </p>
-          </div>
         </div>
         <button
           type="submit"
@@ -115,17 +89,17 @@ const EditDataset = ({ onClose, initialData, updateDataset }) => {
           }`}
           disabled={isSubmitting}
         >
-          {isSubmitting ? 'Updating...' : 'Update Dataset'}
+          {isSubmitting ? 'Updating...' : 'Update category'}
         </button>
       </form>
     </div>
   );
 };
 
-EditDataset.propTypes = {
+EditCategory.propTypes = {
   onClose: PropTypes.func,
   initialData: PropTypes.object,
-  updateDataset: PropTypes.func,
+  updateCategory: PropTypes.func,
 };
 
-export default EditDataset;
+export default EditCategory;

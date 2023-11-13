@@ -15,7 +15,7 @@ const TextInput = ({
       <label
         htmlFor={name}
         className={`block mb-2 text-base font-medium ${
-          darkMode ? 'text-white' : 'text-gray-600'
+          darkMode ? 'text-white' : 'text-slate-800'
         }`}
       >
         {label}:
@@ -28,7 +28,7 @@ const TextInput = ({
         onChange={onChange}
         className={`bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 mb-3 ${
           darkMode
-            ? 'dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white'
+            ? 'dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white'
             : ''
         }`}
         placeholder={placeholder}

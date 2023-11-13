@@ -7,6 +7,8 @@ import Pagination from '../../Dashboard/components/Pagination';
 import { CreateCknowledge } from '../components';
 import { Confirm } from '../../Dashboard/components';
 
+import EditCknowledge from './EditCknowledge';
+
 import {
   customFetch,
   getUserFromLocalStorage,
@@ -16,12 +18,14 @@ import {
 
 const CknowledgeTable = ({ items }) => {
   const [search, setSearch] = useState('');
+  const [isEditOpen, setIsEditOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const itemsPerPage = 10;
   const totalItems = items.length;
   const [currentPage, setCurrentPage] = useState(1);
+  const [editData, setEditData] = useState(false);
 
-  const [cKnowledge, SetCKnowledge] = useState(items);
+  const [cKnowledge, setCKnowledge] = useState(items);
 
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deletingItemId, setDeletingItemId] = useState(null);
@@ -31,8 +35,12 @@ const CknowledgeTable = ({ items }) => {
     setIsModalOpen(!isModalOpen);
   };
 
+  const openCloseEditModal = () => {
+    setIsEditOpen(!isEditOpen);
+  };
+
   const onCknowledgeCreated = (newCknowledge) => {
-    SetCKnowledge([...cKnowledge, newCknowledge]);
+    setCKnowledge([...cKnowledge, newCknowledge]);
   };
 
   // Filter items based on the search input
@@ -70,6 +78,26 @@ const CknowledgeTable = ({ items }) => {
     setConfirmDelete(!confirmDelete);
   };
 
+  const handleEdit = (item) => {
+    setEditData(item);
+    openCloseEditModal();
+  };
+
+  // update Cknowledge state on edit
+  const updateCknowledge = (editedCknowledge) => {
+    const CknowledgeIndex = cKnowledge.findIndex(
+      (ckledge) => ckledge.id === editedCknowledge.id
+    );
+
+    if (CknowledgeIndex !== -1) {
+      // Create a new copy of the 'Cknowledges' array and replace the updated one
+      const updatedCknowledges = [...cKnowledge];
+      updatedCknowledges[CknowledgeIndex] = editedCknowledge;
+      setCKnowledge(updatedCknowledges);
+    }
+    openCloseEditModal();
+  };
+
   // delete Cknowledge
   const deleteCknowledge = async () => {
     if (deletingItemId) {
@@ -86,7 +114,7 @@ const CknowledgeTable = ({ items }) => {
         const updatedCknowledges = cKnowledge.filter(
           (cknowledge) => cknowledge.id !== deletingItemId
         );
-        SetCKnowledge(updatedCknowledges);
+        setCKnowledge(updatedCknowledges);
         setDeletingItemId(null);
 
         // Check if the current page exceeds the new total number of pages to update pagination
@@ -117,6 +145,16 @@ const CknowledgeTable = ({ items }) => {
         message="Are you sure you want to delete this Cknowledge?"
         onConfirm={deleteCknowledge}
         deleting={deleting}
+      />
+    );
+  }
+
+  if (isEditOpen) {
+    return (
+      <EditCknowledge
+        onClose={openCloseEditModal}
+        initialData={editData}
+        updateCknowledge={updateCknowledge}
       />
     );
   }
@@ -241,7 +279,7 @@ const CknowledgeTable = ({ items }) => {
 
               <td className="px-6 py-4 flex">
                 <button
-                  // onClick={() => handleEdit(item)}
+                  onClick={() => handleEdit(item)}
                   className="font-medium hover:underline flex items-center mr-3"
                 >
                   <FaEdit className="mr-1" /> Edit

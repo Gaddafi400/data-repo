@@ -43,7 +43,7 @@ export default {
         silver: '#ecebff',
         'bubble-gum': '#ff77e9',
         bermuda: '#78dcca',
-        footer: '#EBB044',
+        footer: '#EBB044',  
         fth: '#c39135',
       },
       maxWidth: {

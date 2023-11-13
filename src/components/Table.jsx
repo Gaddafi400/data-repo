@@ -55,15 +55,14 @@ const Table = ({ data }) => {
   const firstColumnVariable = variables.find(
     (variable) => variable.firstColumn
   );
+  
+  console.log('firstColumnVariable', firstColumnVariable)
+
 
   // Sort the data based on the first column variable
   const sortedData = Object.keys(dataRecord).sort((a, b) => {
-    const aValue = dataRecord[a].find(
-      (item) => item.variable === firstColumnVariable.variable
-    ).data;
-    const bValue = dataRecord[b].find(
-      (item) => item.variable === firstColumnVariable.variable
-    ).data;
+    const aValue = dataRecord[a]?.find((item) => item.variable === firstColumnVariable?.variable).data;
+    const bValue = dataRecord[b]?.find((item) => item.variable === firstColumnVariable?.variable).data;
     return aValue.localeCompare(bValue);
   });
 

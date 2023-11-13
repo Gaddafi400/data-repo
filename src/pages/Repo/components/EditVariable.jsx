@@ -11,9 +11,10 @@ import {
 } from '../../../utils';
 
 const EditVariable = ({ onClose, initialData, updateVariable }) => {
-    console.log('initialData', initialData);
+  console.log('initialData', initialData);
   const initialFormState = {
-    variable: initialData?.variable,
+    name: initialData?.variable,
+    alias: initialData?.alias,
   };
 
   const [formData, setFormData] = useState(initialFormState);
@@ -38,11 +39,11 @@ const EditVariable = ({ onClose, initialData, updateVariable }) => {
     try {
       const response = await customFetch.patch(url, formData, header(token));
       const responseData = response.data.data;
-      console.log(responseData);
       toast.success('Variable updated successfully!');
-      setFormData({});
+    //   setFormData({});
       updateVariable(responseData);
-      return { dataset: responseData };
+      onClose();
+      return { variables: responseData };
     } catch (error) {
       const errorMessage = flattenErrorMessage(error.response.data?.data);
       toast.error(
@@ -72,11 +73,18 @@ const EditVariable = ({ onClose, initialData, updateVariable }) => {
 
         <div className="mb-6">
           <TextInput
-            label="Variable"
-            name="variable"
-            value={formData.variable}
+            label="Name"
+            name="name"
+            value={formData.name}
             onChange={handleFormChange}
             placeholder="Variable Name"
+          />
+          <TextInput
+            label="Alias"
+            name="alias"
+            value={formData.alias}
+            onChange={handleFormChange}
+            placeholder="Alias Name"
           />
         </div>
         <button

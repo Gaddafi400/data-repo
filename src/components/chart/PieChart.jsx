@@ -10,14 +10,14 @@ exportingInit(Highcharts);
 offlineExportingInit(Highcharts);
 fullscreenInit(Highcharts);
 
-const PieChart = ({ hData, label }) => {
+const PieChart = ({ hData, label, backgroundColors }) => {
   const options = {
     chart: {
       type: 'pie',
-      backgroundColor: null,
-      plotBackgroundColor: null,
-      plotBorderWidth: null,
-      plotShadow: true,
+      // backgroundColor: null,
+      // plotBackgroundColor: null,
+      // plotBorderWidth: null,
+      // plotShadow: true,
       width: 1200,
       height: 700,
       borderWidth: 1,
@@ -89,21 +89,7 @@ const PieChart = ({ hData, label }) => {
         fontSize: '14px',
       },
     },
-    colors: [
-      '#0077B6',
-      '#00A88E',
-      '#005465',
-      '#33FF33',
-      '#FF6633',
-      '#ff33a081',
-      '#4caefe',
-      '#3dc3e8',
-      '#2dd9db',
-      '#1feeaf',
-      '#0ff3a0',
-      '#00e887',
-      '#23e274',
-    ],
+    colors: backgroundColors,
   };
 
   return (
@@ -116,6 +102,7 @@ const PieChart = ({ hData, label }) => {
 PieChart.propTypes = {
   hData: PropTypes.array,
   label: PropTypes.string,
+  backgroundColors: PropTypes.array,
 };
 
 export default PieChart;

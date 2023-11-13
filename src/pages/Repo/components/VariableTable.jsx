@@ -74,17 +74,17 @@ const VariableTable = ({ items }) => {
     openCloseEditModal();
   };
 
-  // update dataset state on edit
-  const updateVariable = (editedDataset) => {
-    const datasetIndex = datasets.findIndex(
-      (dataset) => dataset.id === editedDataset.id
+  // update variable state on edit
+  const updateVariable = (editedVariable) => {
+    const datasetIndex = variables.findIndex(
+      (variable) => variable.id === editedVariable.id
     );
 
     if (datasetIndex !== -1) {
-      // Create a new copy of the 'datasets' array and replace the updated one
-      const updatedDatasets = [...datasets];
-      updatedDatasets[datasetIndex] = editedDataset;
-      setDataset(updatedDatasets);
+      // Create a new copy of the 'variables' array and replace the updated one
+      const updatedVariables = [...variables];
+      updatedVariables[datasetIndex] = editedVariable;
+      setVariables(updatedVariables);
     }
     openCloseEditModal();
   };

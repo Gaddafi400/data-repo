@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useLoaderData } from 'react-router-dom';
 import {
   Select,
@@ -7,16 +7,16 @@ import {
   Heading,
   Map,
   FinderSidebar,
+  Loading,
 } from '../components';
 
-import { customFetchMarket } from '../utils';
+import { customFetchMarket, daysOfWeek, capitalizeFirstLetter } from '../utils';
 
 export const loader = async () => {
   const url = '/guest';
   try {
     const response = await customFetchMarket(url);
     const responseData = await response.data.data;
-
     return { initialData: responseData };
   } catch (error) {
     return error;
@@ -25,7 +25,8 @@ export const loader = async () => {
 
 const Mfinder = () => {
   const { initialData } = useLoaderData();
-
+  const [loading, setLoading] = useState(false);
+  const dataSectionRef = useRef(null);
   const [states, setStates] = useState([]);
   const [localGovernments, setLocalGovernments] = useState([]);
   const [towns, setTowns] = useState([]);
@@ -35,8 +36,14 @@ const Mfinder = () => {
   const [selectedState, setSelectedState] = useState('');
   const [selectedLGA, setSelectedLGA] = useState('');
   const [selectedTown, setSelectedTown] = useState('');
+  const [selectedDay, setSelectedDay] = useState(''); // active days
 
-  //
+  // scroll to result
+  useEffect(() => {
+    if (!loading && dataSectionRef.current) {
+      dataSectionRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [loading]);
 
   // get states
   useEffect(() => {
@@ -98,6 +105,7 @@ const Mfinder = () => {
 
   const handleSearch = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const url = '/guest/';
     const params = {
       state: selectedState,
@@ -112,21 +120,74 @@ const Mfinder = () => {
       setCommodities(commodities);
     } catch (error) {
       return error;
+    } finally {
+      setLoading(false);
     }
+  };
+
+  // Active days
+  const handleDayChange = async (e) => {
+    e.preventDefault();
+    setSelectedDay(e.target.value);
+    setLoading(true);
+    const url = '/guest/';
+    const params = {
+      state: selectedState,
+      town: selectedTown,
+      lga: selectedLGA,
+      activeDay: selectedDay,
+    };
+
+    try {
+      const response = await customFetchMarket.get(url, { params });
+      console.log(response.data.data);
+      const { commodities, markets } = response.data.data;
+      setMarkets(markets);
+      setCommodities(commodities);
+    } catch (error) {
+      return error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleActiveToday = async (e) => {
+    e.preventDefault();
+    const currentDate = new Date();
+    const currentDay = daysOfWeek[currentDate.getDay()];
+    const url = '/guest/';
+    setLoading(true);
+    const params = {
+      state: selectedState,
+      town: selectedTown,
+      lga: selectedLGA,
+      activeDay: currentDay,
+    };
+
+    try {
+      const response = await customFetchMarket.get(url, { params });
+      console.log(response.data.data);
+      const { commodities, markets } = response.data.data;
+      setMarkets(markets);
+      setCommodities(commodities);
+    } catch (error) {
+      return error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Update markets
+  const updateMarkets = (markets) => {
+    setMarkets(markets);
   };
 
   return (
     <>
       <Navbar />
       <div className="mfinder-hero">
-        <div className="w-full xx:w-[1518px] flex items-center xl:px-20 px-6  align-element heading">
-          <Heading text="Home" />
-          <Heading text="Data Sets" />
-          <Heading text={'Markets'} />
-        </div>
-
         <div className="mfinder-form-container">
-          <h1 className=" text-white font-semibold sm:text-center text-3xl sm:text-5xl">
+          <h1 className=" text-white font-medium sm:text-center text-3xl xl:text-5xl">
             Find Local Markets and Commodities in Nigeria
           </h1>
           <form className="mfinder-form">
@@ -158,19 +219,63 @@ const Mfinder = () => {
             <button
               type="submit"
               onClick={handleSearch}
-              className="w-full  bg-fth rounded-lg  text-white"
+              className="w-full  bg-footer rounded-lg  text-white"
             >
               Steady search
             </button>
           </form>
         </div>
       </div>
-      {/* Other components and JSX */}
-      <div className="m-data-section-container px-2">
-        <section className="m-data-section w-full xx:w-[1518px] rounded-[30px] p-6">
-          <Map markets={markets} />
-          <FinderSidebar items={commodities} />
-        </section>
+      {/* Other components  */}
+      <div ref={dataSectionRef} className="m-data-section-container px-2">
+        <div className="m-data-section-header w-full xx:w-[1518px] flex flex-col sm:flex-row gap-4 md:gap-11">
+          <button
+            type="button"
+            onClick={handleActiveToday}
+            className="bg-footer  text-white rounded-3xl"
+          >
+            Active Today
+          </button>
+
+          <form className="w-full sm:w-[250px]">
+            <div>
+              <select
+                className="mb-3 bg-white border border-gray-300 text-slate-800 text-sm  focus:ring-primary-500 focus:border-primary-500 block w-full p-3 pl-6 rounded-3xl"
+                id="activedays"
+                name="activedays"
+                value={selectedDay}
+                onChange={handleDayChange}
+                placeholder="Select a state"
+              >
+                <option value="" disabled>
+                  Select an active day
+                </option>
+                {daysOfWeek.map((day, index) => (
+                  <option key={index} value={day}>
+                    {capitalizeFirstLetter(day)}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </form>
+        </div>
+        {loading ? (
+          <Loading />
+        ) : (
+          <section className="m-data-section w-full xx:w-[1518px] rounded-[30px] p-6">
+            <Map markets={markets} />
+            <FinderSidebar
+              items={commodities}
+              updateMarkets={updateMarkets}
+              paramsObj={{
+                state: selectedState,
+                town: selectedTown,
+                lga: selectedLGA,
+                selectedDay: selectedDay,
+              }}
+            />
+          </section>
+        )}
       </div>
 
       <Footer />

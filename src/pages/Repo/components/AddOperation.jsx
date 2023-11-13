@@ -11,7 +11,7 @@ import {
   flattenErrorMessage,
 } from '../../../utils';
 
-const AddOperation = ({ onClose, onCknowledgeCreated }) => {
+const AddOperation = ({ onClose, updateOperations, datasetId }) => {
   const initialFormState = {
     operation: '',
   };
@@ -22,31 +22,27 @@ const AddOperation = ({ onClose, onCknowledgeCreated }) => {
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;
-
     setFormData({
       ...formData,
       [name]: value,
     });
-
-    console.log(formData)
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    const url = '/admin/knowledge';
+    const url = `/admin/subcategories/${datasetId}/operation`;
     const token = getUserFromLocalStorage().token;
 
     try {
-      const response = await customFetch.post(url, formData, header(token));
+      const response = await customFetch.patch(url, formData, header(token));
       const responseData = response.data?.data;
-      toast.success('C-knowledge created successfully!');
-      onCknowledgeCreated(responseData);
-      onClose();
-      return { category: responseData };
+      toast.success('Operation added successfully!');
+      updateOperations(responseData?.operations);
+      return { operations: responseData?.operations };
     } catch (error) {
       const errorMessage = flattenErrorMessage(error.response.data?.data);
-      toast.error(errorMessage || 'Failed to C-knowledge. Please try again.');
+      toast.error(errorMessage || 'Failed to add operation. Please try again.');
       return error;
     } finally {
       setFormData(initialFormState);
@@ -81,7 +77,7 @@ const AddOperation = ({ onClose, onCknowledgeCreated }) => {
             &#x2715;
           </button>
         </div>
-        <h1 className="text-2xl font-medium  text-gray-800 dark:text-white my-4">
+        <h1 className="text-2xl font-medium  text-slate-800 dark:text-white my-4">
           Add new operation
         </h1>
 
@@ -107,7 +103,7 @@ const AddOperation = ({ onClose, onCknowledgeCreated }) => {
               : 'hover:bg-primary-600'
           }`}
         >
-          {isSubmitting ? 'Submitting' : 'Submit'}
+          {isSubmitting ? 'Adding' : 'Add Operation'}
         </button>
       </form>
     </div>
@@ -116,7 +112,8 @@ const AddOperation = ({ onClose, onCknowledgeCreated }) => {
 
 AddOperation.propTypes = {
   onClose: PropTypes.func,
-  onCknowledgeCreated: PropTypes.func,
+  datasetId: PropTypes.string,
+  updateOperations: PropTypes.func,
 };
 
 export default AddOperation;

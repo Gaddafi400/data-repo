@@ -64,7 +64,12 @@ const AreaChart = ({ hData, label }) => {
     exporting: {
       buttons: {
         contextButton: {
-          menuItems: ['downloadPNG', 'downloadJPEG', 'downloadSVG'],
+          menuItems: [
+            'viewFullscreen',
+            'downloadPNG',
+            'downloadJPEG',
+            'downloadSVG',
+          ],
         },
       },
     },

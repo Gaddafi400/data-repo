@@ -67,7 +67,7 @@ const CreateCknowledge = ({ onClose, onCknowledgeCreated }) => {
           Create a new Common knowledge
         </h1>
 
-        <div className="mb-6">
+        <div className="mb-4">
           <TextInput
             label="Title"
             name="title"
@@ -77,14 +77,26 @@ const CreateCknowledge = ({ onClose, onCknowledgeCreated }) => {
           />
         </div>
 
-        <div className="mb-6">
-          <TextInput
-            label="Message"
-            name="message"
-            value={formData.message}
-            onChange={handleFormChange}
-            placeholder="Message"
-          />
+        <div className="col-span-full mb-4">
+          <label
+            htmlFor="about"
+            className="block text-sm font-medium leading-6 text-slate-800"
+          >
+            Message
+          </label>
+          <div className="mt-2">
+            <textarea
+              id="message"
+              name="message"
+              value={formData.message}
+              onChange={handleFormChange}
+              rows="3"
+              className="block w-full rounded-md border-0 py-1.5 text-slate-800 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6"
+            ></textarea>
+          </div>
+          <p className="mt-3 text-sm leading-6 text-gray-600">
+            Write a few sentences about the common knowledge.
+          </p>
         </div>
 
         <button

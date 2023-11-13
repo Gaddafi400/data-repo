@@ -34,6 +34,16 @@ export const getUserFromLocalStorage = () => {
   return user;
 };
 
+export const addLocationToLocalStorage = (userLocation) => {
+  localStorage.setItem('userLocation', JSON.stringify(userLocation));
+};
+
+export const getLocationFromLocalStorage = () => {
+  const result = localStorage.getItem('userLocation');
+  const userLocation = result ? JSON.parse(result) : null;
+  return userLocation;
+};
+
 export const flattenErrorMessage = (data) => {
   if (Array.isArray(data)) {
     return data.map((item) => flattenErrorMessage(item)).join(' ');
@@ -47,16 +57,20 @@ export const flattenErrorMessage = (data) => {
 };
 
 export const daysOfWeek = [
+  'sunday',
   'monday',
   'tuesday',
   'wednesday',
   'thursday',
   'friday',
   'saturday',
-  'sunday',
 ];
 
-const getRandomColor = () => {
+export const capitalizeFirstLetter = (day) => {
+  return day.charAt(0).toUpperCase() + day.slice(1);
+};
+
+export const getRandomColor = () => {
   return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
 };
 
@@ -113,6 +127,7 @@ export const extractLabelsAndData = (chartLabel, chartData, label) => {
 export const formatDataHeightChart = (chartLabel, chartData) => {
   const labels = [];
   const data = [];
+  const backgroundColors = [];
 
   for (const key in chartLabel) {
     if (Object.prototype.hasOwnProperty.call(chartLabel, key)) {
@@ -123,6 +138,7 @@ export const formatDataHeightChart = (chartLabel, chartData) => {
 
       labels.push(label);
       data.push(dataValue);
+      backgroundColors.push(getRandomColor());
     }
   }
 
@@ -136,7 +152,6 @@ export const formatDataHeightChart = (chartLabel, chartData) => {
     .sort((a, b) => a.label.localeCompare(b.label))
     .map(({ label, data }) => ({ name: label, y: data }));
 
-
   // // Sort the data by the 'y' property in descending order
   // mappedData.sort((a, b) => b.y - a.y);
 
@@ -148,5 +163,5 @@ export const formatDataHeightChart = (chartLabel, chartData) => {
     mappedData[maxIndex].selected = true;
   }
 
-  return mappedData;
+  return { mappedData, backgroundColors };
 };

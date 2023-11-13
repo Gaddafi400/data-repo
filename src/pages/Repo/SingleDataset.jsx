@@ -43,6 +43,7 @@ const SingleDataset = () => {
     singleRecord;
 
   const [variableState, setVariableState] = useState(variables);
+  const [operationsState, setOperationsState] = useState(operations);
 
   const tableData = {
     variables,
@@ -126,12 +127,23 @@ const SingleDataset = () => {
     }
   };
 
+  const updateOperations = (operations) => {
+    setOperationsState(operations);
+    setIsAddOperation(false);
+  };
+
   if (isModalOpen) {
     return <Upload onClose={openCloseModal} datasetId={datasetId} />;
   }
 
   if (isAddOperation) {
-    return <AddOperation onClose={handleAddOperation} />;
+    return (
+      <AddOperation
+        onClose={handleAddOperation}
+        datasetId={datasetId}
+        updateOperations={updateOperations}
+      />
+    );
   }
 
   if (isAddVariable) {
@@ -168,7 +180,9 @@ const SingleDataset = () => {
             </button>
           </div>
         </div>
-        <h1 className="text-2xl md:text-3xl font-semibold text-slate-800 mb-4">{name}</h1>
+        <h1 className="text-2xl md:text-3xl font-semibold text-slate-800 mb-4">
+          {name}
+        </h1>
         <p className="text-lg text-slate-800 mb-4">{category}</p>
         <p className="text-slate-800mb-4">{description}</p>
 
@@ -243,7 +257,7 @@ const SingleDataset = () => {
             <thead className="text-xs text-slate-800 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
                 <th scope="col" className="px-6 py-3 border-gray-300">
-                  Variables
+                  Name
                 </th>
                 <th scope="col" className="px-6 py-3  border-gray-300">
                   Actions
@@ -251,7 +265,7 @@ const SingleDataset = () => {
               </tr>
             </thead>
             <tbody>
-              {operations.map((operation) => (
+              {operationsState.map((operation) => (
                 <tr
                   key={operation.id}
                   className="bg-white border-b dark:bg-gray-900 dark:border-gray-700"

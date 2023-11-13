@@ -1,12 +1,37 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { customFetchMarket } from '../utils';
 
-const FinderSidebar = ({ items }) => {
-
-  
+const FinderSidebar = ({ items, updateMarkets, paramsObj }) => {
   const [isDropdownOpen, setDropdownOpen] = useState(true);
   const toggleDropdown = () => {
     setDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleCommodityClick = async (e) => {
+    e.preventDefault();
+    const url = '/guest/';
+
+    console.log('paramsObj', paramsObj);
+    // setLoading(true);
+    const params = {
+      state: paramsObj?.state,
+      town: paramsObj?.town,
+      lga: paramsObj?.lga,
+      selectedDay: paramsObj?.selectedDay,
+      commodity: e.target.id,
+    };
+
+    try {
+      const response = await customFetchMarket.get(url, { params });
+      console.log(response.data.data);
+      const { commodities, markets } = response.data.data;
+      updateMarkets(markets);
+    } catch (error) {
+      return error;
+    } finally {
+      // setLoading(false);
+    }
   };
 
   return (
@@ -46,7 +71,7 @@ const FinderSidebar = ({ items }) => {
                 <li key={index} className="nav-link">
                   <button
                     id={`${item?.id}`}
-                    // onClick={onClick}
+                    onClick={handleCommodityClick}
                     className="flex items-center w-full p-2 text-white transition duration-75 rounded-lg pl-8 group"
                   >
                     {item?.name}
@@ -63,6 +88,8 @@ const FinderSidebar = ({ items }) => {
 
 FinderSidebar.propTypes = {
   items: PropTypes.array,
+  paramsObj: PropTypes.object,
+  updateMarkets: PropTypes.func,
 };
 
 export default FinderSidebar;

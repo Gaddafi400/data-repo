@@ -10,10 +10,12 @@ import {
   flattenErrorMessage,
 } from '../../../utils';
 
-const EditCategory = ({ onClose, initialData, updateCategory }) => {
-  
+const EditCknowledge = ({ onClose, initialData, updateCknowledge }) => {
+  console.log('initialData', initialData);
+
   const initialFormState = {
-    name: initialData?.name,
+    title: initialData?.title,
+    message: initialData?.message,
   };
 
   const [formData, setFormData] = useState(initialFormState);
@@ -30,7 +32,7 @@ const EditCategory = ({ onClose, initialData, updateCategory }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    let url = '/admin/data-category';
+    let url = '/admin/knowledge';
     const token = getUserFromLocalStorage().token;
 
     url = `${url}/${initialData?.id}`;
@@ -38,18 +40,16 @@ const EditCategory = ({ onClose, initialData, updateCategory }) => {
     try {
       const response = await customFetch.patch(url, formData, header(token));
       const responseData = response.data.data;
-      toast.success('Category updated successfully!');
+      console.log('responseData', responseData);
+      toast.success('Cknowledge updated successfully!');
       setFormData({});
-      updateCategory({
-        id: responseData?.id,
-        name: responseData?.name,
-        numberOfSubcategories: responseData?.subcategories.length,
-      });
-      return { category: responseData };
+      updateCknowledge(responseData);
+      onClose();
+      return { Cknowledge: responseData };
     } catch (error) {
-      const errorMessage = flattenErrorMessage(error.response.data?.data);
+      const errorMessage = flattenErrorMessage(error.response?.data.data);
       toast.error(
-        errorMessage || 'Failed to update category. Please try again.'
+        errorMessage || 'Failed to update Cknowledge. Please try again.'
       );
       return error;
     } finally {
@@ -70,17 +70,38 @@ const EditCategory = ({ onClose, initialData, updateCategory }) => {
           </button>
         </div>
         <h1 className="text-2xl font-medium  text-gray-800 dark:text-white my-4">
-          Update a category
+          Update a Common Knowledge
         </h1>
 
         <div className="mb-6">
           <TextInput
-            label="Category"
-            name="name"
-            value={formData.name}
+            label="Title"
+            name="title"
+            value={formData.title}
             onChange={handleFormChange}
-            placeholder="Category Name"
+            placeholder="Title"
           />
+          <div className="col-span-full mb-4">
+            <label
+              htmlFor="about"
+              className="block text-sm font-medium leading-6 text-gray-900"
+            >
+              Message
+            </label>
+            <div className="mt-2">
+              <textarea
+                id="message"
+                name="message"
+                value={formData.message}
+                onChange={handleFormChange}
+                rows="3"
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6"
+              ></textarea>
+            </div>
+            <p className="mt-3 text-sm leading-6 text-gray-600">
+              Write a few sentences about the common knowledge.
+            </p>
+          </div>
         </div>
         <button
           type="submit"
@@ -91,17 +112,17 @@ const EditCategory = ({ onClose, initialData, updateCategory }) => {
           }`}
           disabled={isSubmitting}
         >
-          {isSubmitting ? 'Updating...' : 'Update category'}
+          {isSubmitting ? 'Updating...' : 'Update Cknowledge'}
         </button>
       </form>
     </div>
   );
 };
 
-EditCategory.propTypes = {
+EditCknowledge.propTypes = {
   onClose: PropTypes.func,
   initialData: PropTypes.object,
-  updateCategory: PropTypes.func,
+  updateCknowledge: PropTypes.func,
 };
 
-export default EditCategory;
+export default EditCknowledge;

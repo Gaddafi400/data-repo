@@ -1,10 +1,6 @@
 import { Navbar, Footer, Heading } from '../components';
 import { useLoaderData } from 'react-router-dom';
-import {
-  customFetch,
-  extractLabelsAndData,
-  formatDataHeightChart,
-} from '../utils';
+import { customFetch, formatDataHeightChart } from '../utils';
 import { useState, useEffect } from 'react';
 
 import xlsx from '../assets/xlsx.png';
@@ -16,6 +12,7 @@ import BarChart from '../components/chart/BarChart';
 import PieChart from '../components/chart/PieChart';
 import AreaChart from '../components/chart/AreaChart';
 import BubbleChart from '../components/chart/BubbleChart';
+import OperationChart from '../components/chart/OperationChart';
 
 export const loader = async ({ params }) => {
   try {
@@ -74,7 +71,7 @@ const SingleData = () => {
           >
             Operation
           </li>
-
+          {/* 
           <li
             className={`cursor-pointer mb-2 ${
               selectedItem === 'table'
@@ -84,7 +81,7 @@ const SingleData = () => {
             onClick={() => handleItemClick('table')}
           >
             Table
-          </li>
+          </li> */}
         </ul>
       </div>
     );
@@ -94,11 +91,6 @@ const SingleData = () => {
     <>
       <Navbar />
       <div className="data-set-hero min-h-[490px]">
-        {/* <div className="w-full xx:w-[1518px] flex items-center xl:px-12">
-          <Heading text="Home" />
-          <Heading text="Data Sets" />
-          <Heading text={result?.category} />
-        </div> */}
         <div className="w-full xx:w-[1518px] min-h-[292px] bordered bg-white rounded-2xl">
           <p className="py-8 px-6 text-zinc-700 text-lg">
             {result?.description}
@@ -128,31 +120,46 @@ const SingleData = () => {
               {/* Always show the chart first */}
               <div className="relative overflow-x-auto shadow-md rounded-lg min-w-[1270px]">
                 {/* Table content goes here */}
-                {selectedItem === 'table' && <Table data={result} />}
+                {/* {selectedItem === 'table' && <Table data={result} />} */}
               </div>
               {/* Add conditionals for other components */}
-
               {selectedItem === 'charts' && (
                 <div className="bg-white h-full p-4 rounded-lg overflow-none">
                   <div className="chart-container">
                     {/* display chart here base on the button click under the container */}
                     {chartType === 'BarChart' ? (
-                      <BarChart hData={hData} label={result?.name} />
+                      <BarChart
+                        hData={hData.mappedData}
+                        backgroundColors={hData.backgroundColors}
+                        label={result?.name}
+                      />
                     ) : (
                       ''
                     )}
                     {chartType === 'PieChart' ? (
-                      <PieChart hData={hData} label={result?.name} />
+                      <PieChart
+                        hData={hData.mappedData}
+                        backgroundColors={hData.backgroundColors}
+                        label={result?.name}
+                      />
                     ) : (
                       ''
                     )}
                     {chartType === 'AreaChart' ? (
-                      <AreaChart hData={hData} label={result?.name} />
+                      <AreaChart
+                        backgroundColors={hData.backgroundColors}
+                        hData={hData.mappedData}
+                        label={result?.name}
+                      />
                     ) : (
                       ''
                     )}
                     {chartType === 'BubbleChart' ? (
-                      <BubbleChart hData={hData} label={result?.name} />
+                      <BubbleChart
+                        backgroundColors={hData.backgroundColors}
+                        hData={hData.mappedData}
+                        label={result?.name}
+                      />
                     ) : (
                       ''
                     )}
@@ -186,12 +193,17 @@ const SingleData = () => {
                   </div>
                 </div>
               )}
-
               {selectedItem === 'operation' && (
                 <div className="bg-white h-full p-4 rounded-lg w-full">
                   <h1 className="text-2xl font-medium mb-4">Operations</h1>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <OperationChart
+                    title={result?.name}
+                    mean={parseInt(operations.mean)}
+                    median={parseInt(operations.median)}
+                    mode={parseInt(operations.mode[1])}
+                  />
+                  {/* <div className="grid grid-cols-2 gap-4">
                     <div className="border p-4 rounded-lg">
                       <h2 className="text-xl font-semibold">Mean</h2>
                       <p>
@@ -218,7 +230,7 @@ const SingleData = () => {
                           : 'N/A'}
                       </p>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               )}
             </div>

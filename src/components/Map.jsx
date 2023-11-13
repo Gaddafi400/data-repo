@@ -7,8 +7,11 @@ import {
   Marker,
   InfoWindow,
 } from '@react-google-maps/api';
-
 import marketIcon from '../assets/mapIcon.svg';
+import {
+  getLocationFromLocalStorage,
+  addLocationToLocalStorage,
+} from '../utils';
 
 const markersData = [
   {
@@ -64,10 +67,45 @@ const markersData = [
 ];
 
 const MapContainer = ({ markets }) => {
-  const center = useMemo(() => ({ lat: 9.05785, lng: 7.49508 }), []);
   const [markers, setMarkers] = useState(markersData);
+  const [userLocation, setUserLocation] = useState(null);
   const [activeMarker, setActiveMarker] = useState(null);
   const [showMarkers, setShowMarkers] = useState(false);
+  const center = useMemo(
+    () => userLocation || { lat: 9.05785, lng: 7.49508 },
+    [userLocation]
+  );
+
+  const fetchUserLocation = () => {
+    const storedLocation = getLocationFromLocalStorage('userLocation');
+
+    if (storedLocation) {
+      setUserLocation(storedLocation);
+    } else {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            const currentLocation = { lat: latitude, lng: longitude };
+            setUserLocation(currentLocation);
+            addLocationToLocalStorage(currentLocation);
+          },
+          (error) => {
+            console.error('Error getting user location:', error);
+            setUserLocation({ lat: 9.05785, lng: 7.49508 }); // Default location if geolocation fails
+          },
+          {
+            enableHighAccuracy: true,
+            timeout: 5000,
+            maximumAge: 0,
+          }
+        );
+      } else {
+        console.error('Geolocation is not supported');
+        setUserLocation({ lat: 9.05785, lng: 7.49508 }); // Default location if geolocation is not supported
+      }
+    }
+  };
 
   const handleActiveMarker = (marker) => {
     if (marker === activeMarker) {
@@ -90,6 +128,10 @@ const MapContainer = ({ markets }) => {
     return () => {
       clearTimeout(timeout);
     };
+  }, []);
+
+  useEffect(() => {
+    fetchUserLocation();
   }, []);
 
   return (

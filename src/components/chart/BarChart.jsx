@@ -8,28 +8,13 @@ import offlineExportingInit from 'highcharts/modules/offline-exporting';
 exportingInit(Highcharts);
 offlineExportingInit(Highcharts);
 
-const BarChart = ({ hData, label }) => {
+const BarChart = ({ hData, label, backgroundColors }) => {
   // Define an array of fixed predefined colors
-  const fixedColors = [
-    '#0077B6',
-    '#00A88E',
-    '#005465',
-    '#33FF33',
-    '#FF6633',
-    '#ff33a081',
-    '#4caefe',
-    '#3dc3e8',
-    '#2dd9db',
-    '#1feeaf',
-    '#0ff3a0',
-    '#00e887',
-    '#23e274',
-  ];
+  const fixedColors = backgroundColors;
 
   const options = {
     chart: {
       type: 'bar',
-      backgroundColor: 'transparent',
       width: 1200,
       height: 710,
     },
@@ -84,6 +69,7 @@ const BarChart = ({ hData, label }) => {
       buttons: {
         contextButton: {
           menuItems: [
+            'viewFullscreen',
             'downloadPNG',
             'downloadJPEG',
             'downloadSVG',
@@ -118,6 +104,7 @@ BarChart.propTypes = {
     })
   ),
   label: PropTypes.string,
+  backgroundColors: PropTypes.array,
 };
 
 export default BarChart;

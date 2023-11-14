@@ -3,6 +3,7 @@ import logo from '../assets/logo.png';
 
 const Navbar = () => {
   const style = { background: '#292949', color: 'white' };
+
   return (
     <div className="bg-primary-500 text-white nav">
       <div className="navbar lg:align-element">
@@ -34,20 +35,22 @@ const Navbar = () => {
                 </Link>
               </li>
               <li>
-                <Link to={'./market-finder'} className="nav-link" style={style}>
+                <Link to="/market-finder" className="nav-link" style={style}>
                   Market Finder
                 </Link>
               </li>
               <li>
-                <span className="nav-link">Discover More</span>
+                <span className="nav-link" style={style}>
+                  Discover More
+                </span>
                 <ul className="p-2">
                   <li>
                     <Link to="/about" className="nav-link" style={style}>
                       About us
                     </Link>
                   </li>
-                  <li className="nav-link" style={style}>
-                    <Link to="/contact" className="nav-link">
+                  <li>
+                    <Link to="/contact" className="nav-link" style={style}>
                       Contact us
                     </Link>
                   </li>
@@ -55,16 +58,12 @@ const Navbar = () => {
               </li>
             </ul>
           </div>
-          <Link to="/">
-            <div className="flex flex-row items-center">
-              <img src={logo} alt="Logo" className="cursor-pointer" />
-              <Link
-                to={'/'}
-                className="normal-case text-white text-24 font-arial font-normal break-words px-3 cursor-pointer"
-              >
-                STEADY VARIABLE
-              </Link>
-            </div>
+          <Link
+            to="/"
+            className="normal-case flex flex-row items-center text-white text-24 font-arial font-normal break-words px-3 cursor-pointer"
+          >
+            <img src={logo} alt="Logo" className="cursor-pointer" />
+            STEADY VARIABLE
           </Link>
         </div>
 
@@ -81,7 +80,7 @@ const Navbar = () => {
             </li>
             <li>
               <Link
-                to={'/market-finder'}
+                to="/market-finder"
                 className="text-base nav-link"
                 style={style}
               >

@@ -11,70 +11,30 @@ import marketIcon from '../assets/mapIcon.svg';
 import {
   getLocationFromLocalStorage,
   addLocationToLocalStorage,
+  isValidCoordinate,
 } from '../utils';
 
-const markersData = [
-  {
-    id: 1,
-    name: 'Garki Market',
-    position: { lat: 9.05785, lng: 7.49508 },
-  },
-  {
-    id: 2,
-    name: 'Wuse Market',
-    position: { lat: 9.0833, lng: 7.5333 },
-  },
-  {
-    id: 3,
-    name: 'Area 11 Shopping Complex',
-    position: { lat: 9.082, lng: 7.4918 },
-  },
-  {
-    id: 4,
-    name: 'Durumi Market Garki',
-    position: { lat: 9.0572, lng: 7.4951 },
-  },
-  {
-    id: 5,
-    name: 'Abuja Arts and Crafts Village',
-    position: { lat: 9.0811, lng: 7.4951 },
-  },
-  {
-    id: 6,
-    name: 'Abuja Aso Rock',
-    position: { lat: 9.0797, lng: 7.4968 },
-  },
-  {
-    id: 7,
-    name: 'Abuja Aso Rock',
-    position: { lat: 9.0797, lng: 7.4968 },
-  },
-  {
-    id: 8,
-    name: 'Abuja Central Park',
-    position: { lat: 9.05785, lng: 7.49508 },
-  },
-  {
-    id: 9,
-    name: 'Abuja Jabi Lake',
-    position: { lat: 9.0693, lng: 7.4141 },
-  },
-  {
-    id: 10,
-    name: 'Abuja National Mosque',
-    position: { lat: 9.0833, lng: 7.5333 },
-  },
-];
-
-const MapContainer = ({ markets }) => {
-  const [markers, setMarkers] = useState(markersData);
+const MapContainer = ({ markets, defaultLonLat }) => {
   const [userLocation, setUserLocation] = useState(null);
   const [activeMarker, setActiveMarker] = useState(null);
   const [showMarkers, setShowMarkers] = useState(false);
-  const center = useMemo(
-    () => userLocation || { lat: 9.05785, lng: 7.49508 },
-    [userLocation]
-  );
+  const [defaultLocationSet, setDefaultLocationSet] = useState(false);
+
+  const center = useMemo(() => {
+    if (defaultLocationSet && isValidCoordinate(defaultLonLat)) {
+      return defaultLonLat;
+    } else if (isValidCoordinate(userLocation)) {
+      return userLocation;
+    } else {
+      return { lat: 9.05785, lng: 7.49508 }; // Fallback default values
+    }
+  }, [userLocation, defaultLonLat, defaultLocationSet]);
+
+  useEffect(() => {
+    if (defaultLonLat) {
+      setDefaultLocationSet(true);
+    }
+  }, [defaultLonLat]);
 
   const fetchUserLocation = () => {
     const storedLocation = getLocationFromLocalStorage('userLocation');
@@ -114,12 +74,6 @@ const MapContainer = ({ markets }) => {
     setActiveMarker(marker);
   };
 
-  const handleOnLoad = (map) => {
-    const bounds = new google.maps.LatLngBounds();
-    markers.forEach(({ position }) => bounds.extend(position));
-    map.fitBounds(bounds);
-  };
-
   useEffect(() => {
     const timeout = setTimeout(() => {
       setShowMarkers(true);
@@ -139,7 +93,6 @@ const MapContainer = ({ markets }) => {
       zoom={13}
       center={center}
       mapContainerClassName="map-container"
-      onLoad={handleOnLoad}
       onClick={() => setActiveMarker(null)}
     >
       {showMarkers &&
@@ -157,7 +110,7 @@ const MapContainer = ({ markets }) => {
               onClick={() => handleActiveMarker(id)}
               icon={{
                 url: marketIcon,
-                scaledSize: new window.google.maps.Size(40, 40),
+                scaledSize: new window.google.maps.Size(30, 30),
               }}
             >
               {activeMarker === id ? (
@@ -197,9 +150,10 @@ const MapContainer = ({ markets }) => {
 
 MapContainer.propTypes = {
   markets: PropTypes.array,
+  defaultLonLat: PropTypes.object,
 };
 
-const Map = ({ markets }) => {
+const Map = ({ markets, defaultLonLat }) => {
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: 'AIzaSyD7rfqjUrqhxFgxBsmgM68GOFsY4FCOZ-s',
   });
@@ -213,13 +167,14 @@ const Map = ({ markets }) => {
 
   return (
     <div className="map">
-      <MapContainer markets={markets} />
+      <MapContainer markets={markets} defaultLonLat={defaultLonLat} />
     </div>
   );
 };
 
 Map.propTypes = {
   markets: PropTypes.array,
+  defaultLonLat: PropTypes.object,
 };
 
 export default Map;

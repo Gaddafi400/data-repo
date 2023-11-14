@@ -97,9 +97,9 @@ const CategoriesTable = ({ items }) => {
   };
 
   // delete categories
-  const deleteMarket = async () => {
+  const deleteCategory = async () => {
     if (deletingItemId) {
-      let url = `/admin/categories/${deletingItemId}`;
+      let url = `/admin/data-category/${deletingItemId}`;
       const token = getUserFromLocalStorage().token;
 
       setDeleting(true);
@@ -141,7 +141,7 @@ const CategoriesTable = ({ items }) => {
       <Confirm
         onClose={handleConfirmDelete}
         message="Are you sure you want to delete this category?"
-        onConfirm={deleteMarket}
+        onConfirm={deleteCategory}
         deleting={deleting}
       />
     );

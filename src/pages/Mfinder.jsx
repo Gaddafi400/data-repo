@@ -4,7 +4,6 @@ import {
   Select,
   Navbar,
   Footer,
-  Heading,
   Map,
   FinderSidebar,
   Loading,
@@ -32,6 +31,7 @@ const Mfinder = () => {
   const [towns, setTowns] = useState([]);
   const [commodities, setCommodities] = useState(initialData?.commodities);
   const [markets, setMarkets] = useState(initialData?.markets);
+  const [defaultLonLat, setDefaultLonLat] = useState({});
 
   const [selectedState, setSelectedState] = useState('');
   const [selectedLGA, setSelectedLGA] = useState('');
@@ -93,10 +93,13 @@ const Mfinder = () => {
 
   const handleStateChange = (e) => {
     setSelectedState(e.target.value);
+    setLocalGovernments([]);
+    setTowns([]);
   };
 
   const handleLGAChange = (e) => {
     setSelectedLGA(e.target.value);
+    setTowns([]);
   };
 
   const handleTownChange = (e) => {
@@ -118,6 +121,10 @@ const Mfinder = () => {
       const { commodities, markets } = response.data.data;
       setMarkets(markets);
       setCommodities(commodities);
+      setDefaultLonLat({
+        lat: parseFloat(response.data.data.default?.latitude),
+        lng: parseFloat(response.data.data.default?.longitude),
+      });
     } catch (error) {
       return error;
     } finally {
@@ -263,7 +270,7 @@ const Mfinder = () => {
           <Loading />
         ) : (
           <section className="m-data-section w-full xx:w-[1518px] rounded-[30px] p-6">
-            <Map markets={markets} />
+            <Map markets={markets} defaultLonLat={defaultLonLat} />
             <FinderSidebar
               items={commodities}
               updateMarkets={updateMarkets}

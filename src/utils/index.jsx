@@ -165,3 +165,13 @@ export const formatDataHeightChart = (chartLabel, chartData) => {
 
   return { mappedData, backgroundColors };
 };
+
+export const isValidCoordinate = (coordinates) => {
+  return (
+    coordinates &&
+    typeof coordinates.lat === 'number' &&
+    typeof coordinates.lng === 'number' &&
+    isFinite(coordinates.lat) &&
+    isFinite(coordinates.lng)
+  );
+};

@@ -10,9 +10,14 @@ const SearchCard = ({ heading, description, handleClick }) => {
 
   return (
     <div className="px-4 py-6 search-card ">
-      <h1 className="text-xl font-semibold text-slate-800">{heading}</h1>
+      <h1 className="text-lg font-semibold text-slate-800">
+        {heading}
+      </h1>
       <p className="text-base">{truncatedDescription}</p>
-      <button onClick={handleClick} className="text-sm bg-primary-500 rounded-lg py-2">
+      <button
+        onClick={handleClick}
+        className="text-sm bg-primary-500 rounded-lg py-2"
+      >
         Read more {'>>>'}
       </button>
     </div>

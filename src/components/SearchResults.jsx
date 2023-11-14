@@ -62,7 +62,7 @@ const SearchResults = ({ searchData, topSearch }) => {
     <div className="search-parent">
       <div className="py-20 px-2 search-container text-black md:mt-20">
         {getCurrentPageData().length !== 0 ? (
-          <div>
+          <div className="w-full">
             <h3 className="text-lg">
               We&apos;ve found{' '}
               <span className="font-semibold">{searchData.length}</span> Results

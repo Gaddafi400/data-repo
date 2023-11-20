@@ -18,12 +18,14 @@ const Upload = ({ onClose, datasetId }) => {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
 
-    if (file && file.name.endsWith('.xlsx')) {
+    if ((file && file.name.endsWith('.xlsx')) || file.name.endsWith('.xls')) {
       setSelectedFile(file);
     } else {
       setSelectedFile(null);
       e.target.value = null;
-      toast.error('Invalid file format. Please select a file in .xlsx format.');
+      toast.error(
+        'Invalid file format. Please select a file in .xlsx or .xls format.'
+      );
     }
   };
 
@@ -41,7 +43,9 @@ const Upload = ({ onClose, datasetId }) => {
         formData.append('subcategory', datasetId);
         const response = await customFetch.post(url, formData, header(token));
         toast.success('Dataset uploaded successfully!');
-        onClose();
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);  
       } else {
         toast.error('Please select a file to upload.');
       }
@@ -89,7 +93,7 @@ const Upload = ({ onClose, datasetId }) => {
             className="mt-1 text-sm text-gray-500 dark:text-gray-300"
             id="file_input_help"
           >
-            Accepted format: Excel .xlsx.
+            Accepted format: Excel .xlsx or .xls
           </p>
         </div>
 

@@ -1,7 +1,8 @@
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
 
-const Navbar = () => {
+const Navbar = ({ isMarketFinder }) => {
   const style = { background: '#292949', color: 'white' };
 
   return (
@@ -29,16 +30,22 @@ const Navbar = () => {
               tabIndex={0}
               className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-primary-500 rounded-box w-52"
             >
-              <li>
-                <Link to="/" className="nav-link" style={style}>
-                  Data Repo
-                </Link>
-              </li>
-              <li>
-                <Link to="/market-finder" className="nav-link" style={style}>
-                  Market Finder
-                </Link>
-              </li>
+              {isMarketFinder && (
+                <li>
+                  <Link to="/" className="nav-link" style={style}>
+                    Data Repo
+                  </Link>
+                </li>
+              )}
+
+              {!isMarketFinder && (
+                <li>
+                  <Link to="/market-finder" className="nav-link" style={style}>
+                    Market Finder
+                  </Link>
+                </li>
+              )}
+
               <li>
                 <span className="nav-link" style={style}>
                   Discover More
@@ -63,30 +70,36 @@ const Navbar = () => {
             className="normal-case flex flex-row items-center text-white text-24 font-arial font-normal break-words px-3 cursor-pointer"
           >
             <img src={logo} alt="Logo" className="cursor-pointer" />
-            STEADY VARIABLE
+            STEADY VARIABLES
           </Link>
         </div>
 
         <div className="navbar-end hidden lg:flex">
           <ul className="menu menu-horizontal px-1">
-            <li>
-              <Link
-                to="/"
-                className="hover:text-white text-base nav-link"
-                style={style}
-              >
-                Data Repo
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/market-finder"
-                className="text-base nav-link"
-                style={style}
-              >
-                Market Finder
-              </Link>
-            </li>
+            {isMarketFinder && (
+              <li>
+                <Link
+                  to="/"
+                  className="hover:text-white text-base nav-link"
+                  style={style}
+                >
+                  Data Repo
+                </Link>
+              </li>
+            )}
+
+            {!isMarketFinder && (
+              <li>
+                <Link
+                  to="/market-finder"
+                  className="text-base nav-link"
+                  style={style}
+                >
+                  Market Finder
+                </Link>
+              </li>
+            )}
+
             <li tabIndex={0}>
               <details>
                 <summary
@@ -122,6 +135,10 @@ const Navbar = () => {
       </div>
     </div>
   );
+};
+
+Navbar.propTypes = {
+  isMarketFinder: PropTypes.bool,
 };
 
 export default Navbar;

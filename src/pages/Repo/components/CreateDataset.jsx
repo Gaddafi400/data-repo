@@ -241,6 +241,17 @@ const CreateDataset = ({ onClose, onDatasetCreated }) => {
                 ))}
               </ul>
             </div>
+            {/* remove variable */}
+            <div className="flex justify-end">
+              {vIndex > 0 && (
+                <button
+                  className="bg-red-500 text-white  px-1 py-1 rounded-full"
+                  onClick={(e) => removeVariable(e, vIndex)}
+                >
+                  <FaMinus />
+                </button>
+              )}
+            </div>
           </div>
         ))}
 
@@ -253,14 +264,14 @@ const CreateDataset = ({ onClose, onDatasetCreated }) => {
             <AiOutlinePlusCircle />
           </button>
 
-          {formData.variables.length > 1 && (
+          {/* {formData.variables.length > 1 && (
             <button
               className="bg-red-500 text-white rounded-md px-3 py-2"
               onClick={(e) => removeVariable(e, formData.variables.length - 1)}
             >
               <FaMinus />
             </button>
-          )}
+          )} */}
         </div>
 
         {/* End Variables */}
@@ -308,3 +319,5 @@ CreateDataset.propTypes = {
 };
 
 export default CreateDataset;
+
+// i want removing options

@@ -191,7 +191,7 @@ const Mfinder = () => {
 
   return (
     <>
-      <Navbar />
+      <Navbar isMarketFinder={true} />
       <div className="mfinder-hero">
         <div className="mfinder-form-container">
           <h1 className=" text-white font-medium sm:text-center text-3xl xl:text-5xl">

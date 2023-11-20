@@ -1,7 +1,7 @@
 import { useLoaderData, redirect, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
-import { FaTrash, FaArrowLeft } from 'react-icons/fa';
+import { FaTrash, FaArrowLeft, FaEdit } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import {
   customFetch,
@@ -42,8 +42,10 @@ const SingleDataset = () => {
   const { name, variables, category, description, dataRecord, operations } =
     singleRecord;
 
-  const [variableState, setVariableState] = useState(variables);
+  const [variablesState, setVariablesState] = useState(variables);
   const [operationsState, setOperationsState] = useState(operations);
+  const [isDeletingVar, setIsDeletingVar] = useState(false);
+  const [isDeletingOpe, setIsDeletingOpe] = useState(false);
 
   const tableData = {
     variables,
@@ -114,16 +116,52 @@ const SingleDataset = () => {
     e.preventDefault();
     const token = getUserFromLocalStorage().token;
     const url = `admin/subcategories/${variableId}/variable`;
-
     try {
+      setIsDeletingVar(true);
       const response = await customFetch.delete(url, header(token));
       const responseData = response.data?.data;
+      setVariablesState((prevVariables) => {
+        return prevVariables.filter((variable) => variable.id !== variableId);
+      });
       toast.success('Variable deleted successfully!');
-      return { category: responseData };
+      return { variable: responseData };
     } catch (error) {
       const errorMessage = flattenErrorMessage(error.response.data?.data);
-      toast.error(errorMessage || 'Failed to variable. Please try again.');
+      toast.error(
+        errorMessage || 'Failed to delete variable. Please try again.'
+      );
       return error;
+    } finally {
+      setIsDeletingVar(false);
+    }
+  };
+
+  const handleDeleteOperation = async (e, operationId) => {
+    e.preventDefault();
+    const token = getUserFromLocalStorage().token;
+    const url = `admin/subcategories/${operationId}/operation`;
+
+    try {
+      setIsDeletingOpe(true);
+      const response = await customFetch.delete(url, header(token));
+      const responseData = response.data?.data;
+
+      setOperationsState((prevOperations) => {
+        return prevOperations.filter(
+          (operation) => operation.id !== operationId
+        );
+      });
+
+      toast.success('Operation removed successfully!');
+      return { operation: responseData };
+    } catch (error) {
+      const errorMessage = flattenErrorMessage(error.response.data?.data);
+      toast.error(
+        errorMessage || 'Failed to remove operation. Please try again.'
+      );
+      return error;
+    } finally {
+      setIsDeletingOpe(false);
     }
   };
 
@@ -185,7 +223,6 @@ const SingleDataset = () => {
         </h1>
         <p className="text-lg text-slate-800 mb-4">{category}</p>
         <p className="text-slate-800mb-4">{description}</p>
-
         {/* Variables */}
         <div className="flex items-center justify-between gap-4">
           <h2 className="text-xl font-semibold mb-3 mt-3 sm:text-2xl md:text-xl lg:text-xl xl:text-xl 2xl:text-xl">
@@ -202,10 +239,9 @@ const SingleDataset = () => {
             <span className="text-sm">Add variable</span>
           </div>
         </div>
-
         <div className="border border-primary-100 rounded-lg p-1 mb-12">
-          <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 ">
-            <thead className="text-xs text-slate-800 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <table className="w-full text-sm text-left text-slate-500 dark:text-gray-400 ">
+            <thead className="text-xs text-slate-800 uppercase bg-gray-50">
               <tr>
                 <th scope="col" className="px-6 py-3  border-gray-300">
                   Variables
@@ -216,23 +252,31 @@ const SingleDataset = () => {
               </tr>
             </thead>
             <tbody>
-              {variableState.map((variable) => (
+              {variablesState.map((variable) => (
                 <tr key={variable.id} className="border-b border-gray-300">
                   <td className="px-6 py-4">{variable.variable}</td>
                   <td className="px-6 py-4 flex items-center">
-                    <span
-                      className="mr-2 text-red-600 cursor-pointer"
-                      onClick={(e) => handleDeleteVariable(e, variable.id)}
-                    >
-                      <FaTrash />
+                    {/* edit */}
+                    <span className="mr-2 cursor-pointer">
+                      <FaEdit className="mr-1" />
                     </span>
+                    {/* remove */}
+                    {isDeletingVar ? (
+                      <span className="mr-2 text-red-600">Deleting...</span>
+                    ) : (
+                      <span
+                        className="mr-2 text-red-600 cursor-pointer"
+                        onClick={(e) => handleDeleteVariable(e, variable.id)}
+                      >
+                        <FaTrash />
+                      </span>
+                    )}
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-
         {/* End Variables */}
 
         {/* Operations */}
@@ -251,10 +295,9 @@ const SingleDataset = () => {
             <span className="text-sm"> Add operation</span>
           </div>
         </div>
-
         <div className="border border-primary-100 rounded-lg p-1 mb-12">
           <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 overflow-y-auto">
-            <thead className="text-xs text-slate-800 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <thead className="text-xs text-slate-800 uppercase bg-gray-50 ">
               <tr>
                 <th scope="col" className="px-6 py-3 border-gray-300">
                   Name
@@ -266,27 +309,26 @@ const SingleDataset = () => {
             </thead>
             <tbody>
               {operationsState.map((operation) => (
-                <tr
-                  key={operation.id}
-                  className="bg-white border-b dark:bg-gray-900 dark:border-gray-700"
-                >
+                <tr key={operation.id} className="bg-white border-b">
                   <td className="px-6 py-4">{operation.operation}</td>
                   <td className="px-6 py-4 flex items-center">
-                    <span
-                      className="mr-2 text-red-600 cursor-pointer"
-                      // onClick={() => handleDeleteVariable(variable.id)}
-                    >
-                      <FaTrash />
-                    </span>
+                    {isDeletingOpe ? (
+                      <span className="mr-2 text-red-600">Deleting...</span>
+                    ) : (
+                      <span
+                        className="mr-2 text-red-600 cursor-pointer"
+                        onClick={(e) => handleDeleteOperation(e, operation.id)}
+                      >
+                        <FaTrash />
+                      </span>
+                    )}
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-
         {/* End operations */}
-
         {/* Data Records */}
         <h2 className="text-xl font-semibold mb-3 mt-3 sm:text-2xl md:text-xl lg:text-xl xl:text-xl 2xl:text-xl">
           Dataset Records

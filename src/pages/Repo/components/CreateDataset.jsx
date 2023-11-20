@@ -263,15 +263,6 @@ const CreateDataset = ({ onClose, onDatasetCreated }) => {
           >
             <AiOutlinePlusCircle />
           </button>
-
-          {/* {formData.variables.length > 1 && (
-            <button
-              className="bg-red-500 text-white rounded-md px-3 py-2"
-              onClick={(e) => removeVariable(e, formData.variables.length - 1)}
-            >
-              <FaMinus />
-            </button>
-          )} */}
         </div>
 
         {/* End Variables */}

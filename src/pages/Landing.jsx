@@ -37,19 +37,18 @@ const Landing = () => {
   const { knowledge } = useGlobalContext();
   const data = useActionData();
 
-  console.log('data?.subscribing', data);
-
   return (
     <div>
       <section className="first-section">
         <div className="px-4">
           <Card
-            title="Data Repository"
+            title="Market Finder"
             imageUrl={location}
             description="
-        Our platform serves as a comprehensive data repository where users 
-        can easily access a wealth of valuable information on topics 
-        ranging from the economy and the environment to education and more."
+            Our platform serves as a comprehensive data repository 
+            where users can easily access a wealth of valuable information 
+            on topics ranging from the economy and the environment to 
+            education and more."
           />
         </div>
       </section>
@@ -57,13 +56,13 @@ const Landing = () => {
       <section className="second-section">
         <div className="px-4">
           <Finder
-            title="Market Finder"
+            title="Data Repository"
             imageUrl={finder}
             description="
-            Our platform serves as a comprehensive data repository 
-            where users can easily access a wealth of valuable information 
-            on topics ranging from the economy and the environment to 
-            education and more. "
+            Our platform serves as a comprehensive data repository where users 
+            can easily access a wealth of valuable information on topics 
+            ranging from the economy and the environment to education and more. 
+             "
             position="right"
           />
           <SectionTitle

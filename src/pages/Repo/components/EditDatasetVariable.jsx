@@ -1,9 +1,6 @@
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 import { useState, useEffect } from 'react';
-import { AiOutlinePlusCircle } from 'react-icons/ai';
-import { FaMinus } from 'react-icons/fa';
-
 import { Select } from '../../../components';
 
 import {
@@ -14,15 +11,27 @@ import {
   flattenErrorMessage,
 } from '../../../utils';
 
-const AddVariable = ({ onClose, datasetId }) => {
+const EditDatasetVariable = ({ onClose, initialData, datasetId }) => {
   const initialFormState = {
     variables: [
       {
-        variable: '',
+        variable: initialData?.variable,
         variableOptions: [
-          { name: 'firstColumn', label: 'First Column', selected: false },
-          { name: 'chartData', label: 'Chart Data', selected: false },
-          { name: 'chartLabel', label: 'Chart Label', selected: false },
+          {
+            name: 'firstColumn',
+            label: 'First Column',
+            selected: initialData?.firstColumn,
+          },
+          {
+            name: 'chartData',
+            label: 'Chart Data',
+            selected: initialData?.chartData,
+          },
+          {
+            name: 'chartLabel',
+            label: 'Chart Label',
+            selected: initialData?.chartLabel,
+          },
         ],
       },
     ],
@@ -60,38 +69,10 @@ const AddVariable = ({ onClose, datasetId }) => {
     });
   };
 
-  const addVariable = (e) => {
-    e.preventDefault();
-    setFormData({
-      ...formData,
-      variables: [
-        ...formData.variables,
-        {
-          variable: '',
-          variableOptions: [
-            { name: 'firstColumn', label: 'First Column', selected: false },
-            { name: 'chartData', label: 'Chart Data', selected: false },
-            { name: 'chartLabel', label: 'Chart Label', selected: false },
-          ],
-        },
-      ],
-    });
-  };
-
-  const removeVariable = (e, index) => {
-    e.preventDefault();
-    const updatedVariables = [...formData.variables];
-    updatedVariables.splice(index, 1);
-    setFormData({
-      ...formData,
-      variables: updatedVariables,
-    });
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    const url = `admin/subcategories/${datasetId}/variable`;
+    const url = `admin/subcategories/${datasetId}/variable/${initialData?.id}`;
     const token = getUserFromLocalStorage().token;
 
     // transform the data into proper shape
@@ -104,13 +85,13 @@ const AddVariable = ({ onClose, datasetId }) => {
     try {
       const response = await customFetch.patch(url, payload, header(token));
       const responseData = response.data?.data;
-      toast.success('New variable created successfully!');
+      toast.success('Variable updated successfully!');
       close();
       return { category: responseData };
     } catch (error) {
       const errorMessage = flattenErrorMessage(error.response.data?.data);
       toast.error(
-        errorMessage || 'Failed to create variable. Please try again.'
+        errorMessage || 'Failed to update variable. Please try again.'
       );
       return error;
     } finally {
@@ -147,7 +128,7 @@ const AddVariable = ({ onClose, datasetId }) => {
           </button>
         </div>
         <h1 className="text-2xl font-medium  text-gray-800 dark:text-white my-4">
-          Add more variable
+          Update variable
         </h1>
 
         {formData.variables?.map((variable, vIndex) => (
@@ -189,29 +170,8 @@ const AddVariable = ({ onClose, datasetId }) => {
                 ))}
               </ul>
             </div>
-            {/* remove variable */}
-            <div className="flex justify-end">
-              {vIndex > 0 && (
-                <button
-                  className="bg-red-500 text-white  px-1 py-1 rounded-full"
-                  onClick={(e) => removeVariable(e, vIndex)}
-                >
-                  <FaMinus />
-                </button>
-              )}
-            </div>
           </div>
         ))}
-
-        {/* Add more variables */}
-        <div className="flex justify-end gap-2">
-          <button
-            className="bg-primary-500 text-white rounded-md px-3 py-2"
-            onClick={(e) => addVariable(e)}
-          >
-            <AiOutlinePlusCircle />
-          </button>
-        </div>
 
         {/* End Variables */}
 
@@ -223,16 +183,17 @@ const AddVariable = ({ onClose, datasetId }) => {
               : 'hover:bg-primary-600'
           }`}
         >
-          {isSubmitting ? 'Adding...' : 'Add variable'}
+          {isSubmitting ? 'Updating' : 'Update Variable'}
         </button>
       </form>
     </div>
   );
 };
 
-AddVariable.propTypes = {
+EditDatasetVariable.propTypes = {
   onClose: PropTypes.func,
+  initialData: PropTypes.string,
   datasetId: PropTypes.string,
 };
 
-export default AddVariable;
+export default EditDatasetVariable;

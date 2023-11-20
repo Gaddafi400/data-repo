@@ -45,7 +45,7 @@ const Upload = ({ onClose, datasetId }) => {
         toast.success('Dataset uploaded successfully!');
         setTimeout(() => {
           window.location.reload();
-        }, 1000);  
+        }, 500);
       } else {
         toast.error('Please select a file to upload.');
       }

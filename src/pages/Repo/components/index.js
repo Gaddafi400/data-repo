@@ -11,3 +11,4 @@ export { default as Upload } from './Upload';
 export { default as AddOperation } from './AddOperation';
 export { default as AddVariable } from './AddVariable';
 export { default as EditDataset } from './EditDataset';
+export { default as EditDatasetVariable } from './EditDatasetVariable';

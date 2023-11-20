@@ -10,7 +10,13 @@ import {
   flattenErrorMessage,
 } from '../../utils';
 import Table from '../../components/Table';
-import { Upload, AddOperation, AddVariable } from './components';
+import {
+  Upload,
+  AddOperation,
+  AddVariable,
+  EditDatasetVariable,
+} from './components';
+import { Confirm } from '../Dashboard/components';
 
 let datasetId = '';
 
@@ -35,17 +41,20 @@ const SingleDataset = () => {
   const { singleRecord } = useLoaderData();
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isUpdateVariable, setIsUpdateVariable] = useState(false);
+  const [editData, setEditData] = useState(false);
   const [isAddOperation, setIsAddOperation] = useState(false);
   const [isAddVariable, setIsVariable] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
-
+  const [deleting, setDeleting] = useState(false);
+  const [confirmClear, setConfirmClear] = useState(false);
   const { name, variables, category, description, dataRecord, operations } =
     singleRecord;
 
   const [variablesState, setVariablesState] = useState(variables);
   const [operationsState, setOperationsState] = useState(operations);
-  const [isDeletingVar, setIsDeletingVar] = useState(false);
-  const [isDeletingOpe, setIsDeletingOpe] = useState(false);
+  const [deletingStatus, setDeletingStatus] = useState({});
+  const [deletingOperationStatus, setDeletingOperationStatus] = useState({});
 
   const tableData = {
     variables,
@@ -112,17 +121,30 @@ const SingleDataset = () => {
     setIsVariable(!isAddVariable);
   };
 
+  const handleUpdateVariable = (e, variable) => {
+    e.preventDefault();
+    setIsUpdateVariable(!isUpdateVariable);
+    setEditData(variable);
+  };
+
   const handleDeleteVariable = async (e, variableId) => {
     e.preventDefault();
     const token = getUserFromLocalStorage().token;
     const url = `admin/subcategories/${variableId}/variable`;
+
     try {
-      setIsDeletingVar(true);
+      setDeletingStatus((prevStatus) => ({
+        ...prevStatus,
+        [variableId]: true,
+      }));
+
       const response = await customFetch.delete(url, header(token));
       const responseData = response.data?.data;
+
       setVariablesState((prevVariables) => {
         return prevVariables.filter((variable) => variable.id !== variableId);
       });
+
       toast.success('Variable deleted successfully!');
       return { variable: responseData };
     } catch (error) {
@@ -132,8 +154,15 @@ const SingleDataset = () => {
       );
       return error;
     } finally {
-      setIsDeletingVar(false);
+      setDeletingStatus((prevStatus) => ({
+        ...prevStatus,
+        [variableId]: false,
+      }));
     }
+  };
+
+  const updateVariable = async () => {
+    console.log('updateVariable', updateVariable);
   };
 
   const handleDeleteOperation = async (e, operationId) => {
@@ -142,7 +171,11 @@ const SingleDataset = () => {
     const url = `admin/subcategories/${operationId}/operation`;
 
     try {
-      setIsDeletingOpe(true);
+      setDeletingOperationStatus((prevStatus) => ({
+        ...prevStatus,
+        [operationId]: true,
+      }));
+
       const response = await customFetch.delete(url, header(token));
       const responseData = response.data?.data;
 
@@ -161,13 +194,43 @@ const SingleDataset = () => {
       );
       return error;
     } finally {
-      setIsDeletingOpe(false);
+      setDeletingOperationStatus((prevStatus) => ({
+        ...prevStatus,
+        [operationId]: false,
+      }));
     }
   };
 
   const updateOperations = (operations) => {
     setOperationsState(operations);
     setIsAddOperation(false);
+  };
+
+  const handleClearDataset = (e) => {
+    e.preventDefault();
+    setConfirmClear(!confirmClear);
+  };
+
+  // clearDataset
+  const clearDataset = async () => {
+    setDeleting(true);
+    let url = `admin/subcategories/${datasetId}/data_records`;
+    const token = getUserFromLocalStorage().token;
+    try {
+      const response = await customFetch.delete(url, header(token));
+      const responseData = response.data.data;
+      toast.success('Dataset cleared successfully!');
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
+      return { dataset: responseData };
+    } catch (error) {
+      const errorMessage = flattenErrorMessage(error.response.data?.data);
+      toast.error(errorMessage || 'Failed to clear dataset. Please try again.');
+      return error;
+    } finally {
+      setDeleting(false);
+    }
   };
 
   if (isModalOpen) {
@@ -188,6 +251,30 @@ const SingleDataset = () => {
     return <AddVariable onClose={handleAddVariable} datasetId={datasetId} />;
   }
 
+  if (isUpdateVariable) {
+    return (
+      <EditDatasetVariable
+        onClose={handleUpdateVariable}
+        initialData={editData}
+        datasetId={datasetId}
+        // updateVariable={updateVariable}
+      />
+    );
+  }
+
+  if (confirmClear) {
+    return (
+      <Confirm
+        onClose={handleClearDataset}
+        message="Are you sure you want to clear this dataset?"
+        onConfirm={clearDataset}
+        deleting={deleting}
+      />
+    );
+  }
+
+  console.log('variablesState', variablesState);
+
   return (
     <div className="admin-container container-with-sidebar">
       <div className="">
@@ -201,12 +288,22 @@ const SingleDataset = () => {
           </button>
 
           <div className="flex gap-2 justify-end">
-            <button
-              className="bg-primary-400 text-white font-medium text-sm rounded-md px-3 py-2 hover:bg-primary-700"
-              onClick={openCloseModal}
-            >
-              Upload dataset
-            </button>
+            {Object.keys(dataRecord).length <= 0 ? (
+              <button
+                className="bg-primary-400 text-white font-medium text-sm rounded-md px-3 py-2 hover:bg-primary-700"
+                onClick={openCloseModal}
+              >
+                Upload dataset
+              </button>
+            ) : (
+              <button
+                className="bg-red-500 text-white font-medium text-sm rounded-md px-3 py-2 hover:bg-red-700"
+                onClick={(e) => handleClearDataset(e)}
+              >
+                Clear dataset
+              </button>
+            )}
+
             <button
               className={`bg-primary-400 text-white font-medium text-sm  rounded-md px-3 py-2 hover:bg-primary-700 ${
                 isDownloading ? 'cursor-not-allowed' : 'cursor-pointer'
@@ -235,7 +332,7 @@ const SingleDataset = () => {
             <AiOutlinePlus
               className="mr-2 bg-primary-500 text-white rounded-full"
               style={{ fontSize: '20px' }}
-            />{' '}
+            />
             <span className="text-sm">Add variable</span>
           </div>
         </div>
@@ -246,6 +343,15 @@ const SingleDataset = () => {
                 <th scope="col" className="px-6 py-3  border-gray-300">
                   Variables
                 </th>
+                <th scope="col" className="px-6 py-3  border-gray-300">
+                  First Column
+                </th>
+                <th scope="col" className="px-6 py-3  border-gray-300">
+                  Chart Data
+                </th>
+                <th scope="col" className="px-6 py-3  border-gray-300">
+                  Chart Label
+                </th>
                 <th scope="col" className="px-6 py-3 border-gray-300">
                   Actions
                 </th>
@@ -255,13 +361,25 @@ const SingleDataset = () => {
               {variablesState.map((variable) => (
                 <tr key={variable.id} className="border-b border-gray-300">
                   <td className="px-6 py-4">{variable.variable}</td>
+                  <td className="px-6 py-4">
+                    {variable.firstColumn.toString()}
+                  </td>
+                  <td className="px-6 py-4">{variable.charData.toString()}</td>
+                  <td className="px-6 py-4">
+                    {variable.chartLabel.toString()}
+                  </td>
+
                   <td className="px-6 py-4 flex items-center">
                     {/* edit */}
-                    <span className="mr-2 cursor-pointer">
+                    <span
+                      className="mr-2 cursor-pointer"
+                      onClick={(e) => handleUpdateVariable(e, variable)}
+                    >
                       <FaEdit className="mr-1" />
                     </span>
                     {/* remove */}
-                    {isDeletingVar ? (
+
+                    {deletingStatus[variable.id] ? (
                       <span className="mr-2 text-red-600">Deleting...</span>
                     ) : (
                       <span
@@ -312,7 +430,7 @@ const SingleDataset = () => {
                 <tr key={operation.id} className="bg-white border-b">
                   <td className="px-6 py-4">{operation.operation}</td>
                   <td className="px-6 py-4 flex items-center">
-                    {isDeletingOpe ? (
+                    {deletingOperationStatus[operation.id] ? (
                       <span className="mr-2 text-red-600">Deleting...</span>
                     ) : (
                       <span
@@ -329,6 +447,7 @@ const SingleDataset = () => {
           </table>
         </div>
         {/* End operations */}
+
         {/* Data Records */}
         <h2 className="text-xl font-semibold mb-3 mt-3 sm:text-2xl md:text-xl lg:text-xl xl:text-xl 2xl:text-xl">
           Dataset Records

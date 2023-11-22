@@ -104,8 +104,10 @@ const AddVariable = ({ onClose, datasetId }) => {
     try {
       const response = await customFetch.patch(url, payload, header(token));
       const responseData = response.data?.data;
-      toast.success('New variable created successfully!');
-      close();
+      toast.success('New variable added successfully!');
+      setTimeout(() => {
+        window.location.reload();
+      }, 800);
       return { category: responseData };
     } catch (error) {
       const errorMessage = flattenErrorMessage(error.response.data?.data);

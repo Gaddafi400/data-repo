@@ -12,6 +12,7 @@ import {
 } from '../../../utils';
 
 const EditDatasetVariable = ({ onClose, initialData, datasetId }) => {
+    
   const initialFormState = {
     variables: [
       {
@@ -39,7 +40,7 @@ const EditDatasetVariable = ({ onClose, initialData, datasetId }) => {
 
   const [formData, setFormData] = useState(initialFormState);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [variables, setVariables] = useState([]);
+  //   const [variables, setVariables] = useState([]);
 
   const handleVariableOptionToggle = (vIndex, index) => {
     console.log(formData);
@@ -55,19 +56,19 @@ const EditDatasetVariable = ({ onClose, initialData, datasetId }) => {
     setFormData(updatedFormData);
   };
 
-  const handleVariableChange = (e, index) => {
-    const variableValue = e.target.value;
-    const updatedVariables = [...formData.variables];
+  //   const handleVariableChange = (e, index) => {
+  //     const variableValue = e.target.value;
+  //     const updatedVariables = [...formData.variables];
 
-    updatedVariables[index] = {
-      ...updatedVariables[index],
-      variable: variableValue,
-    };
-    setFormData({
-      ...formData,
-      variables: updatedVariables,
-    });
-  };
+  //     updatedVariables[index] = {
+  //       ...updatedVariables[index],
+  //       variable: variableValue,
+  //     };
+  //     setFormData({
+  //       ...formData,
+  //       variables: updatedVariables,
+  //     });
+  //   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -78,20 +79,21 @@ const EditDatasetVariable = ({ onClose, initialData, datasetId }) => {
     // transform the data into proper shape
     const { variables } = transformData(formData);
 
-    const payload = {
-      variables: variables,
-    };
+    // eslint-disable-next-line no-unused-vars
+    const { variable, ...payload } = variables[0];
 
     try {
       const response = await customFetch.patch(url, payload, header(token));
       const responseData = response.data?.data;
       toast.success('Variable updated successfully!');
-      close();
-      return { category: responseData };
+      setTimeout(() => {
+        window.location.reload();
+      }, 800);
+      return { variable: responseData };
     } catch (error) {
       const errorMessage = flattenErrorMessage(error.response.data?.data);
       toast.error(
-        errorMessage || 'Failed to update variable. Please try again.'
+        errorMessage || 'Failed to update a variable. Please try again.'
       );
       return error;
     } finally {
@@ -100,20 +102,20 @@ const EditDatasetVariable = ({ onClose, initialData, datasetId }) => {
     }
   };
 
-  // get variables list
-  useEffect(() => {
-    const url = '/admin/variables';
-    const token = getUserFromLocalStorage().token;
+  //   // get variables list
+  //   useEffect(() => {
+  //     const url = '/admin/variables';
+  //     const token = getUserFromLocalStorage().token;
 
-    customFetch
-      .get(url, header(token))
-      .then((response) => {
-        setVariables(response.data?.data);
-      })
-      .catch((error) => {
-        console.error('Error fetching variables options:', error);
-      });
-  }, []);
+  //     customFetch
+  //       .get(url, header(token))
+  //       .then((response) => {
+  //         setVariables(response.data?.data);
+  //       })
+  //       .catch((error) => {
+  //         console.error('Error fetching variables options:', error);
+  //       });
+  //   }, []);
 
   return (
     <div className="create-town">
@@ -128,7 +130,7 @@ const EditDatasetVariable = ({ onClose, initialData, datasetId }) => {
           </button>
         </div>
         <h1 className="text-2xl font-medium  text-gray-800 dark:text-white my-4">
-          Update variable
+          Update a variable
         </h1>
 
         {formData.variables?.map((variable, vIndex) => (
@@ -139,14 +141,24 @@ const EditDatasetVariable = ({ onClose, initialData, datasetId }) => {
             >
               Variables
             </label>
-            <Select
+            {/* <Select
               id="variable"
               name="variable"
               options={variables}
               value={formData.variables[vIndex].variable}
               onChange={(e) => handleVariableChange(e, vIndex, variable)}
               placeholder="Select a variable"
-            />
+            /> */}
+
+            <select
+              disabled
+              className="mb-3 bg-gray-50 border border-gray-300 text-slate-800 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-3"
+            >
+              <option value="" disabled defaultValue>
+                {initialData?.variable}
+              </option>
+            </select>
+
             <label
               htmlFor="category"
               className="block mb-2 text-sm font-medium"
@@ -183,7 +195,7 @@ const EditDatasetVariable = ({ onClose, initialData, datasetId }) => {
               : 'hover:bg-primary-600'
           }`}
         >
-          {isSubmitting ? 'Updating' : 'Update Variable'}
+          {isSubmitting ? 'Updating...' : 'Update Variable'}
         </button>
       </form>
     </div>
@@ -192,7 +204,7 @@ const EditDatasetVariable = ({ onClose, initialData, datasetId }) => {
 
 EditDatasetVariable.propTypes = {
   onClose: PropTypes.func,
-  initialData: PropTypes.string,
+  initialData: PropTypes.object,
   datasetId: PropTypes.string,
 };
 

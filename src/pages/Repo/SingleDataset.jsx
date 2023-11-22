@@ -161,9 +161,9 @@ const SingleDataset = () => {
     }
   };
 
-  const updateVariable = async () => {
-    console.log('updateVariable', updateVariable);
-  };
+  // const updateVariable = async () => {
+  //   console.log('updateVariable', updateVariable);
+  // };
 
   const handleDeleteOperation = async (e, operationId) => {
     e.preventDefault();
@@ -222,7 +222,7 @@ const SingleDataset = () => {
       toast.success('Dataset cleared successfully!');
       setTimeout(() => {
         window.location.reload();
-      }, 500);
+      }, 700);
       return { dataset: responseData };
     } catch (error) {
       const errorMessage = flattenErrorMessage(error.response.data?.data);

@@ -1,12 +1,11 @@
-import { Navbar, Footer, Heading } from '../components';
+import { Navbar, Footer } from '../components';
 import { useLoaderData } from 'react-router-dom';
 import { customFetch, formatDataHeightChart } from '../utils';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import xlsx from '../assets/xlsx.png';
 import jpeg from '../assets/jpeg.png';
 import pdf from '../assets/pdf.png';
-import Table from '../components/Table';
 
 import BarChart from '../components/chart/BarChart';
 import PieChart from '../components/chart/PieChart';
@@ -32,8 +31,6 @@ export const loader = async ({ params }) => {
 
 const SingleData = () => {
   const { result, operations, chartLabel, chartData } = useLoaderData();
-
-  console.log('operations', operations);
 
   const [selectedItem, setSelectedItem] = useState('charts');
 
@@ -61,27 +58,18 @@ const SingleData = () => {
             Chart
           </li>
 
-          <li
-            className={`cursor-pointer mb-2 ${
-              selectedItem === 'operation'
-                ? 'text-primary-800 bg-primary-50 text-center rounded-md'
-                : ''
-            }`}
-            onClick={() => handleItemClick('operation')}
-          >
-            Operation
-          </li>
-          {/* 
-          <li
-            className={`cursor-pointer mb-2 ${
-              selectedItem === 'table'
-                ? 'text-primary-800 bg-primary-50 text-center rounded-md'
-                : ''
-            }`}
-            onClick={() => handleItemClick('table')}
-          >
-            Table
-          </li> */}
+          {operations && Object.keys(operations).length > 0 ? (
+            <li
+              className={`cursor-pointer mb-2 ${
+                selectedItem === 'operation'
+                  ? 'text-primary-800 bg-primary-50 text-center rounded-md'
+                  : ''
+              }`}
+              onClick={() => handleItemClick('operation')}
+            >
+              Operation
+            </li>
+          ) : null}
         </ul>
       </div>
     );

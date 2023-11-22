@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
-import { useState, useEffect } from 'react';
-import { Select } from '../../../components';
+import { useState } from 'react';
 
 import {
   customFetch,
@@ -12,7 +11,6 @@ import {
 } from '../../../utils';
 
 const EditDatasetVariable = ({ onClose, initialData, datasetId }) => {
-    
   const initialFormState = {
     variables: [
       {
@@ -40,10 +38,8 @@ const EditDatasetVariable = ({ onClose, initialData, datasetId }) => {
 
   const [formData, setFormData] = useState(initialFormState);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  //   const [variables, setVariables] = useState([]);
 
   const handleVariableOptionToggle = (vIndex, index) => {
-    console.log(formData);
     const updatedFormData = { ...formData };
     const updatedOptions = [...formData.variables[vIndex].variableOptions];
 
@@ -55,20 +51,6 @@ const EditDatasetVariable = ({ onClose, initialData, datasetId }) => {
     updatedFormData.variables[vIndex].variableOptions = updatedOptions;
     setFormData(updatedFormData);
   };
-
-  //   const handleVariableChange = (e, index) => {
-  //     const variableValue = e.target.value;
-  //     const updatedVariables = [...formData.variables];
-
-  //     updatedVariables[index] = {
-  //       ...updatedVariables[index],
-  //       variable: variableValue,
-  //     };
-  //     setFormData({
-  //       ...formData,
-  //       variables: updatedVariables,
-  //     });
-  //   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -141,22 +123,13 @@ const EditDatasetVariable = ({ onClose, initialData, datasetId }) => {
             >
               Variables
             </label>
-            {/* <Select
-              id="variable"
-              name="variable"
-              options={variables}
-              value={formData.variables[vIndex].variable}
-              onChange={(e) => handleVariableChange(e, vIndex, variable)}
-              placeholder="Select a variable"
-            /> */}
 
             <select
-              disabled
+              readOnly
+              value={formData.variables[0].variable}
               className="mb-3 bg-gray-50 border border-gray-300 text-slate-800 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-3"
             >
-              <option value="" disabled defaultValue>
-                {initialData?.variable}
-              </option>
+              <option value="">{initialData.variable}</option>
             </select>
 
             <label

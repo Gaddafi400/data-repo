@@ -47,6 +47,7 @@ const Footer = () => {
                   src={twitter}
                   alt="twitter"
                   className="w-full h-20 object-cover"
+                  style={{ height: '25px' }}
                 />
               </a>
 

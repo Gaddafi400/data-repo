@@ -723,6 +723,7 @@
 
 .column-one-social {
   display: flex;
+  align-items: center;
   max-width: 200px;
   justify-content: space-between;
   padding: 0;
@@ -1158,3 +1159,25 @@
 .highcharts-credits {
   display: none !important;
 }
+
+/* .control-arrow {
+  background: rgba(54, 69, 79, 1) !important;
+} */
+
+.carousel .control-prev.control-arrow::before {
+  border-right: 8px solid rgba(54, 69, 79, 1) !important;
+}
+
+.carousel .control-arrow::before, .carousel.carousel-slider .control-arrow::before {
+	margin: 0 5px;
+	display: inline-block;
+	border-top: 8px solid transparent !important;
+	border-bottom: 8px solid transparent !important;
+	content: '';
+}
+
+.carousel .control-next.control-arrow::before {
+  border-left: 8px solid rgba(54, 69, 79, 1) !important;
+}
+
+ 

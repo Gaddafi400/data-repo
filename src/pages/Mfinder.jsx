@@ -32,6 +32,7 @@ const Mfinder = () => {
   const [commodities, setCommodities] = useState(initialData?.commodities);
   const [markets, setMarkets] = useState(initialData?.markets);
   const [defaultLonLat, setDefaultLonLat] = useState({});
+  const [activeTodayClicked, setActiveTodayClicked] = useState(false);
 
   const [selectedState, setSelectedState] = useState('');
   const [selectedLGA, setSelectedLGA] = useState('');
@@ -160,27 +161,32 @@ const Mfinder = () => {
 
   const handleActiveToday = async (e) => {
     e.preventDefault();
-    const currentDate = new Date();
-    const currentDay = daysOfWeek[currentDate.getDay()];
-    const url = '/guest/';
-    setLoading(true);
-    const params = {
-      state: selectedState,
-      town: selectedTown,
-      lga: selectedLGA,
-      activeDay: currentDay,
-    };
+    if (!activeTodayClicked) {
+      setActiveTodayClicked(true);
+      const currentDate = new Date();
+      const currentDay = daysOfWeek[currentDate.getDay()];
+      const url = '/guest/';
+      setLoading(true);
+      const params = {
+        state: selectedState,
+        town: selectedTown,
+        lga: selectedLGA,
+        activeDay: currentDay,
+      };
 
-    try {
-      const response = await customFetchMarket.get(url, { params });
-      console.log(response.data.data);
-      const { commodities, markets } = response.data.data;
-      setMarkets(markets);
-      setCommodities(commodities);
-    } catch (error) {
-      return error;
-    } finally {
-      setLoading(false);
+      try {
+        const response = await customFetchMarket.get(url, { params });
+        console.log(response.data.data);
+        const { commodities, markets } = response.data.data;
+        setMarkets(markets);
+        setCommodities(commodities);
+      } catch (error) {
+        return error;
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      setActiveTodayClicked(false);
     }
   };
 
@@ -239,7 +245,10 @@ const Mfinder = () => {
           <button
             type="button"
             onClick={handleActiveToday}
-            className="bg-footer  text-white rounded-3xl"
+            // className="bg-footer text-white rounded-3xl"
+            className={`bg-footer text-white rounded-3xl ${
+              activeTodayClicked ? 'bg-fth' : ''
+            }`}
           >
             Active Today
           </button>

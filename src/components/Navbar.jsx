@@ -33,7 +33,7 @@ const Navbar = ({ isMarketFinder }) => {
               {isMarketFinder && (
                 <li>
                   <Link to="/" className="nav-link" style={style}>
-                    Data Repo
+                    Data Repository
                   </Link>
                 </li>
               )}
@@ -83,7 +83,7 @@ const Navbar = ({ isMarketFinder }) => {
                   className="hover:text-white text-base nav-link"
                   style={style}
                 >
-                  Data Repo
+                  Data Repository
                 </Link>
               </li>
             )}

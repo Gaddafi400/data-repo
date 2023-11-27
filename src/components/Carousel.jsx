@@ -9,13 +9,13 @@ import c4 from '../assets/c4.png';
 import c5 from '../assets/c5.png';
 import c6 from '../assets/c6.png';
 
-function getRandomImage() {
+const getRandomImage = () => {
   const images = [bulb, c1, c2, c3, c4, c5, c6];
   const randomIndex = Math.floor(Math.random() * images.length);
   return images[randomIndex];
-}
+};
 
-const MyCarousel = ({ data }) => {
+const CustomCarousel = ({ data }) => {
   const slideContentStyles = {
     display: 'flex',
     flexDirection: 'column',
@@ -31,7 +31,7 @@ const MyCarousel = ({ data }) => {
 
   return (
     <Carousel
-      showArrows={true}
+      showArrows={true} 
       showThumbs={false}
       showStatus={false}
       emulateTouch={true}
@@ -54,8 +54,8 @@ const MyCarousel = ({ data }) => {
   );
 };
 
-MyCarousel.propTypes = {
+CustomCarousel.propTypes = {
   data: PropTypes.array.isRequired,
 };
 
-export default MyCarousel;
+export default CustomCarousel;

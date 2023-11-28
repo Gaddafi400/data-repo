@@ -46,10 +46,11 @@ OperationChart.propTypes = {
   title: PropTypes.string,
   mean: PropTypes.number.isRequired,
   median: PropTypes.number.isRequired,
-  mode: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.arrayOf(PropTypes.string),
-  ]).isRequired,
+  mode: PropTypes.number.isRequired,
+  //   mode: PropTypes.oneOfType([
+  //     PropTypes.string,
+  //     PropTypes.arrayOf(PropTypes.string),
+  //   ]).isRequired,
 };
 
 export default OperationChart;

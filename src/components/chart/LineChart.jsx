@@ -8,13 +8,15 @@ import offlineExportingInit from 'highcharts/modules/offline-exporting';
 exportingInit(Highcharts);
 offlineExportingInit(Highcharts);
 
-const AreaChart = ({backgroundColors, hData, label }) => {
+const LineChart = ({ hData, label, backgroundColors }) => {
+  // Define an array of fixed predefined colors
+  const fixedColors = backgroundColors;
+
   const options = {
     chart: {
-      type: 'area',
-      backgroundColor: 'transparent',
-      width: 1100,
-      height: 600,
+      type: 'line',
+      width: 1200,
+      height: 710,
     },
     title: {
       text: label,
@@ -22,24 +24,32 @@ const AreaChart = ({backgroundColors, hData, label }) => {
       style: {
         color: 'black',
         fontSize: '20px',
+        opacity: 0.8,
       },
     },
+
     xAxis: {
       categories: hData.map((item) => item.name),
+      title: {
+        text: 'Year',
+        style: {
+          color: 'black',
+          fontSize: '14px',
+        },
+      },
       labels: {
         style: {
           color: 'black',
           fontSize: '12px',
         },
-        rotation: -45,
       },
     },
     yAxis: {
       title: {
-        text: 'Value',
+        text: 'Rate of Change',
         style: {
           color: 'black',
-          fontSize: '12px',
+          fontSize: '14px',
         },
       },
       labels: {
@@ -50,8 +60,10 @@ const AreaChart = ({backgroundColors, hData, label }) => {
       },
     },
     plotOptions: {
-      area: {
-        fillOpacity: 0.8,
+      bar: {
+        pointPadding: 0.3,
+        groupPadding: 0.3,
+        borderRadius: 5,
         dataLabels: {
           enabled: true,
           style: {
@@ -69,6 +81,7 @@ const AreaChart = ({backgroundColors, hData, label }) => {
             'downloadPNG',
             'downloadJPEG',
             'downloadSVG',
+            'downloadPDF',
           ],
         },
       },
@@ -76,8 +89,10 @@ const AreaChart = ({backgroundColors, hData, label }) => {
     series: [
       {
         name: 'Values',
-        data: hData.map((item) => item.y),
-        color: 'rgba(41, 41, 73, 0.5)',
+        data: hData.map((item, index) => ({
+          y: item.y,
+          color: fixedColors[index % fixedColors.length],
+        })),
       },
     ],
   };
@@ -89,10 +104,15 @@ const AreaChart = ({backgroundColors, hData, label }) => {
   );
 };
 
-AreaChart.propTypes = {
-  backgroundColors: PropTypes.array,
-  hData: PropTypes.array,
+LineChart.propTypes = {
+  hData: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+      y: PropTypes.number,
+    })
+  ),
   label: PropTypes.string,
+  backgroundColors: PropTypes.array,
 };
 
-export default AreaChart;
+export default LineChart;

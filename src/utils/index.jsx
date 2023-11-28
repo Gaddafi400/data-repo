@@ -142,18 +142,10 @@ export const formatDataHeightChart = (chartLabel, chartData) => {
     }
   }
 
-  // const mappedData = labels.map((label, index) => ({
-  //   name: label,
-  //   y: data[index],
-  // }));
-
   const mappedData = labels
     .map((label, index) => ({ label, data: data[index] }))
     .sort((a, b) => a.label.localeCompare(b.label))
     .map(({ label, data }) => ({ name: label, y: data }));
-
-  // // Sort the data by the 'y' property in descending order
-  // mappedData.sort((a, b) => b.y - a.y);
 
   // Find the index of the data point with the largest value
   const maxIndex = data.indexOf(Math.max(...data));
@@ -174,4 +166,27 @@ export const isValidCoordinate = (coordinates) => {
     isFinite(coordinates.lat) &&
     isFinite(coordinates.lng)
   );
+};
+
+// Rate of change
+export const rateOfChange = (rate_of_change) => {
+  const labels = [];
+  const data = [];
+  const backgroundColors = [];
+
+  const sortedEntries = Object.entries(rate_of_change).sort(
+    ([yearA], [yearB]) => yearA - yearB
+  );
+
+  sortedEntries.forEach(([year, value]) => {
+    labels.push(year);
+    data.push(value);
+    backgroundColors.push(getRandomColor());
+  });
+
+  const mappedData = labels
+    .map((label, index) => ({ label, data: data[index] }))
+    .map(({ label, data }) => ({ name: label, y: data }));
+
+  return { mappedData, backgroundColors };
 };

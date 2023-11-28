@@ -1,6 +1,6 @@
 import { Navbar, Footer } from '../components';
 import { useLoaderData } from 'react-router-dom';
-import { customFetch, formatDataHeightChart } from '../utils';
+import { customFetch, formatDataHeightChart, rateOfChange } from '../utils';
 import { useState } from 'react';
 
 import xlsx from '../assets/xlsx.png';
@@ -12,6 +12,7 @@ import PieChart from '../components/chart/PieChart';
 import AreaChart from '../components/chart/AreaChart';
 import BubbleChart from '../components/chart/BubbleChart';
 import OperationChart from '../components/chart/OperationChart';
+import LineChart from '../components/chart/LineChart';
 
 export const loader = async ({ params }) => {
   try {
@@ -23,6 +24,7 @@ export const loader = async ({ params }) => {
       chartLabel: response.data.data?.chartLabel,
       chartData: response.data.data?.chartData,
       operations: response.data.data?.operations,
+      rate_of_change: response.data.data?.rate_of_change,
     };
   } catch (error) {
     return error;
@@ -30,13 +32,13 @@ export const loader = async ({ params }) => {
 };
 
 const SingleData = () => {
-  const { result, operations, chartLabel, chartData } = useLoaderData();
-
+  const { chartLabel, chartData, operations, result, rate_of_change } =
+    useLoaderData();
   const [selectedItem, setSelectedItem] = useState('charts');
-
   const [chartType, setChartType] = useState('PieChart');
 
   const hData = formatDataHeightChart(chartLabel, chartData);
+  const rData = rateOfChange(rate_of_change);
 
   const handleItemClick = (item) => {
     setSelectedItem(item);
@@ -51,7 +53,7 @@ const SingleData = () => {
             className={`cursor-pointer mb-2 ${
               selectedItem === 'charts'
                 ? 'text-primary-800 bg-primary-50 text-center rounded-md'
-                : ''
+                : null
             }`}
             onClick={() => handleItemClick('charts')}
           >
@@ -68,6 +70,19 @@ const SingleData = () => {
               onClick={() => handleItemClick('operation')}
             >
               Operation
+            </li>
+          ) : null}
+
+          {rate_of_change && Object.keys(rate_of_change).length > 0 ? (
+            <li
+              className={`cursor-pointer mb-2 ${
+                selectedItem === 'rate_of_change'
+                  ? 'text-primary-800 bg-primary-50 text-center rounded-md'
+                  : ''
+              }`}
+              onClick={() => handleItemClick('rate_of_change')}
+            >
+              Rate of change
             </li>
           ) : null}
         </ul>
@@ -105,7 +120,6 @@ const SingleData = () => {
               className="w-full md:w-3/0 sm:p-0  min-h-[830px]"
               style={{ marginLeft: '1rem' }}
             >
-              {/* Always show the chart first */}
               <div className="relative overflow-x-auto shadow-md rounded-lg min-w-[1270px]">
                 {/* Table content goes here */}
                 {/* {selectedItem === 'table' && <Table data={result} />} */}
@@ -181,44 +195,30 @@ const SingleData = () => {
                   </div>
                 </div>
               )}
+
+              {/* Operation */}
               {selectedItem === 'operation' && (
                 <div className="bg-white h-full p-4 rounded-lg w-full">
                   <h1 className="text-2xl font-medium mb-4">Operations</h1>
 
                   <OperationChart
                     title={result?.name}
-                    mean={parseInt(operations.mean)}
-                    median={parseInt(operations.median)}
-                    mode={parseInt(operations.mode[1])}
+                    mean={parseInt(operations?.mean)}
+                    median={parseInt(operations?.median)}
+                    mode={parseInt(operations?.mode)}
                   />
-                  {/* <div className="grid grid-cols-2 gap-4">
-                    <div className="border p-4 rounded-lg">
-                      <h2 className="text-xl font-semibold">Mean</h2>
-                      <p>
-                        {operations.mean !== null
-                          ? parseFloat(operations.mean).toFixed(2)
-                          : 'N/A'}
-                      </p>
-                    </div>
+                </div>
+              )}
 
-                    <div className="border p-4 rounded-lg">
-                      <h2 className="text-xl font-semibold">Mode</h2>
-                      <p>
-                        {operations.mode !== null
-                          ? parseFloat(operations.mode).toFixed(2)
-                          : 'N/A'}
-                      </p>
-                    </div>
-
-                    <div className="border p-4 rounded-lg">
-                      <h2 className="text-xl font-semibold">Median</h2>
-                      <p>
-                        {operations.median !== null
-                          ? parseFloat(operations.median).toFixed(2)
-                          : 'N/A'}
-                      </p>
-                    </div>
-                  </div> */}
+              {/* Rate of change */}
+              {selectedItem === 'rate_of_change' && (
+                <div className="bg-white h-full p-4 rounded-lg w-full">
+                  <h1 className="text-2xl font-medium mb-4">Rate of change</h1>
+                  <LineChart
+                    label="Rate of change"
+                    backgroundColors={rData.backgroundColors}
+                    hData={rData.mappedData}
+                  />
                 </div>
               )}
             </div>

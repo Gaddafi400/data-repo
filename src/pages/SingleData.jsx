@@ -69,7 +69,7 @@ const SingleData = () => {
               }`}
               onClick={() => handleItemClick('operation')}
             >
-              Operation
+              Central Stats
             </li>
           ) : null}
 
@@ -82,7 +82,7 @@ const SingleData = () => {
               }`}
               onClick={() => handleItemClick('rate_of_change')}
             >
-              Rate of change
+              Rate of Change
             </li>
           ) : null}
         </ul>
@@ -108,7 +108,6 @@ const SingleData = () => {
           <img src={jpeg} alt="jpeg" width="50px" height="10px" />
         </div>
       </div>
-
       <div className="data-section-container px-2">
         <section className="data-section w-full xx:w-[1518px] rounded-[30px] p-6 overflow-scroll">
           <div className="flex">

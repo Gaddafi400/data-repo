@@ -40,7 +40,7 @@ const Landing = () => {
   return (
     <div>
       <section className="first-section">
-        <div className="px-4">
+        {/* <div className="px-4">
           <Card
             title="Market Finder"
             imageUrl={location}
@@ -50,7 +50,7 @@ const Landing = () => {
             on topics ranging from the economy and the environment to 
             education and more."
           />
-        </div>
+        </div> */}
       </section>
 
       <section className="second-section">

@@ -71,7 +71,14 @@ const SingleData = () => {
             >
               Central Stats
             </li>
-          ) : null}
+          ) : (
+            <li
+              className="cursor-not-allowed mb-2 opacity-50"
+              aria-disabled="true"
+            >
+              Central Stats
+            </li>
+          )}
 
           {rate_of_change && Object.keys(rate_of_change).length > 0 ? (
             <li
@@ -84,7 +91,14 @@ const SingleData = () => {
             >
               Rate of Change
             </li>
-          ) : null}
+          ) : (
+            <li
+              className="cursor-not-allowed mb-2 opacity-50"
+              aria-disabled="true"
+            >
+              Rate of Change
+            </li>
+          )}
         </ul>
       </div>
     );

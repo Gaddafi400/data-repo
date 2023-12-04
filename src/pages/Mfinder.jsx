@@ -96,15 +96,18 @@ const Mfinder = () => {
     setSelectedState(e.target.value);
     setLocalGovernments([]);
     setTowns([]);
+    setActiveTodayClicked(false);
   };
 
   const handleLGAChange = (e) => {
     setSelectedLGA(e.target.value);
     setTowns([]);
+    setActiveTodayClicked(false);
   };
 
   const handleTownChange = (e) => {
     setSelectedTown(e.target.value);
+    setActiveTodayClicked(false);
   };
 
   const handleSearch = async (e) => {
@@ -138,6 +141,7 @@ const Mfinder = () => {
     e.preventDefault();
     setSelectedDay(e.target.value);
     setLoading(true);
+    setActiveTodayClicked(false);
     const url = '/guest/';
     const params = {
       state: selectedState,
@@ -245,7 +249,6 @@ const Mfinder = () => {
           <button
             type="button"
             onClick={handleActiveToday}
-            // className="bg-footer text-white rounded-3xl"
             className={`bg-footer text-white rounded-3xl ${
               activeTodayClicked ? 'bg-fth' : ''
             }`}

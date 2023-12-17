@@ -1,8 +1,7 @@
-import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
 
-const Navbar = ({ isMarketFinder }) => {
+const Navbar = () => {
   const style = { background: '#292949', color: 'white' };
 
   return (
@@ -30,21 +29,15 @@ const Navbar = ({ isMarketFinder }) => {
               tabIndex={0}
               className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-primary-500 rounded-box w-52"
             >
-              {isMarketFinder && (
-                <li>
-                  <Link to="/" className="nav-link" style={style}>
-                    Data Repository
-                  </Link>
-                </li>
-              )}
-
-              {!isMarketFinder && (
-                <li>
-                  <Link to="/market-finder" className="nav-link" style={style}>
-                    Market Finder
-                  </Link>
-                </li>
-              )}
+              <li>
+                <Link
+                  to="https://market-finder.steadyvariables.com/"
+                  className="nav-link"
+                  style={style}
+                >
+                  Market Finder
+                </Link>
+              </li>
 
               <li>
                 <span className="nav-link" style={style}>
@@ -76,29 +69,15 @@ const Navbar = ({ isMarketFinder }) => {
 
         <div className="navbar-end hidden lg:flex">
           <ul className="menu menu-horizontal px-1">
-            {isMarketFinder && (
-              <li>
-                <Link
-                  to="/"
-                  className="hover:text-white text-base nav-link"
-                  style={style}
-                >
-                  Data Repository
-                </Link>
-              </li>
-            )}
-
-            {!isMarketFinder && (
-              <li>
-                <Link
-                  to="/market-finder"
-                  className="text-base nav-link"
-                  style={style}
-                >
-                  Market Finder
-                </Link>
-              </li>
-            )}
+            <li>
+              <Link
+                to="https://market-finder.steadyvariables.com/"
+                className="text-base nav-link"
+                style={style}
+              >
+                Market Finder
+              </Link>
+            </li>
 
             <li tabIndex={0}>
               <details>
@@ -135,10 +114,6 @@ const Navbar = ({ isMarketFinder }) => {
       </div>
     </div>
   );
-};
-
-Navbar.propTypes = {
-  isMarketFinder: PropTypes.bool,
 };
 
 export default Navbar;
